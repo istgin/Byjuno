@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Byjuno_Cdp>
+            <active>true</active>
+            <codePool>local</codePool>
+            <self_name>Byjuno Modul</self_name>
+            <depends>
+                <Mage_Payment />
+            </depends>   
+        </Byjuno_Cdp>
+    </modules>
+</config>
