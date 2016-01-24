@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>4.0.0</version>
+            <version>1.0.0</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -67,15 +67,6 @@
             </updates>
         </layout>
     </adminhtml>
-    <frontend>
-        <layout>
-            <updates>
-                <mymodule>
-                    <file>byjuno_frontend.xml</file> <!-- Our layout file name-->
-                </mymodule>
-            </updates>
-        </layout>
-    </frontend>
     <global>
         <fieldsets>
             <sales_convert_quote>
@@ -91,14 +82,25 @@
             </sales_convert_quote>
         </fieldsets>
         <helpers>
-            <byjuno><class>Byjuno_Cdp_Helper</class></byjuno>
+            <byjuno>
+                <class>Byjuno_Cdp_Helper</class>
+            </byjuno>
+            <byjunocheckout>
+                <class>Byjuno_Byjunocheckout_Helper</class>
+            </byjunocheckout>
         </helpers>
         <blocks>
+            <byjunocheckout>
+                <class>Byjuno_Byjunocheckout_Block</class>
+            </byjunocheckout>
             <byjuno>
                 <class>Byjuno_Cdp_Block</class>
             </byjuno>
         </blocks>
         <models>
+            <byjunocheckout>
+                <class>Byjuno_Cdp_Model_Checkout</class>
+            </byjunocheckout>
             <byjuno>
                 <class>Byjuno_Cdp_Model</class>
                 <resourceModel>byjuno_mysql4</resourceModel>
@@ -111,11 +113,6 @@
                     </byjuno>
                 </entities>
             </byjuno_mysql4>
-            <!--<checkout> Mage_Checkout_Model_Type_Onepage
-                <rewrite>
-                    <type_onepage>Byjuno_Cdp_Model_Onepage</type_onepage>
-                </rewrite>
-            </checkout>-->
         </models>
         <events>
             <controller_action_predispatch>
@@ -127,15 +124,15 @@
                     </byjuno_amscheckoutfront_onepage>
                 </observers>
             </controller_action_predispatch>
-			<controller_action_predispatch_checkout_onepage_saveBilling>
-				<observers>
-					<auto_register_shipping>
-						<type>singleton</type>
-						<class>byjuno/observer</class>
-						<method>checkout_controller_onepage_save_billing_method</method>
-					</auto_register_shipping>
-				</observers>
-			</controller_action_predispatch_checkout_onepage_saveBilling>
+            <controller_action_predispatch_checkout_onepage_saveBilling>
+                <observers>
+                    <auto_register_shipping>
+                        <type>singleton</type>
+                        <class>byjuno/observer</class>
+                        <method>checkout_controller_onepage_save_billing_method</method>
+                    </auto_register_shipping>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_saveBilling>
             <checkout_controller_onepage_save_shipping_method>
                 <observers>
                     <byjuno_after_checkout_process>
@@ -175,6 +172,17 @@
             </byjuno_setup>
         </resources>
     </global>
+    <frontend>
+        <routers>
+            <byjunocheckout>
+                <use>standard</use>
+                <args>
+                    <module>Byjuno_Byjunocheckout</module>
+                    <frontname>Byjunocard</frontname>
+                </args>
+            </byjunocheckout>
+        </routers>
+    </frontend>
     <default>
         <byjuno>
             <api>
@@ -183,18 +191,8 @@
                 <timeout>30</timeout>
                 <tmxenabled>disable</tmxenabled>
                 <businesstobusiness>disable</businesstobusiness>
+                <title>Byjuno Invoice</title>
             </api>
-            <advancedcall>
-                <activation>checkout,onepage
-onestepcheckout,index
-onestepcheckout,onepage
-PostFinanceCw,onepage
-PostFinanceCw,process
-SaferpayCw,onepage
-SaferpayCw,process
-DatatransCw,onepage
-DatatransCw,process</activation>
-            </advancedcall>
         </byjuno>
     </default>
 </config>

@@ -2,29 +2,24 @@
 <config>
     <tabs>
         <byjuno translate="label" module="byjuno">
-            <label>Byjuno (4.0.0)</label>
+            <label>Byjuno (1.0.0)</label>
             <sort_order>301</sort_order>
         </byjuno>
     </tabs>
     <sections>
-        <byjuno translate="label" module="byjuno">
-            <label>Configuration</label>
-            <tab>byjuno</tab>
-            <sort_order>130</sort_order>
-            <show_in_default>1</show_in_default>
-            <show_in_website>1</show_in_website>
-            <show_in_store>1</show_in_store>
+        <payment translate="label" module="byjuno">
             <groups>
                 <api translate="label">
-                    <label>API Settings</label>
+                    <label>Byjuno checkout Settings</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
                     <fields>
                         <pluginenabled translate="label comment">
-                            <label>Enable credit check</label>
+                            <label>Enable Byjuno checkout</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>0</sort_order>
                             <source_model>byjuno/source_Activate</source_model>
@@ -32,18 +27,46 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </pluginenabled>
-                        <plugincheckouttype translate="label comment">
-                            <label>Checkout type</label>
-                            <frontend_type>select</frontend_type>
-                            <sort_order>1</sort_order>
-                            <source_model>byjuno/source_Checkouttype</source_model>
+                        <title translate="label">
+                            <label>Checkout title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </plugincheckouttype>
+                        </title>
+                        <order_status translate="label">
+                            <label>New Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status>
+                        <success_order_status translate="label">
+                            <label>Success Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </success_order_status>
+                        <fail_order_status translate="label">
+                            <label>Fail Order Status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_order_status</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </fail_order_status>
                         <businesstobusiness translate="label comment">
                             <label>Enable B2B check</label>
-                            <comment>B2B integration allow to to do credit check if customer provide company credentials</comment>
+                            <comment>B2B integration allow to to do credit check if customer provide company
+                                credentials
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>2</sort_order>
                             <source_model>byjuno/source_Activate</source_model>
@@ -93,256 +116,33 @@
                             <show_in_store>1</show_in_store>
                         </mail>
                         <minamout translate="label">
-                            <label>Mininmal amount for credit check</label>
+                            <label>Mininmal amount for checkout</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>8</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </minamout>
-                        <timeout translate="label">
-                           <label>Connection timeout to Byjuno CDP server in seconds</label>
-                           <frontend_type>text</frontend_type>
-                           <validate>required-entry validate-digits</validate>
-                           <sort_order>9</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                        </timeout>
-                        <tmxenabled translate="label comment">
-                            <label>Enable ThreatMetrix security check</label>
-                            <comment>ThreatMetrix will place invisible JavaScript in checkout process</comment>
-                            <frontend_type>select</frontend_type>
-                            <sort_order>10</sort_order>
-                            <source_model>byjuno/source_Activate</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </tmxenabled>
-                        <tmxkey translate="label">
-                            <label>ThreatMetrix Org Id</label>
+                        <maxamout translate="label">
+                            <label>Maximal amount for checkout</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>11</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </tmxkey>
-                    </fields>
-                </api>
-                <risk translate="label">
-                    <label>Risk Management</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>3</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <titleModel1 translate="label comment">
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>0</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_TitleRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </titleModel1>
-                        <status1 translate="label comment">
-                            <label>There are serious negative indicators (status 1)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>1</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status1>
-                        <status2 translate="label comment">
-                            <label>All payment methods (status 2)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>2</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status2>
-                        <status3 translate="label">
-                            <label>Manual post-processing (currently not yet in use) (status 3)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>3</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status3>
-                        <status4 translate="label">
-                            <label>Postal address is incorrect (status 4)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>4</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status4>
-                        <status5 translate="label">
-                            <label>Enquiry exceeds the credit limit (the credit limit is specified in the cooperation agreement) (status 5)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>5</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status5>
-                        <titleModel4 translate="label comment">
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>6</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_TitleRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </titleModel4>
-                        <status6 translate="label">
-                            <label>Customer specifications not met (optional) (status 6)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status6>
-                        <status7 translate="label">
-                            <label>Enquiry exceeds the net credit limit (enquiry amount plus open items exceeds credit limit) (status 7)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
                             <sort_order>8</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </status7>
-                        <status8 translate="label">
-                            <label>Person queried is not of creditworthy age (status 8)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
+                        </maxamout>
+                        <timeout translate="label">
+                            <label>Connection timeout to Byjuno CDP server in seconds</label>
+                            <frontend_type>text</frontend_type>
+                            <validate>required-entry validate-digits</validate>
                             <sort_order>9</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </status8>
-                        <status9 translate="label">
-                            <label>Delivery address does not match invoice address (for payment guarantee only) (status 9)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status9>
-                        <titleModel3 translate="label comment">
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>11</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_TitleRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </titleModel3>
-                        <status10 translate="label">
-                            <label>Household cannot be identified at this address (status 10)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>12</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status10>
-                        <status11 translate="label">
-                            <label>Country is not supported (status 11)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>13</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status11>
-                        <status12 translate="label">
-                            <label>Party queried is not a natural person (status 12)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>14</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status12>
-                        <status13 translate="label">
-                            <label>System is in maintenance mode (status 13)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>15</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status13>
-                        <status14 translate="label">
-                            <label>Address with high fraud risk (status 14)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>16</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status14>
-                        <status15 translate="label">
-                            <label>Allowance is too low (status 15)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>17</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status15>
-                        <titleModel2 translate="label comment">
-                            <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>18</sort_order>
-                            <frontend_model>byjuno/catalog_form_renderer_config_TitleRange</frontend_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </titleModel2>
-                        <status0 translate="label">
-                            <label>Fail to connect (status Error)</label>
-                            <frontend_type>Checkboxes</frontend_type>
-                            <frontend_model>byjuno/catalog_form_renderer_config_allowedRange</frontend_model>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </status0>
+                        </timeout>
                     </fields>
-                </risk>
-                <mappings translate="label">
-                    <label>Payment methods mappings</label>
-                    <frontend_type>text</frontend_type>
-                    <frontend_model>byjuno/adminhtml_system_config_form_fieldset_customer_groups</frontend_model>
-                    <sort_order>2</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                </mappings>
-                <advancedcall translate="label">
-                    <label>Risk managment activation places (for developers)</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>4</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                        <fields>
-                        <activation translate="label">
-                            <label>Provide activation places when to call risk managment (Each place on new line (ModuleName, ControllerName))</label>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>2</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </activation>
-                    </fields>
-                </advancedcall>
+                </api>
             </groups>
-        </byjuno>
+        </payment>
     </sections>
 </config>
