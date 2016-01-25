@@ -68,6 +68,39 @@
         </layout>
     </adminhtml>
     <global>
+        <models>
+            <cdp>
+                <class>Byjuno_Cdp_Model</class>
+            </cdp>
+            <byjuno>
+                <class>Byjuno_Cdp_Model</class>
+                <resourceModel>byjuno_mysql4</resourceModel>
+            </byjuno>
+            <byjuno_mysql4>
+                <class>Byjuno_Cdp_Model_Mysql4</class>
+                <entities>
+                    <byjuno>
+                        <table>byjuno</table>
+                    </byjuno>
+                </entities>
+            </byjuno_mysql4>
+        </models>
+        <helpers>
+            <byjuno>
+                <class>Byjuno_Cdp_Helper</class>
+            </byjuno>
+            <byjunocheckout>
+                <class>Byjuno_Byjunocheckout_Helper</class>
+            </byjunocheckout>
+        </helpers>
+        <blocks>
+            <byjunocheckout>
+                <class>Byjuno_Cdp_Model</class>
+            </byjunocheckout>
+            <byjuno>
+                <class>Byjuno_Cdp_Block</class>
+            </byjuno>
+        </blocks>
         <fieldsets>
             <sales_convert_quote>
                 <byjuno_status>
@@ -81,6 +114,30 @@
                 </byjuno_credit_level>
             </sales_convert_quote>
         </fieldsets>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <byjuno_before_load_payment_method>
+                        <type>singleton</type>
+                        <class>byjuno/observer</class>
+                        <method>checkandcall</method>
+                    </byjuno_before_load_payment_method>
+                </observers>
+            </payment_method_is_active>
+        </events>
+        <resources>
+            <byjuno_setup>
+                <setup>
+                    <module>Byjuno_Cdp</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </byjuno_setup>
+        </resources>
+    </global>
+    <!--<global>
+
         <helpers>
             <byjuno>
                 <class>Byjuno_Cdp_Helper</class>
@@ -91,7 +148,7 @@
         </helpers>
         <blocks>
             <byjunocheckout>
-                <class>Byjuno_Byjunocheckout_Block</class>
+                <class>Byjuno_Cdp_Model</class>
             </byjunocheckout>
             <byjuno>
                 <class>Byjuno_Cdp_Block</class>
@@ -171,28 +228,30 @@
                 </connection>
             </byjuno_setup>
         </resources>
-    </global>
-    <frontend>
-        <routers>
-            <byjunocheckout>
-                <use>standard</use>
-                <args>
-                    <module>Byjuno_Byjunocheckout</module>
-                    <frontname>Byjunocard</frontname>
-                </args>
-            </byjunocheckout>
-        </routers>
-    </frontend>
+    </global>-->
     <default>
-        <byjuno>
-            <api>
+        <payment>
+            <cdp>
+                <model>cdp/standard</model>
+                <active>1</active>
+                <title>Byjuno Invoice</title>
                 <currentmode>test</currentmode>
                 <minamout>10</minamout>
                 <timeout>30</timeout>
                 <tmxenabled>disable</tmxenabled>
                 <businesstobusiness>disable</businesstobusiness>
-                <title>Byjuno Invoice</title>
-            </api>
-        </byjuno>
+            </cdp>
+        </payment>
     </default>
+    <frontend>
+        <routers>
+            <cdp>
+                <use>standard</use>
+                <args>
+                    <module>Byjuno_Cdp</module>
+                    <frontname>Byjunocard</frontname>
+                </args>
+            </cdp>
+        </routers>
+    </frontend>
 </config>

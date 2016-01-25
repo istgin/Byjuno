@@ -15,28 +15,13 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
     }
 
     public function checkandcall(Varien_Event_Observer $observer){
-        if (Mage::getStoreConfig('byjuno/api/pluginenabled', Mage::app()->getStore()) == 'disable') {
+        $methodInstance = $observer->getEvent()->getMethodInstance();
+        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standard)) {
             return;
         }
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) != 'default') {
-            return;
-        }
-        if(false === $this->isInCheckoutProcess()){
-            return;
-        }
-        $status = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
-        $minAmount = Mage::getStoreConfig('byjuno/api/minamount', Mage::app()->getStore());
-        /* @var $quote Mage_Sales_Model_Quote */
-        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
-        if (isset($status) && $quote->getGrandTotal() >= $minAmount) {
-            $status = intval($status);
-            $methods = $this->getHelper()->getAllowedAndDeniedMethods(Mage::getStoreConfig('byjuno/risk/status' . $status, Mage::app()->getStore()));
-            $event = $observer->getEvent();
-            $method = $event->getMethodInstance();
-            $result = $event->getResult();
-            if (in_array($method->getCode(), $methods["denied"])) {
-                $result->isAvailable = false;
-            }
+
+        if (Mage::getStoreConfig('byjuno/cdp/active', Mage::app()->getStore()) == 'disable') {
+            $observer->getEvent()->getResult()->isAvailable = false;
         }
         return;
     }
