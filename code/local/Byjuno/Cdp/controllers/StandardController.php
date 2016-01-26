@@ -85,7 +85,6 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
         $session = Mage::getSingleton('checkout/session');
         $session->setQuoteId($session->getByjunoStandardQuoteId(true));
-
         if ($session->getLastRealOrderId()) {
             $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
             if ($order->getId()) {
@@ -93,6 +92,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             }
             Mage::helper('byjuno/checkout')->restoreQuote();
         }
+        $session->addError("Error pay byjuno");
         $this->_redirect('checkout/cart');
         //exit('return back');
     }
