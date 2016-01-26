@@ -249,7 +249,7 @@
                 <use>standard</use>
                 <args>
                     <module>Byjuno_Cdp</module>
-                    <frontname>Byjunocard</frontname>
+                    <frontName>cdp</frontName>
                 </args>
             </cdp>
         </routers>

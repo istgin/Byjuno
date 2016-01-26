@@ -20,7 +20,9 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
      */
     public function getOrderPlaceRedirectUrl()
     {
-        return 'http://www.csv.lv';//Mage::getUrl('customcard/standard/redirect', array('_secure' => true));
+        //exit(Mage::getUrl('paypal/standard/success'));
+        return Mage::getUrl('cdp/standard/result');
+        //return 'http://www.csv.lv';//Mage::getUrl('customcard/standard/redirect', array('_secure' => true));
     }
 
 }
