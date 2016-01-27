@@ -59,15 +59,14 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
      */
     public function cancelAction()
     {
-        exit('cancel');
         $session = Mage::getSingleton('checkout/session');
-        $session->setQuoteId($session->getPaypalStandardQuoteId(true));
+        $session->setQuoteId($session->getByjunoStandardQuoteId(true));
         if ($session->getLastRealOrderId()) {
             $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
             if ($order->getId()) {
                 $order->cancel()->save();
             }
-            Mage::helper('paypal/checkout')->restoreQuote();
+            Mage::helper('byjuno/checkout')->restoreQuote();
         }
         $this->_redirect('checkout/cart');
     }

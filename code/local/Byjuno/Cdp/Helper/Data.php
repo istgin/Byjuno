@@ -73,7 +73,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $order->setByjunoCreditLevel($ByjunoResponse->getCustomerCreditRatingLevel());
         $order->save();
     }
-
+/*
     function CreateMagentoShopRequest(Mage_Sales_Model_Quote $quote) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
@@ -216,7 +216,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $request->setExtraInfo($extraInfo);
         }
 
-        /* shipping information */
+
         if (!$quote->isVirtual()) {
             $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
             $extraInfo["Value"] = $quote->getShippingAddress()->getFirstname();
@@ -290,7 +290,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 4.0.0';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.0.0';
 		$request->setExtraInfo($extraInfo);
         return $request;
 
@@ -380,7 +380,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $request->setExtraInfo($extraInfo);
         }
 
-        /* shipping information */
         if ($order->canShip()) {
             $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
             $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
@@ -432,33 +431,119 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $request;
 
     }
+*/
 
-    public function mapPaymentMethodToSpecs($paymentCode){
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod) {
 
-        $mapping = Mage::getStoreConfig('byjuno/mappings/group_'.$paymentCode, Mage::app()->getStore());
-        if (empty($mapping)) {
-            $mapping = 'INVOICE';
+        $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setVersion("1.00");
+        try {
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+        } catch (Exception $e) {
+
         }
-        return $mapping;
-    }
+        $b = $order->getCustomerDob();
+        if (!empty($b)) {
+            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
+        }
 
-
-    function getAllowedAndDeniedMethods($string) {
-        $methods = Array();
-        $methods["allowed"] = Array();
-        $methods["denied"] = Array();
-        $str = explode(",", $string);
-        foreach($str as $strval) {
-            $m = explode("_", $strval);
-            $last = end($m);
-            $method = str_replace("_".$last, "", $strval);
-            if ($last == 'allow') {
-                $methods["allowed"][] = $method;
-            } else {
-                $methods["denied"][] = $method;
+        $g = $order->getCustomerGender();
+        if (!empty($g)) {
+            if ($g == '1') {
+                $request->setGender('1');
+            } else if ($g == '2') {
+                $request->setGender('2');
             }
         }
-        return $methods;
+
+        $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
+        $reference = $order->getCustomerId();
+        if (empty($reference)) {
+            $request->setCustomerReference("guest_".$order->getBillingAddress()->getId());
+        } else {
+            $request->setCustomerReference($order->getCustomerId());
+        }
+        $request->setFirstName((String)$order->getBillingAddress()->getFirstname());
+        $request->setLastName((String)$order->getBillingAddress()->getLastname());
+        $request->setFirstLine(trim((String)$order->getBillingAddress()->getStreetFull()));
+        $request->setCountryCode(strtoupper((String)$order->getBillingAddress()->getCountry()));
+        $request->setPostCode((String)$order->getBillingAddress()->getPostcode());
+        $request->setTown((String)$order->getBillingAddress()->getCity());
+        $request->setFax((String)trim($order->getBillingAddress()->getFax(), '-'));
+        $request->setLanguage((String)substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
+
+        if ($order->getBillingAddress()->getCompany()) {
+            $request->setCompanyName1($order->getBillingAddress()->getCompany());
+        }
+
+        $request->setTelephonePrivate((String)trim($order->getBillingAddress()->getTelephone(), '-'));
+        $request->setEmail((String)$order->getBillingAddress()->getEmail());
+
+        $extraInfo["Name"] = 'ORDERCLOSED';
+        $extraInfo["Value"] = 'NO';
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'ORDERAMOUNT';
+        $extraInfo["Value"] = number_format($order->getGrandTotal(), 2, '.', '');
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'ORDERCURRENCY';
+        $extraInfo["Value"] = $order->getBaseCurrencyCode();
+        $request->setExtraInfo($extraInfo);
+
+        /* shipping information */
+        if ($order->canShip()) {
+            $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+            $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+            $extraInfo["Value"] = $order->getShippingAddress()->getLastname();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
+            $extraInfo["Value"] = trim($order->getShippingAddress()->getStreetFull());
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_HOUSENUMBER';
+            $extraInfo["Value"] = '';
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_COUNTRYCODE';
+            $extraInfo["Value"] = strtoupper($order->getShippingAddress()->getCountry());
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_POSTCODE';
+            $extraInfo["Value"] = $order->getShippingAddress()->getPostcode();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_TOWN';
+            $extraInfo["Value"] = $order->getShippingAddress()->getCity();
+            $request->setExtraInfo($extraInfo);
+
+            if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+                $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
+                $request->setExtraInfo($extraInfo);
+            }
+        }
+
+        $extraInfo["Name"] = 'ORDERID';
+        $extraInfo["Value"] = $order->getIncrementId();
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'PAYMENTMETHOD';
+        $extraInfo["Value"] = 'INVOICE';
+        $request->setExtraInfo($extraInfo);
+
+		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.0.0';
+		$request->setExtraInfo($extraInfo);
+        return $request;
     }
+
 
 }

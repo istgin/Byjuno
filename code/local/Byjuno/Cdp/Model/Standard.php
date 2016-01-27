@@ -24,60 +24,61 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
         return Mage::getSingleton('checkout/session');
     }
 
+    private function getHelper(){
+        return Mage::helper('byjuno');
+    }
+
     public function getOrderPlaceRedirectUrl()
     {
-
-        return Mage::getUrl('cdp/standard/result');
-
-        $order_id = Mage::getSingleton('checkout/session')->getQuoteId();
-        return 'http://www.csv.lv/' . $order_id;
-
+        $session = Mage::getSingleton('checkout/session');
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('checkout/cart')->getQuote();
         /* @var $order Mage_Sales_Model_Order */
-        $order = Mage::getModel('sales/order')->load($order_id);
-        $incrementId = $order->getIncrementId();
-        if (empty($incrementId)) {
-            return;
-        }
+        /* @var $ordSess Mage_Sales_Model_Order */
+        $ordSess = Mage::getModel('sales/order');
+
+        $order = $ordSess->loadByIncrementId($quote->getReservedOrderId());
         $payment = $order->getPayment();
-        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
         $paymentMethod = $payment->getMethod();
-        $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $paymentMethod);
-        $ByjunoRequestName = "Order paid";
-        if ($request->getCompanyName1() != '' && Mage::getStoreConfig('byjuno/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-            $ByjunoRequestName = "Order paid for Company";
+        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod);
+
+        $ByjunoRequestName = "Order request";
+        if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            $ByjunoRequestName = "Order request for Company";
             $xml = $request->createRequestCompany();
         } else {
             $xml = $request->createRequest();
         }
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('byjuno/api/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
         if ($mode == 'production') {
             $byjunoCommunicator->setServer('live');
         } else {
             $byjunoCommunicator->setServer('test');
         }
-        $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('byjuno/api/timeout', Mage::app()->getStore()));
+        $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
         $status = 0;
+        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
         if ($response) {
-            $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = (int)$byjunoResponse->getCustomerRequestStatus();
+            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
             if (intval($status) > 15) {
                 $status = 0;
-            }
-            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
-            $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
-            $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
-            if (!empty($statusToPayment) && !empty($ByjunoResponseSession)) {
-                $this->getHelper()->saveStatusToOrder($order, $statusToPayment, unserialize($ByjunoResponseSession));
             }
         } else {
             $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
-        //exit(Mage::getUrl('paypal/standard/success'));
-        return Mage::getUrl('cdp/standard/result');
-        //return 'http://www.csv.lv';//Mage::getUrl('customcard/standard/redirect', array('_secure' => true));
+        if ($status == 2) {
+            return Mage::getUrl('cdp/standard/result');
+        } else if ($status == 0) {
+            $session->addError("Gateway timeout. Please try again later");
+            return Mage::getUrl('cdp/standard/cancel');
+        } else {
+            $session->addError("You are not allowed to pay with this payment method");
+            return Mage::getUrl('cdp/standard/cancel');
+        }
     }
 
 }

@@ -32,11 +32,10 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator
             $timeout = 30;
         }
         if ($this->server == 'test') {
-            $sslsock = @fsockopen("ssl://secure.byjuno.ch", 443, $errno, $errstr, $timeout);
+            $sslsock = fsockopen("ssl://secure.intrum.ch", 443, $errno, $errstr, $timeout);
         } else {
-            $sslsock = @fsockopen("ssl://secure.byjuno.ch", 443, $errno, $errstr, $timeout);
+            $sslsock = fsockopen("ssl://secure.intrum.ch", 443, $errno, $errstr, $timeout);
         }
-
         if(is_resource($sslsock)) {
 
             $request_data	= urlencode("REQUEST")."=".urlencode($xmlRequest);
@@ -62,7 +61,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator
 
             $response = substr($response, strpos($response,'<?xml')-1);
             $response = substr($response, 1,strpos($response,'Response>')+8);
-
         }
         return $response;
     }
