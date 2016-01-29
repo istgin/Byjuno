@@ -459,7 +459,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
-        $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
+        $requestId = uniqid((String)$order->getBillingAddress()->getId()."_");
+        $request->setRequestId($requestId);
         $reference = $order->getCustomerId();
         if (empty($reference)) {
             $request->setCustomerReference("guest_".$order->getBillingAddress()->getId());
@@ -531,12 +532,16 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
+        $extraInfo["Name"] = 'PP_TRANSACTION_NUMBER';
+        $extraInfo["Value"] = $requestId;
+        $request->setExtraInfo($extraInfo);
+
         $extraInfo["Name"] = 'ORDERID';
         $extraInfo["Value"] = $order->getIncrementId();
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'PAYMENTMETHOD';
-        $extraInfo["Value"] = 'INVOICE';
+        $extraInfo["Value"] = 'BYJUNO-INVOICE';
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';

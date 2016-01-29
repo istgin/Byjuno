@@ -244,6 +244,23 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse
     private $ProcessingInfoDescription;
 
     private $CustomerRequestStatus;
+    private $TransactionNumber;
+
+    /**
+     * @return mixed
+     */
+    public function getTransactionNumber()
+    {
+        return $this->TransactionNumber;
+    }
+
+    /**
+     * @param mixed $TransactionNumber
+     */
+    public function setTransactionNumber($TransactionNumber)
+    {
+        $this->TransactionNumber = $TransactionNumber;
+    }
     private $CustomerLastStatusChange;
     private $CustomerProcessingInfoCode;
     private $CustomerProcessingInfoClassification;
@@ -271,9 +288,9 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse
             }
 
         }
-        $this->ResponseId = (int)$xml["ResponseId"];
-        $this->Version = (double)$xml["Version"];
-        $this->ClientId = (int)$xml["ClientId"];
+        $this->ResponseId = $xml["ResponseId"];
+        $this->Version = $xml["Version"];
+        $this->ClientId = $xml["ClientId"];
 
         $this->ProcessingInfoCode = trim((string)$xml->ProcessingInfo->Code);
         $this->ProcessingInfoClassification = trim((string)$xml->ProcessingInfo->Classification);
@@ -290,6 +307,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse
         }
 
         $this->CustomerRequestStatus = (int)$xml->Customer->RequestStatus;
+        $this->TransactionNumber = $xml->Customer->TransactionNumber;
         $this->CustomerLastStatusChange = trim((string)$xml->Customer->RequestStatus);
         $this->CustomerProcessingInfoCode = trim((string)$xml->Customer->ProcessingInfo->Code);
         $this->CustomerProcessingInfoClassification = trim((string)$xml->Customer->ProcessingInfo->Classification);
