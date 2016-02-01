@@ -71,7 +71,7 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
             $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
         if ($status == 2) {
-            $return = "http://localhost:62532/confirm?req=".$byjunoResponse->getTransactionNumber()."&res=".$byjunoResponse->getResponseId()."&lang=de&method=BYJUNO-INVOICE&redirectURL=/";//.Mage::getUrl('cdp/standard/result');
+            $return = "http://localhost:62532/confirm?req=".$byjunoResponse->getTransactionNumber()."&res=".$byjunoResponse->getResponseId()."&lang=de&method=BYJUNO-INVOICE&redirectURL=".Mage::getUrl('cdp/standard/result');
             return $return;
            // var_dump($byjunoResponse);
            // exit();

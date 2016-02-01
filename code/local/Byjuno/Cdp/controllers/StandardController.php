@@ -82,25 +82,18 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
 
-        $session = Mage::getSingleton('checkout/session');
-        $session->setQuoteId($session->getByjunoStandardQuoteId(true));
-        if ($session->getLastRealOrderId()) {
-            $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
-            if ($order->getId()) {
-                $order->cancel()->save();
-            }
-            Mage::helper('byjuno/checkout')->restoreQuote();
+        if ($_GET["action"] == 'success') {
+            $this->_redirect('cdp/standard/success');
+        } else {
+            $session->addError("Error with BYJUNO-INVOICE payment");
+            $this->_redirect('cdp/standard/cancel');
         }
-        $session->addError("Error pay byjuno");
-        $this->_redirect('checkout/cart');
-        //exit('return back');
     }
 
     public function  successAction()
     {
-        exit('success');
         $session = Mage::getSingleton('checkout/session');
-        $session->setQuoteId($session->getPaypalStandardQuoteId(true));
+        $session->setQuoteId($session->getByjunoStandardQuoteId(true));
         Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
         $this->_redirect('checkout/onepage/success', array('_secure'=>true));
     }
