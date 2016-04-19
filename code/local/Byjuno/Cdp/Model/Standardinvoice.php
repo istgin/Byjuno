@@ -5,9 +5,9 @@
  * Date: 25.01.2016
  * Time: 18:35
  */
-class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
+class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstract
 {
-    protected $_code = 'cdp';
+    protected $_code = 'cdp_invoice';
 
     protected $_isInitializeNeeded = true;
     protected $_canUseInternal = false;
@@ -18,6 +18,12 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
      *
      * @return string
      */
+
+
+    public function getTitle()
+    {
+        return  Mage::getStoreConfig('payment/cdp/title_invoice', Mage::app()->getStore());
+    }
 
     public function getCheckout()
     {
@@ -40,6 +46,7 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
         $order = $ordSess->loadByIncrementId($quote->getReservedOrderId());
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethod();
+        //$_code;
         $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod);
 
         $ByjunoRequestName = "Order request";

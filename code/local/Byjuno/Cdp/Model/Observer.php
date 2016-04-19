@@ -239,7 +239,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
 
     public function checkandcall(Varien_Event_Observer $observer){
         $methodInstance = $observer->getEvent()->getMethodInstance();
-        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standard)) {
+        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice)) {
             return;
         }
 

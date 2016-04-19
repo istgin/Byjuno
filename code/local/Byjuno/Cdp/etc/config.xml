@@ -231,8 +231,8 @@
     </global>-->
     <default>
         <payment>
-            <cdp>
-                <model>cdp/standard</model>
+            <cdp_invoice>
+                <model>cdp/standardinvoice</model>
                 <active>1</active>
                 <title>Byjuno Invoice</title>
                 <currentmode>test</currentmode>
@@ -240,18 +240,35 @@
                 <timeout>30</timeout>
                 <tmxenabled>disable</tmxenabled>
                 <businesstobusiness>disable</businesstobusiness>
-            </cdp>
+            </cdp_invoice>
+            <cdp_installment>
+                <model>cdp/standardinstallment</model>
+                <active>1</active>
+                <title>Byjuno Installment</title>
+                <currentmode>test</currentmode>
+                <minamout>10</minamout>
+                <timeout>30</timeout>
+                <tmxenabled>disable</tmxenabled>
+                <businesstobusiness>disable</businesstobusiness>
+            </cdp_installment>
         </payment>
     </default>
     <frontend>
         <routers>
-            <cdp>
-                <use>standard</use>
+            <cdp_invoice>
+                <use>standardinvoice</use>
                 <args>
                     <module>Byjuno_Cdp</module>
-                    <frontName>cdp</frontName>
+                    <frontName>cdp_invoice</frontName>
                 </args>
-            </cdp>
+            </cdp_invoice>
+            <cdp_invoice>
+                <use>standardinstallment</use>
+                <args>
+                    <module>Byjuno_Cdp</module>
+                    <frontName>cdp_installment</frontName>
+                </args>
+            </cdp_invoice>
         </routers>
     </frontend>
 </config>
