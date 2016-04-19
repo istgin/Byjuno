@@ -70,12 +70,10 @@ class Byjuno_Cdp_Model_Standard extends Mage_Payment_Model_Method_Abstract
         } else {
             $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
-        if ($status == 2) {
-            $return = "http://magento-checkout-byjuno-ch/confirm?req=".$byjunoResponse->getTransactionNumber()."&res=".$byjunoResponse->getResponseId()."&lang=de&method=BYJUNO-INVOICE&redirectURL=".Mage::getUrl('cdp/standard/result');
-            return $return;
-           // var_dump($byjunoResponse);
-           // exit();
-            return "http://ext-test-checkout.byjuno.ch/confirm?Req=".$byjunoResponse->getTransactionNumber()."&Res=".$byjunoResponse->getResponseId()."&lang=de&method=BYJUNO-INVOICE&redirectURL=".Mage::getUrl('cdp/standard/result');
+        $session->setData("intrum_status", $status);
+        $session->setData("intrum_order", $order->getId());
+        if ($status == 11) {
+            return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
             $session->addError("Gateway timeout. Please try again later");
             return Mage::getUrl('cdp/standard/cancel');

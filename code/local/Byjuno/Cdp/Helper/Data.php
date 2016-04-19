@@ -295,16 +295,16 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $request;
 
     }
-
+*/
     function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('byjuno/api/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('byjuno/api/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('byjuno/api/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
         $request->setVersion("1.00");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('byjuno/api/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
         } catch (Exception $e) {
 
         }
@@ -313,7 +313,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
         }
 
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($b)) {
+        if (Mage::getStoreConfig('payment/cdp/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($b)) {
             $dob = Mage::getSingleton('checkout/session')->getData('dob_amasty');
             if (!empty($dob)) {
                 $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($dob)));
@@ -330,7 +330,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($g)) {
+        if (Mage::getStoreConfig('payment/cdp/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($g)) {
             $gender = Mage::getSingleton('checkout/session')->getData('gender_amasty');
             if (!empty($gender)) {
                 $request->setGender($gender);
@@ -374,7 +374,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
         $sesId = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
-        if (Mage::getStoreConfig('byjuno/api/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
+        if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
             $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
             $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
             $request->setExtraInfo($extraInfo);
@@ -409,7 +409,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $extraInfo["Value"] = $order->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
-            if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('byjuno/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
@@ -421,7 +421,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'PAYMENTMETHOD';
-        $extraInfo["Value"] = $this->mapPaymentMethodToSpecs($paymentmethod);
+        $extraInfo["Value"] = $paymentmethod;
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
@@ -431,7 +431,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $request;
 
     }
-*/
 
     function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod) {
 

@@ -82,7 +82,9 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
 
-        if ($_GET["action"] == 'success') {
+
+        $status = $session->getData("intrum_status");
+        if ($status == 11) {
             $this->_redirect('cdp/standard/success');
         } else {
             $session->addError("Error with BYJUNO-INVOICE payment");
@@ -93,8 +95,60 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
     public function  successAction()
     {
         $session = Mage::getSingleton('checkout/session');
+        $session->setByjunoStandardQuoteId($session->getQuoteId());
+        $statusRequest = $session->getData("intrum_status");
+        $orderId = $session->getData("intrum_order");
+        if ($statusRequest != 11) {
+            $session->addError("Error with BYJUNO-INVOICE payment");
+            $this->_redirect('cdp/standard/cancel');
+        }
+
+
+        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+        $session = Mage::getSingleton('checkout/session');
         $session->setQuoteId($session->getByjunoStandardQuoteId(true));
-        Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
-        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
+        $order = Mage::getModel('sales/order')->load($orderId);
+        $helper = Mage::helper('byjuno');
+        $request = $helper->CreateMagentoShopRequestPaid($order, 'BYJUNO-INVOICE');
+        $ByjunoRequestName = "Order paid";
+        if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            $ByjunoRequestName = "Order paid for Company";
+            $xml = $request->createRequestCompany();
+        } else {
+            $xml = $request->createRequest();
+        }
+        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $byjunoCommunicator->setServer('live');
+        } else {
+            $byjunoCommunicator->setServer('test');
+        }
+        $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $status = 0;
+        if ($response) {
+            $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
+            $byjunoResponse->setRawResponse($response);
+            $byjunoResponse->processResponse();
+            $status = (int)$byjunoResponse->getCustomerRequestStatus();
+            if (intval($status) > 15) {
+                $status = 0;
+            }
+            $helper->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
+            $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
+            $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
+            if (!empty($statusToPayment) && !empty($ByjunoResponseSession)) {
+                $helper->saveStatusToOrder($order, $statusToPayment, unserialize($ByjunoResponseSession));
+            }
+        } else {
+            $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
+        }
+        if ($statusRequest == 11 && $status == 2) {
+            Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
+            $this->_redirect('checkout/onepage/success', array('_secure' => true));
+        } else {
+            $session->addError("Error with BYJUNO-INVOICE payment");
+            $this->_redirect('cdp/standard/cancel');
+        }
     }
 }
