@@ -255,20 +255,13 @@
     </default>
     <frontend>
         <routers>
-            <cdp_invoice>
-                <use>standardinvoice</use>
+            <cdp>
+                <use>standard</use>
                 <args>
                     <module>Byjuno_Cdp</module>
-                    <frontName>cdp_invoice</frontName>
+                    <frontName>cdp</frontName>
                 </args>
-            </cdp_invoice>
-            <cdp_invoice>
-                <use>standardinstallment</use>
-                <args>
-                    <module>Byjuno_Cdp</module>
-                    <frontName>cdp_installment</frontName>
-                </args>
-            </cdp_invoice>
+            </cdp>
         </routers>
     </frontend>
 </config>
