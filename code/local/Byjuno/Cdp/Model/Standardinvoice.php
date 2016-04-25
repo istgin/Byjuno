@@ -9,10 +9,34 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 {
     protected $_code = 'cdp_invoice';
 
+	protected $_formBlockType = 'byjuno/form_byjunoinvoice';
     protected $_isInitializeNeeded = true;
     protected $_canUseInternal = false;
     protected $_canUseForMultishipping = false;
 
+	public function validate()
+    {
+        parent::validate(); 
+        return $this;
+    }
+  
+	public function assignData($data)
+	{
+		$info = $this->getInfoInstance();
+		 /*
+		if ($data->getCustomFieldOne())
+		{
+		  $info->setCustomFieldOne($data->getCustomFieldOne());
+		}
+		 
+		if ($data->getCustomFieldTwo())
+		{
+		  $info->setCustomFieldTwo($data->getCustomFieldTwo());
+		}
+		*/
+	 
+		return $this;
+	}
     /**
      * Return Order place redirect url
      *

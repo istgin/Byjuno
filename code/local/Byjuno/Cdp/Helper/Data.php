@@ -41,6 +41,13 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
         return $ipaddress;
     }
+    public function mapMethod($method) {
+		if ($method == 'cdp_installment') {
+			return "BYJUNO-INSTALLMENT";
+		} else {
+			return "BYJUNO-INVOICE";			
+		}
+	}
 
     public function valueToStatus($val) {
         $status[0] = 'Fail to connect (status Error)';
@@ -421,7 +428,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'PAYMENTMETHOD';
-        $extraInfo["Value"] = $paymentmethod;
+        $extraInfo["Value"] = $this->mapMethod($paymentmethod);
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
@@ -540,7 +547,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'PAYMENTMETHOD';
-        $extraInfo["Value"] = 'BYJUNO-INVOICE';
+        $extraInfo["Value"] = $this->mapMethod($paymentmethod);
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';

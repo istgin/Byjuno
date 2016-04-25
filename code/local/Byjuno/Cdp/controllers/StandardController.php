@@ -109,7 +109,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session->setQuoteId($session->getByjunoStandardQuoteId(true));
         $order = Mage::getModel('sales/order')->load($orderId);
         $helper = Mage::helper('byjuno');
-        $request = $helper->CreateMagentoShopRequestPaid($order, 'BYJUNO-INVOICE');
+        $request = $helper->CreateMagentoShopRequestPaid($order, $order->getPayment()->getMethodInstance()->getCode());
         $ByjunoRequestName = "Order paid";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order paid for Company";
