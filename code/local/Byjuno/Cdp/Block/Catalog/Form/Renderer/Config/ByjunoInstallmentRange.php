@@ -1,12 +1,49 @@
 <?php
 
-class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_AllowedRange extends Mage_Adminhtml_Block_System_Config_Form_Field
+class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
+        $element->setStyle('display:block')
+            ->setName($element->getName() . '[]');
 
-        /*$element->setStyle('display:block')
+        $methodsAllowed["installment_3"] = array(
+            'label'   => '3 monthly installments',
+            'value' => "installment_3",
+        );
+        $methodsAllowed["installment_10"] = array(
+            'label'   => '10 monthly installments',
+            'value' => "installment_10",
+        );
+        $methodsAllowed["installment_12"] = array(
+            'label'   => '12 monthly installments',
+            'value' => "installment_12",
+        );
+        $methodsAllowed["installment_24"] = array(
+            'label'   => '24 monthly installments',
+            'value' => "installment_24",
+        );
+        $methodsAllowed["installment_4x12"] = array(
+            'label'   => '4 installments in 12 months',
+            'value' => "installment_4x12",
+        );
+        $methodsAllowed["installment_4x10"] = array(
+            'label'   => '4 installments in 10 months',
+            'value' => "installment_4x10",
+        );
+        if ($element->getValue()) {
+            $values = explode(',', $element->getValue());
+        } else {
+            $values = array();
+        }
+        $from = $element->setValues($methodsAllowed)
+            ->setValue($values)
+            ->getElementHtml();
+        return '<div style="white-space: nowrap;"><div style="display:inline-block;padding: 0 5px 0 0; width:50%">'.$from
+            . '</div>';
+/*
+        $element->setStyle('display:block')
             ->setName($element->getName() . '[]');
 
 
@@ -15,6 +52,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_AllowedRange extends Mage_Ad
         } else {
             $values = array();
         }
+        var_dump($values);
         $payments = Mage::getSingleton('payment/config')->getActiveMethods();
         $allowedDefault = Array();
         $elementsJs = Array();
@@ -72,9 +110,10 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_AllowedRange extends Mage_Ad
             }
             ";
         }
+
+        return '<div style="white-space: nowrap;"><div style="display:inline-block;padding: 0 5px 0 0; width:50%">'.$from
+            . '</div> <div style="display:inline-block;padding: 0 5px 0 0; width:50%">'
+            . $to.'</div></div><script>'.$script.'</script>';
 */
-     //   return '<div style="white-space: nowrap;"><div style="display:inline-block;padding: 0 5px 0 0; width:50%">'.$from
-     //       . '</div> <div style="display:inline-block;padding: 0 5px 0 0; width:50%">'
-      //      . $to.'</div></div><script>'.$script.'</script>';
     }
 }
