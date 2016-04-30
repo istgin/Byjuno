@@ -7,8 +7,28 @@ class Byjuno_Cdp_Model_Standardinstallment
 	protected $_formBlockType = 'byjuno/form_byjunoinstallment';
     public function getTitle()
     {
-        return  Mage::getStoreConfig('payment/cdp/title_installment', Mage::app()->getStore());
+        return Mage::getStoreConfig('payment/cdp/title_installment', Mage::app()->getStore());
     }
+
+	public function isAvailable($quote = null)
+	{
+		if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
+			return false;
+		}
+		$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+		$active = false;
+		$plns = explode(",", $payments);
+		foreach($plns as $val) {
+			if (strstr($val, "_enable")) {
+				$active = true;
+				break;
+			}
+		}
+		if (!$active) {
+			return false;
+		}
+		return true;
+	}
 	
 	public function validate()
     {
@@ -19,18 +39,10 @@ class Byjuno_Cdp_Model_Standardinstallment
 	public function assignData($data)
 	{
 		$info = $this->getInfoInstance();
-		 /*
-		if ($data->getCustomFieldOne())
+		if ($data->getPaymentPlan())
 		{
-		  $info->setCustomFieldOne($data->getCustomFieldOne());
+		    $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
 		}
-		 
-		if ($data->getCustomFieldTwo())
-		{
-		  $info->setCustomFieldTwo($data->getCustomFieldTwo());
-		}
-		*/
-	 
 		return $this;
 	}
 

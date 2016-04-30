@@ -239,14 +239,40 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
 
     public function checkandcall(Varien_Event_Observer $observer){
         $methodInstance = $observer->getEvent()->getMethodInstance();
-        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice)) {
+        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) || !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
+            return;
+        }
+        return;/*
+        if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
+            $observer->getEvent()->getResult()->isAvailable = false;
             return;
         }
 
-        if (Mage::getStoreConfig('byjuno/cdp/active', Mage::app()->getStore()) == 'disable') {
-            $observer->getEvent()->getResult()->isAvailable = false;
+        if ($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) {
+            if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
+                $observer->getEvent()->getResult()->isAvailable = false;
+                return;
+            }
         }
+
+        if ($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment) {
+            $payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+            $active = false;
+            $plns = explode(",", $payments);
+            foreach($plns as $val) {
+                if (strstr($val, "_enable")) {
+                    $active = true;
+                    break;
+                }
+            }
+            if (!$active) {
+                $observer->getEvent()->getResult()->isAvailable = false;
+                return;
+            }
+        }
+
         return;
+        */
     }
 
     public function hookToControllerActionPreDispatch(Varien_Event_Observer $observer){

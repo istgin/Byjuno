@@ -84,7 +84,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
 
         $status = $session->getData("intrum_status");
-        if ($status == 11) {
+        if ($status == 2) {
             $this->_redirect('cdp/standard/success');
         } else {
             $session->addError("Error with BYJUNO-INVOICE payment");
@@ -98,7 +98,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session->setByjunoStandardQuoteId($session->getQuoteId());
         $statusRequest = $session->getData("intrum_status");
         $orderId = $session->getData("intrum_order");
-        if ($statusRequest != 11) {
+        if ($statusRequest != 2) {
             $session->addError("Error with BYJUNO-INVOICE payment");
             $this->_redirect('cdp/standard/cancel');
         }
@@ -109,7 +109,10 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session->setQuoteId($session->getByjunoStandardQuoteId(true));
         $order = Mage::getModel('sales/order')->load($orderId);
         $helper = Mage::helper('byjuno');
-        $request = $helper->CreateMagentoShopRequestPaid($order, $order->getPayment()->getMethodInstance()->getCode());
+
+        $payment = $order->getPayment();
+        $paymentPlan = $payment->getAdditionalInformation("payment_plan");
+        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode());
         $ByjunoRequestName = "Order paid";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order paid for Company";
@@ -143,7 +146,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         } else {
             $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
-        if ($statusRequest == 11 && $status == 2) {
+        if ($statusRequest == 2 && $status == 2) {
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
         } else {

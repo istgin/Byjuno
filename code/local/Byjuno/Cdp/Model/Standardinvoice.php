@@ -19,6 +19,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         parent::validate(); 
         return $this;
     }
+
+    public function isAvailable($quote = null)
+    {
+        if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
+            return false;
+        }
+        return true;
+    }
   
 	public function assignData($data)
 	{
@@ -70,7 +78,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $order = $ordSess->loadByIncrementId($quote->getReservedOrderId());
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethod();
-        //$_code;
+        $paymentPlan = $payment->getAdditionalInformation("payment_plan");
         $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod);
 
         $ByjunoRequestName = "Order request";
@@ -103,7 +111,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         $session->setData("intrum_status", $status);
         $session->setData("intrum_order", $order->getId());
-        if ($status == 11) {
+        if ($status == 2) {
             return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
             $session->addError("Gateway timeout. Please try again later");
