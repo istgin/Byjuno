@@ -87,7 +87,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         if ($status == 2) {
             $this->_redirect('cdp/standard/success');
         } else {
-            $session->addError("Error with BYJUNO-INVOICE payment");
+            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 90)");
             $this->_redirect('cdp/standard/cancel');
         }
     }
@@ -99,7 +99,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $statusRequest = $session->getData("intrum_status");
         $orderId = $session->getData("intrum_order");
         if ($statusRequest != 2) {
-            $session->addError("Error with BYJUNO-INVOICE payment");
+            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 102)");
             $this->_redirect('cdp/standard/cancel');
         }
 
@@ -150,7 +150,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
         } else {
-            $session->addError("Error with BYJUNO-INVOICE payment");
+            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 153)");
             $this->_redirect('cdp/standard/cancel');
         }
     }

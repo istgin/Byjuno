@@ -126,10 +126,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if ($status == 2) {
             return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
-            $session->addError("Gateway timeout. Please try again later");
+            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()));
             return Mage::getUrl('cdp/standard/cancel');
         } else {
-            $session->addError("You are not allowed to pay with this payment method");
+            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()));
             return Mage::getUrl('cdp/standard/cancel');
         }
     }
