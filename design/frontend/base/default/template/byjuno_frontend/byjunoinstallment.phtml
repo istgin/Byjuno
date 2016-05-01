@@ -12,10 +12,18 @@
 
         $stringValues = Array();
         $enablesValues = Array();
+
+        $methodsAllowed["installment_3_enable"] = 0;
+        $methodsAllowed["installment_10_enable"] = 1;
+        $methodsAllowed["installment_12_enable"] = 2;
+        $methodsAllowed["installment_24_enable"] = 3;
+        $methodsAllowed["installment_4x12_enable"] = 4;
+        $methodsAllowed["installment_4x10_enable"] = 5;
+
         $i = 0;
         foreach($plns as $val) {
             if (strstr($val, "_enable")) {
-                $enablesValues[] = $val;
+                $enablesValues[] = Array($val, $methodsAllowed[$val]);
             } else {
                 $stringValues[$i] = $val;
                 $i++;
@@ -25,7 +33,7 @@
         $i = 0;
         $plans = Array();
         foreach($enablesValues as $p) {
-            $plans[] = Array("code" => $p, "name" => $stringValues[$i]);
+            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]]);
             $i++;
         }
         //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
