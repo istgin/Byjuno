@@ -31,7 +31,7 @@
                         <byjuno_invoice_heading translate="label">
                             <label>Byjuno invoice settings</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-                            <sort_order>2</sort_order>
+                            <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -39,7 +39,7 @@
                         <title_invoice translate="label">
                             <label>Title for byjuno invoice</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>3</sort_order>
+                            <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -47,7 +47,7 @@
                         <byjuno_invoice_payments translate="label">
                             <label>Invoice payment methods</label>
                             <frontend_type>Checkboxes</frontend_type>
-                            <sort_order>4</sort_order>
+                            <sort_order>6</sort_order>
                             <frontend_model>byjuno/catalog_form_renderer_config_byjunoInvoiceRange</frontend_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -56,7 +56,7 @@
                         <byjuno_invoice_toc_link translate="label">
                             <label>Link to invoice terms and conditions</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>5</sort_order>
+                            <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -64,7 +64,7 @@
                         <byjuno_invoice_toc_string translate="label">
                             <label>*Localization* Terms &amp; conditions message</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>6</sort_order>
+                            <sort_order>8</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -72,7 +72,7 @@
                         <byjuno_invoice_payment_message translate="label">
                             <label>*Localization* Please select payment plan message</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>7</sort_order>
+                            <sort_order>9</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -139,6 +139,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </byjuno_global_heading>
+
+                        <byjuno_settings_check translate="label">
+                            <label>Byjuno email settings check</label>
+                            <frontend_model>byjuno/catalog_form_renderer_config_byjunoSettingsCheck</frontend_model>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </byjuno_settings_check>
                         <!--<order_status translate="label">
                             <label>New Order Status</label>
                             <frontend_type>select</frontend_type>
@@ -238,22 +247,22 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </copy_email>
-                        <minamout translate="label">
+                        <minamount translate="label">
                             <label>Mininmal amount for checkout</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </minamout>
-                        <maxamout translate="label">
+                        </minamount>
+                        <maxamount translate="label">
                             <label>Maximal amount for checkout</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </maxamout>
+                        </maxamount>
                         <timeout translate="label">
                             <label>Connection timeout to Byjuno CDP server in seconds</label>
                             <frontend_type>text</frontend_type>

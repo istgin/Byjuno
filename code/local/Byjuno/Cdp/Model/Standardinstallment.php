@@ -15,6 +15,12 @@ class Byjuno_Cdp_Model_Standardinstallment
 		if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
 			return false;
 		}
+		$quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+		$minAmount = Mage::getStoreConfig('payment/cdp/minamount', Mage::app()->getStore());
+		$maxAmount = Mage::getStoreConfig('payment/cdp/maxamount', Mage::app()->getStore());
+		if ($quote->getGrandTotal() < $minAmount || $quote->getGrandTotal() > $maxAmount) {
+			return false;
+		}
 		$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
 		$active = false;
 		$plns = explode(",", $payments);
