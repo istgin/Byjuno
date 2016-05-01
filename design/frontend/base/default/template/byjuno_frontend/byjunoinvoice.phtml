@@ -1,3 +1,58 @@
 <div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
-Byjuno invoice agreement
+    <div><?php
+        $locale = Mage::getStoreConfig('general/locale/code', Mage::app()->getStore());
+        $locale = strstr($locale, "_", true);
+        $lang = 'de';
+        if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
+            $lang = $locale;
+        }
+        if ($locale)
+            $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+        $plns = explode(",", $pl);
+
+        $stringValues = Array();
+        $enablesValues = Array();
+        $i = 0;
+        foreach($plns as $val) {
+            if (strstr($val, "_enable")) {
+                $enablesValues[] = $val;
+            } else {
+                $stringValues[$i] = $val;
+                $i++;
+            }
+        }
+
+        $i = 0;
+        $plans = Array();
+        foreach($enablesValues as $p) {
+            $plans[] = Array("code" => $p, "name" => $stringValues[$i]);
+            $i++;
+        }
+        ?>
+        <br /><?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Rechnung_BLK.gif" border="0" />'; ?><br />
+        <?php if (count($plans) > 1) { ?>
+            <label><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label><br />
+        <?php } ?>
+        <span>
+            <?php
+            $i = 0;
+            if (count($plans) == 1) { ?>
+                <input type="hidden" name="payment[payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?><br />
+
+            <?php } else {
+                foreach($plans as $plan) { ?>
+                    <input type="radio" <?php if ($i == 0) {
+                        echo 'checked="checked"';
+                    } ?> name="payment[payment_plan]"
+                           value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
+                    <br/>
+                    <?php
+                    $i++;
+                }
+            } ?>
+            <br />
+            <a href="<?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_link', Mage::app()->getStore()) ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()) ?></a>
+            <br />
+        </span>
+    </div>
 </div>

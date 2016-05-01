@@ -25,6 +25,18 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
             return false;
         }
+        $payments = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+        $active = false;
+        $plns = explode(",", $payments);
+        foreach($plns as $val) {
+            if (strstr($val, "_enable")) {
+                $active = true;
+                break;
+            }
+        }
+        if (!$active) {
+            return false;
+        }
         return true;
     }
   
@@ -79,7 +91,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethod();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
-        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod);
+        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan);
 
         $ByjunoRequestName = "Order request";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {

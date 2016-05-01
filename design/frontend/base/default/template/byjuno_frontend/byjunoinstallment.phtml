@@ -28,8 +28,9 @@
             $plans[] = Array("code" => $p, "name" => $stringValues[$i]);
             $i++;
         }
+        //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
         ?>
-        <br /><?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Rechnung_BLK.gif" border="0" />'; ?><br />
+        <br /><?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Ratenzahlung_BLK.gif" border="0" />'; ?><br />
         <?php if (count($plans) > 1) { ?>
         <label><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_payment_message', Mage::app()->getStore()) ?></label><br />
         <?php } ?>

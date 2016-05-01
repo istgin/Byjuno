@@ -43,11 +43,31 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     }
     public function mapMethod($method) {
 		if ($method == 'cdp_installment') {
-			return "BYJUNO-INSTALLMENT";
+			return "INSTALLMENT";
 		} else {
-			return "BYJUNO-INVOICE";			
+			return "INVOICE";
 		}
 	}
+
+    public function mapRepayment($type) {
+        if ($type == 'installment_3_enable') {
+            return "4";
+        } else if ($type == 'installment_10_enable') {
+            return "5";
+        } else if ($type == 'installment_12_enable') {
+            return "8";
+        } else if ($type == 'installment_24_enable') {
+            return "9";
+        } else if ($type == 'installment_4x12_enable') {
+            return "1";
+        } else if ($type == 'installment_4x10_enable') {
+            return "2";
+        } else if ($type == 'cdp_installment') {
+            return "3";
+        } else {
+            return "4";
+        }
+    }
 
     public function valueToStatus($val) {
         $status[0] = 'Fail to connect (status Error)';
@@ -303,7 +323,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 */
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -431,6 +451,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Value"] = $this->mapMethod($paymentmethod);
         $request->setExtraInfo($extraInfo);
 
+        $extraInfo["Name"] = 'REPAYMENTTYPE';
+        $extraInfo["Value"] = $this->mapRepayment($repayment);
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'RISKOWNER';
+        $extraInfo["Value"] = 'IJ';
+        $request->setExtraInfo($extraInfo);
+
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
 		$extraInfo["Value"] = 'Byjuno Magento module 4.0.0';
 		$request->setExtraInfo($extraInfo);	
@@ -439,7 +467,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod) {
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -548,6 +576,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
         $extraInfo["Name"] = 'PAYMENTMETHOD';
         $extraInfo["Value"] = $this->mapMethod($paymentmethod);
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'REPAYMENTTYPE';
+        $extraInfo["Value"] = $this->mapRepayment($repayment);
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'RISKOWNER';
+        $extraInfo["Value"] = 'IJ';
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
