@@ -66,6 +66,21 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
             }
         }
 
+        $addInheritCheckbox = false;
+        if ($element->getCanUseWebsiteValue()) {
+            $addInheritCheckbox = true;
+        }
+        elseif ($element->getCanUseDefaultValue()) {
+            $addInheritCheckbox = true;
+        }
+        $disabled = '';
+        if ($addInheritCheckbox) {
+            $inherit = $element->getInherit()==1 ? 'checked="checked"' : '';
+            if ($inherit) {
+                $disabled = ' disabled="disabled"';
+            }
+        }
+
         foreach($methodsAllowed as $m) {
             $checked = '';
             foreach($values as $val) {
@@ -73,7 +88,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
                     $checked = 'checked="checked" ';
                 }
             }
-            $from[] = '<div style="margin: 3px 0 0 0"><input type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" '.$checked.'value="' . $m['value'] . '"></div>';
+            $from[] = '<div style="margin: 3px 0 0 0"><input type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" '.$checked.'value="' . $m['value'] . '" '.$disabled.'></div>';
         }
         $i = 0;
         foreach($methodsName as $m) {
@@ -82,7 +97,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
             if (!empty($stringValues[$i])) {
                 $val = $stringValues[$i];
             }
-            $to[] = '<input type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($val).'">';
+            $to[] = '<input type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
             $i++;
         }
         return '<div style="white-space: nowrap;">
