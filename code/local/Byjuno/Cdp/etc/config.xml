@@ -140,28 +140,28 @@
         <payment>
             <cdp_invoice>
                 <model>cdp/standardinvoice</model>
-                <active>1</active>
-                <title>Byjuno Invoice</title>
-                <currentmode>test</currentmode>
-                <minamout>10</minamout>
-                <timeout>30</timeout>
-                <tmxenabled>disable</tmxenabled>
-                <businesstobusiness>disable</businesstobusiness>
             </cdp_invoice>
             <cdp_installment>
                 <model>cdp/standardinstallment</model>
+            </cdp_installment>
+            <cdp>
                 <active>1</active>
-                <title>Byjuno Installment</title>
+                <title_invoice>Byjuno invoice</title_invoice>
+                <title_installment>Byjuno installment</title_installment>
                 <currentmode>test</currentmode>
-                <minamout>10</minamout>
+                <minamount>10</minamount>
+                <maxamount>1000</maxamount>
                 <timeout>30</timeout>
                 <tmxenabled>disable</tmxenabled>
                 <businesstobusiness>disable</businesstobusiness>
                 <byjuno_installment_toc_link>http://www.byjuno.ch/</byjuno_installment_toc_link>
                 <byjuno_installment_toc_string>Byjuno installment terms &amp; conditions</byjuno_installment_toc_string>
                 <byjuno_installment_payment_message>Please select payment plan</byjuno_installment_payment_message>
-                <byjuno_installment_fail_message>Byjuno installment failed</byjuno_installment_fail_message>
-            </cdp_installment>
+                <byjuno_fail_message>Byjuno installment failed</byjuno_fail_message>
+                <byjuno_invoice_toc_link>http://www.byjuno.ch/</byjuno_invoice_toc_link>
+                <byjuno_invoice_toc_string>Byjuno installment terms &amp; conditions</byjuno_invoice_toc_string>
+                <byjuno_invoice_payment_message>Please select payment plan</byjuno_invoice_payment_message>
+            </cdp>
         </payment>
     </default>
     <frontend>
