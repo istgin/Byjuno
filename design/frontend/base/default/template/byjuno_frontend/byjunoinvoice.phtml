@@ -28,35 +28,46 @@
         $i = 0;
         $plans = Array();
         foreach($enablesValues as $p) {
-            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]]);
+            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]], "toc" => $stringValues[$p[1] + 2]);
             $i++;
         }
 
         ?>
-        <br /><?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Rechnung_BLK.gif" border="0" />'; ?><br />
         <?php if (count($plans) > 1) { ?>
-            <label><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label><br />
+            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
+        <?php } else { ?>
+            <br />
         <?php } ?>
-        <span>
-            <?php
-            $i = 0;
-            if (count($plans) == 1) { ?>
-                <input type="hidden" name="payment[payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?><br />
+        <table>
+            <tr>
+                <td style="vertical-align: middle; padding: 0 10px 0 0">
+                    <?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Rechnung_BLK.gif" border="0" />'; ?>
+                </td>
+                <td style="vertical-align: middle">
+                    <span>
+                        <?php
+                        $i = 0;
+                        if (count($plans) == 1) { ?>
+                            <input type="hidden" name="payment[payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?>
+                            (<a href="<?php echo $this->htmlEscape($plans[0]["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                            <br />
 
-            <?php } else {
-                foreach($plans as $plan) { ?>
-                    <input type="radio" <?php if ($i == 0) {
-                        echo 'checked="checked"';
-                    } ?> name="payment[payment_plan]"
-                           value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
-                    <br/>
-                    <?php
-                    $i++;
-                }
-            } ?>
-            <br />
-            <a href="<?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_link', Mage::app()->getStore()) ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()) ?></a>
-            <br />
-        </span>
+                        <?php } else {
+                            foreach($plans as $plan) { ?>
+                                <input type="radio" <?php if ($i == 0) {
+                                    echo 'checked="checked"';
+                                } ?> name="payment[payment_plan]"
+                                       value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
+                                       (<a href="<?php echo $this->htmlEscape($plan["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                                <br/>
+                                <?php
+                                $i++;
+                            }
+                        } ?>
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <br />
     </div>
 </div>
