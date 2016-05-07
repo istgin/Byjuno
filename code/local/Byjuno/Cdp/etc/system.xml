@@ -53,14 +53,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </byjuno_invoice_payments>
-                        <byjuno_invoice_toc_link translate="label">
-                            <label>Link to invoice terms and conditions</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>7</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </byjuno_invoice_toc_link>
                         <byjuno_invoice_toc_string translate="label">
                             <label>*Localization* Terms &amp; conditions message</label>
                             <frontend_type>text</frontend_type>
@@ -105,14 +97,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </byjuno_installment_payments>
-                        <byjuno_installment_toc_link translate="label">
-                            <label>Link to installment terms and conditions</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>14</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </byjuno_installment_toc_link>
                         <byjuno_installment_toc_string translate="label">
                             <label>*Localization* Terms &amp; conditions message</label>
                             <frontend_type>text</frontend_type>
