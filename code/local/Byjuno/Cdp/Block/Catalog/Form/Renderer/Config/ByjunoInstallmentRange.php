@@ -58,6 +58,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
         }
         $from = Array();
         $to = array();
+        $totoc = array();
 
         $stringValues = Array();
         foreach($values as $val) {
@@ -88,7 +89,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
                     $checked = 'checked="checked" ';
                 }
             }
-            $from[] = '<div style="margin: 3px 0 0 0"><input type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" '.$checked.'value="' . $m['value'] . '" '.$disabled.'></div>';
+            $from[] = '<div style="margin: 3px 0 0 0; height: 19px"><input type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" '.$checked.'value="' . $m['value'] . '" '.$disabled.'></div>';
         }
         $i = 0;
         foreach($methodsName as $m) {
@@ -97,12 +98,18 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
             if (!empty($stringValues[$i])) {
                 $val = $stringValues[$i];
             }
-            $to[] = '<input type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
+            $toc = $m["toc"];
+            if (!empty($stringValues[$i + 6])) {
+                $toc = $stringValues[$i + 6];
+            }
+            $to[] = '<input style="width: 200px" type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
+            $totoc[] = '<input style="width: 200px" style="width: 200px" type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($toc).'" '.$disabled.'>';
             $i++;
         }
         return '<div style="white-space: nowrap;">
-            <div style="display:inline-block;padding: 0 5px 0 0; width:15px; vertical-align: top"><ul class="checkboxes"><li>'.implode("</li><li>", $from).'</li></ul></div>
-            <div style="display:inline-block;padding: 0 5px 0 0; width:90%; vertical-align: top"><ul class="checkboxes"><li>'.implode("</li><li>", $to).'</li></ul></div>
+            <div style="display:inline-block;padding: 0 5px 0 0; width:15px; vertical-align: top"><ul class="checkboxes"><li>&nbsp;</li><li>'.implode("</li><li>", $from).'</li></ul></div>
+            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan name</b></li><li>'.implode("</li><li>", $to).'</li></ul></div>
+            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan T&C</b></li><li>'.implode("</li><li>", $totoc).'</li></ul></div>
         </div>';
 
     }

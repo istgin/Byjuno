@@ -154,7 +154,7 @@
                 <model>cdp/standardinstallment</model>
             </cdp_installment>
             <cdp>
-                <active>1</active>
+                <active>0</active>
                 <title_invoice>Byjuno invoice</title_invoice>
                 <title_installment>Byjuno installment</title_installment>
                 <currentmode>test</currentmode>
