@@ -307,7 +307,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse
         }
 
         $this->CustomerRequestStatus = (int)$xml->Customer->RequestStatus;
-        $this->TransactionNumber = $xml->Customer->TransactionNumber;
+        $this->TransactionNumber = trim((string)$xml->Customer->TransactionNumber);
         $this->CustomerLastStatusChange = trim((string)$xml->Customer->RequestStatus);
         $this->CustomerProcessingInfoCode = trim((string)$xml->Customer->ProcessingInfo->Code);
         $this->CustomerProcessingInfoClassification = trim((string)$xml->Customer->ProcessingInfo->Classification);

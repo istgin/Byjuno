@@ -120,6 +120,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = (int)$byjunoResponse->getCustomerRequestStatus();
+            $session->setData("byjuno_transaction", $byjunoResponse->getTransactionNumber());
             $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
             if (intval($status) > 15) {
                 $status = 0;

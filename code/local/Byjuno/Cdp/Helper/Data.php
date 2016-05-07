@@ -323,7 +323,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 */
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -387,6 +387,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
         $request->setTelephonePrivate((String)trim($order->getBillingAddress()->getTelephone(), '-'));
         $request->setEmail((String)$order->getBillingAddress()->getEmail());
+
+        $extraInfo["Name"] = 'TRANSACTIONNUMBER';
+        $extraInfo["Value"] = $transaction;
+        $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'ORDERCLOSED';
         $extraInfo["Value"] = 'YES';

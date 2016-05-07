@@ -237,6 +237,25 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         return Mage::helper('byjuno');
     }
 
+    public function orderStatusChange(Varien_Event_Observer $observer)
+    {
+        $order = $observer->getOrder();
+        $payment = $order->getPayment();
+        $methodInstance = $payment->getMethodInstance();
+        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) || !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
+            return;
+        }
+        $stateProcessing = $order::STATE_PROCESSING;
+        $stateComplete = $order::STATE_COMPLETE;
+        // Only trigger when an order enters processing state.
+        if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing) {
+            //
+          //  var_dump($order->getState(), $order->getOrigData('state'));
+        }
+        //var_dump(get_class($methodInstance), $order->getState(), $order->getOrigData('state'));
+        //exit();
+    }
+
     public function checkandcall(Varien_Event_Observer $observer){
         $methodInstance = $observer->getEvent()->getMethodInstance();
         if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) || !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {

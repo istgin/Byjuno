@@ -124,6 +124,15 @@
                     </byjuno_before_load_payment_method>
                 </observers>
             </payment_method_is_active>
+            <sales_order_save_after>
+                <observers>
+                    <auto_invoice_order>
+                        <type>singleton</type>
+                        <class>byjuno/observer</class>
+                        <method>orderStatusChange</method>
+                    </auto_invoice_order>
+                </observers>
+            </sales_order_save_after>
         </events>
         <resources>
             <byjuno_setup>

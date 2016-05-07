@@ -97,6 +97,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
         $statusRequest = $session->getData("intrum_status");
+        $byjunoTransaction = $session->getData("byjuno_transaction");
         $orderId = $session->getData("intrum_order");
         if ($statusRequest != 2) {
             $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 102)");
@@ -112,7 +113,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
         $payment = $order->getPayment();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
-        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan);
+        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction);
         $ByjunoRequestName = "Order paid";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order paid for Company";
