@@ -26,7 +26,7 @@ $this->run("CREATE TABLE {$this->getTable('byjuno')} (
   PRIMARY KEY  (`byjuno_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-    
+
 $this->endSetup();
 
 

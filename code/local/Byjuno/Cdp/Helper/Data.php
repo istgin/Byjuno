@@ -464,7 +464,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 4.0.0';
+		$extraInfo["Value"] = 'Byjuno magento payment module 1.0.0';
 		$request->setExtraInfo($extraInfo);	
 
         return $request;

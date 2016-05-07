@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -68,6 +68,19 @@
         </layout>
     </adminhtml>
     <global>
+        <fieldsets>
+            <sales_convert_quote>
+                <byjuno_status>
+                    <to_order>*</to_order>
+                </byjuno_status>
+                <byjuno_credit_rating>
+                    <to_order>*</to_order>
+                </byjuno_credit_rating>
+                <byjuno_credit_level>
+                    <to_order>*</to_order>
+                </byjuno_credit_level>
+            </sales_convert_quote>
+        </fieldsets>
         <models>
             <cdp>
                 <class>Byjuno_Cdp_Model</class>

@@ -132,12 +132,12 @@
 
 
                         <byjuno_global_heading translate="label">
-                            <label>Byjuno global settings</label>
+                            <label>Byjuno payment method general settings</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </byjuno_global_heading>
 
                         <byjuno_settings_check translate="label">

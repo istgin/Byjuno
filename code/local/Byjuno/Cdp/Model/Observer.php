@@ -227,7 +227,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         }
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 4.0.0';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.0.0';
 		$request->setExtraInfo($extraInfo);
         return $request;
 

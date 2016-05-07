@@ -10,6 +10,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     protected $_code = 'cdp_invoice';
 
 	protected $_formBlockType = 'byjuno/form_byjunoinvoice';
+    protected $_infoBlockType = 'byjuno/info_byjunoinvoice';
     protected $_isInitializeNeeded = true;
     protected $_canUseInternal = false;
     protected $_canUseForMultishipping = false;
@@ -45,29 +46,16 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         return true;
     }
-  
-	public function assignData($data)
-	{
-		$info = $this->getInfoInstance();
-		 /*
-		if ($data->getCustomFieldOne())
-		{
-		  $info->setCustomFieldOne($data->getCustomFieldOne());
-		}
-		 
-		if ($data->getCustomFieldTwo())
-		{
-		  $info->setCustomFieldTwo($data->getCustomFieldTwo());
-		}
-		*/
-	 
-		return $this;
-	}
-    /**
-     * Return Order place redirect url
-     *
-     * @return string
-     */
+
+    public function assignData($data)
+    {
+        $info = $this->getInfoInstance();
+        if ($data->getPaymentPlan())
+        {
+            $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
+        }
+        return $this;
+    }
 
 
     public function getTitle()

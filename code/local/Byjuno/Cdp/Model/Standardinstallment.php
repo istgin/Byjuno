@@ -5,6 +5,8 @@ class Byjuno_Cdp_Model_Standardinstallment
 
     public $_code = "cdp_installment";
 	protected $_formBlockType = 'byjuno/form_byjunoinstallment';
+	protected $_infoBlockType = 'byjuno/info_byjunoinstallment';
+
     public function getTitle()
     {
         return Mage::getStoreConfig('payment/cdp/title_installment', Mage::app()->getStore());
