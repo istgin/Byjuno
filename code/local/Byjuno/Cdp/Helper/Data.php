@@ -22,6 +22,27 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $byjuno_model->save();
     }
 
+    function saveS4Log(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request $request, $xml_request, $xml_response, $status, $type) {
+
+        $data = array( 'firstname'  => $order->getCustomerFirstname(),
+            'lastname'   => $order->getCustomerLastname(),
+            'postcode'   => '-',
+            'town'       => '-',
+            'country'    => '-',
+            'street1'    => '-',
+            'request_id' => $request->getRequestId(),
+            'status'     => $status,
+            'error'      => '',
+            'request'    => $xml_request,
+            'response'   => $xml_response,
+            'type'       => $type,
+            'ip'         => $_SERVER['REMOTE_ADDR']);
+
+        $byjuno_model = Mage::getModel('byjuno/byjuno');
+        $byjuno_model->setData($data);
+        $byjuno_model->save();
+    }
+
     public function getClientIp() {
         $ipaddress = '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -466,6 +487,33 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
 		$extraInfo["Value"] = 'Byjuno magento payment module 1.0.0';
 		$request->setExtraInfo($extraInfo);	
+
+        return $request;
+
+    }
+
+    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, $invoiceId) {
+
+        $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request();
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setVersion("1.3");
+        try {
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+        } catch (Exception $e) {
+
+        }
+        $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
+
+        $request->setOrderId($order->getIncrementId());
+        $request->setClientRef($order->getCustomerId());
+        $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
+        $request->setTransactionAmount(number_format($order->getGrandTotal(), 2, '.', ''));
+        $request->setTransactionCurrency($order->getBaseCurrencyCode());
+        $request->setAdditional1("INVOICE");
+        $request->setAdditional2($invoiceId);
+        $request->setOpenBalance(number_format($order->getGrandTotal(), 2, '.', ''));
 
         return $request;
 

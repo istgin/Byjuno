@@ -242,15 +242,40 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         $order = $observer->getOrder();
         $payment = $order->getPayment();
         $methodInstance = $payment->getMethodInstance();
-        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) || !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
+        if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) && !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
             return;
         }
         $stateProcessing = $order::STATE_PROCESSING;
         $stateComplete = $order::STATE_COMPLETE;
         // Only trigger when an order enters processing state.
         if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing) {
-            //
-          //  var_dump($order->getState(), $order->getOrigData('state'));
+            if ($order->hasInvoices()) {
+                $invIncrementIDs = array();
+                foreach ($order->getInvoiceCollection() as $inv) {
+                    $invIncrementIDs[] = $inv->getIncrementId();
+                }
+            }
+            /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
+            $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, end($invIncrementIDs));
+            $ByjunoRequestName = 'Byjuno S4';
+            $xml = $request->createRequest();
+            $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+            $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+            if ($mode == 'production') {
+                $byjunoCommunicator->setServer('live');
+            } else {
+                $byjunoCommunicator->setServer('test');
+            }
+            $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+            $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
+            if ($response) {
+                $byjunoResponse->setRawResponse($response);
+                $byjunoResponse->processResponse();
+                $status = $byjunoResponse->getProcessingInfoClassification();
+                $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
+            } else {
+                $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
+            }
         }
         //var_dump(get_class($methodInstance), $order->getState(), $order->getOrigData('state'));
         //exit();
@@ -261,105 +286,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) || !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
             return;
         }
-        return;/*
-        if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
-            $observer->getEvent()->getResult()->isAvailable = false;
-            return;
-        }
-
-        if ($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) {
-            if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
-                $observer->getEvent()->getResult()->isAvailable = false;
-                return;
-            }
-        }
-
-        if ($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment) {
-            $payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
-            $active = false;
-            $plns = explode(",", $payments);
-            foreach($plns as $val) {
-                if (strstr($val, "_enable")) {
-                    $active = true;
-                    break;
-                }
-            }
-            if (!$active) {
-                $observer->getEvent()->getResult()->isAvailable = false;
-                return;
-            }
-        }
-
         return;
-        */
-    }
-
-    public function hookToControllerActionPreDispatch(Varien_Event_Observer $observer){
-        if (Mage::app()->getRequest()->getModuleName() == 'amscheckoutfront'
-            && Mage::app()->getRequest()->getControllerName() == 'onepage'
-            && Mage::app()->getRequest()->getActionName() == 'checkout') {
-            if (Mage::getStoreConfig('byjuno/api/pluginenabled', Mage::app()->getStore()) == 'disable') {
-                return;
-            }
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) != 'amasty') {
-                return;
-            }
-            $quote = Mage::getSingleton('amscheckout/type_onepage')->getQuote();
-            $post = Mage::app()->getRequest()->getPost();
-            if (!empty($post["billing"]["firstname"])) {
-                $request = $this->getHelper()->CreateMagentoShopRequest($quote);
-
-                $ByjunoRequestName = 'Byjuno status';
-                if ($request->getCompanyName1() != '' && Mage::getStoreConfig('byjuno/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                    $xml = $request->createRequestCompany();
-                    $ByjunoRequestName = 'Byjuno status for Company';
-                } else {
-                    $xml = $request->createRequest();
-                }
-                $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-                $mode = Mage::getStoreConfig('byjuno/api/currentmode', Mage::app()->getStore());
-                if ($mode == 'production') {
-                    $byjunoCommunicator->setServer('live');
-                } else {
-                    $byjunoCommunicator->setServer('test');
-                }
-                $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('byjuno/api/timeout', Mage::app()->getStore()));
-                $status = 0;
-                $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
-                if ($response) {
-                    $byjunoResponse->setRawResponse($response);
-                    $byjunoResponse->processResponse();
-                    $status = (int)$byjunoResponse->getCustomerRequestStatus();
-                    $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
-                    if (intval($status) > 15) {
-                        $status = 0;
-                    }
-                } else {
-                    $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
-                }
-
-                $minAmount = Mage::getStoreConfig('byjuno/api/minamount', Mage::app()->getStore());
-                if (isset($status) && $quote->getGrandTotal() >= $minAmount) {
-                    $methods = $this->getHelper()->getAllowedAndDeniedMethods(Mage::getStoreConfig('byjuno/risk/status' . $status, Mage::app()->getStore()));
-                    $method = $quote->getPayment()->getMethodInstance();
-                    if (in_array($method->getCode(), $methods["denied"])) {
-                        $res = array(
-                            "review_lookup" => "error",
-                            "errorsHtml" => '<ul class="messages"><li class="error-msg"><ul>
-                            <li>'.Mage::helper('checkout')->__('Das gewählte Zahlungsmittel ist momentan nicht verfügbar.').'</li>
-                            <li>'.Mage::helper('checkout')->__('Bitte wählen Sie ein anderes Zahlungsmittel.').'</li>
-                            </ul></li></ul>',
-                            "errors" => implode("\n", Array(Mage::helper('checkout')->__("Das gewählte Zahlungsmittel ist momentan nicht verfügbar. Bitte wählen Sie ein anderes Zahlungsmittel.")))
-                        );
-                        echo Mage::helper('core')->jsonEncode($res);
-                        exit();
-                    }
-                }
-
-                Mage::getSingleton('checkout/session')->setData('ByjunoResponse', serialize($byjunoResponse));
-                Mage::getSingleton('checkout/session')->setData('ByjunoCDPStatus',$status);
-            }
-        }
     }
 
     protected function getQuote(){
