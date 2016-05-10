@@ -251,7 +251,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         $stateCanceled = $order::STATE_CANCELED;
         $stateComplete = $order::STATE_COMPLETE;
         // Only trigger when an order enters processing state.
-        if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing) {
+        if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing && Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '1') {
             if ($order->hasInvoices()) {
                 $invIncrementIDs = array();
                 foreach ($order->getInvoiceCollection() as $inv) {

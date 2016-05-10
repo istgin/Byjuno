@@ -40,6 +40,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function refund(Varien_Object $payment, $requestedAmount)
     {
+        if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
+            return $this;
+        }
         $order = $payment->getOrder();
         if ($order->hasInvoices()) {
             $invIncrementIDs = array();
