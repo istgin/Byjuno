@@ -245,7 +245,10 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) && !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
             return;
         }
+
+        $stateNew = $order::STATE_NEW;
         $stateProcessing = $order::STATE_PROCESSING;
+        $stateCanceled = $order::STATE_CANCELED;
         $stateComplete = $order::STATE_COMPLETE;
         // Only trigger when an order enters processing state.
         if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing) {
@@ -277,8 +280,6 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                 $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
             }
         }
-        //var_dump(get_class($methodInstance), $order->getState(), $order->getOrigData('state'));
-        //exit();
     }
 
     public function checkandcall(Varien_Event_Observer $observer){

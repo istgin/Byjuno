@@ -519,6 +519,31 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
+    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount) {
+
+        $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request();
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setVersion("1.3");
+        try {
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+        } catch (Exception $e) {
+
+        }
+        $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
+
+        $request->setOrderId($order->getIncrementId());
+        $request->setClientRef($order->getCustomerId());
+        $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
+        $request->setTransactionAmount(number_format($amount, 2, '.', ''));
+        $request->setTransactionCurrency($order->getBaseCurrencyCode());
+        $request->setTransactionType("CANCEL");
+
+        return $request;
+
+    }
+
     function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
