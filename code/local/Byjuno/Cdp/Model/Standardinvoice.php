@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: isgn
@@ -9,17 +10,18 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 {
     protected $_code = 'cdp_invoice';
 
-	protected $_formBlockType = 'byjuno/form_byjunoinvoice';
+    protected $_formBlockType = 'byjuno/form_byjunoinvoice';
     protected $_infoBlockType = 'byjuno/info_byjunoinvoice';
     protected $_isInitializeNeeded = true;
     protected $_canUseInternal = false;
     protected $_canUseForMultishipping = false;
-    protected $_canRefund               = true;
-    protected $_canCapture               = true;
+    protected $_canRefund = true;
+    protected $_canCapture = true;
+    protected $_canCapturePartial = true;
 
-	public function validate()
+    public function validate()
     {
-        parent::validate(); 
+        parent::validate();
         return $this;
     }
 
@@ -35,6 +37,41 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $payment->setParentTransactionId($payment->getTransactionId());
         $transaction = $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH, null, true, "");
         $transaction->setIsClosed(true);
+        return $this;
+    }
+
+    /* @var $invoice Mage_Sales_Model_Order_Invoice */
+    /* @var $payment Mage_Sales_Model_Order_Payment */
+    public function processInvoice($invoice, $payment)
+    {
+        if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '0') {
+            return $this;
+        }
+        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
+        $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
+        $order = $invoice->getOrder();
+        $invoice->setIncrementId($invoiceId);
+        /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
+        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice);
+        $ByjunoRequestName = 'Byjuno S4';
+        $xml = $request->createRequest();
+        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $byjunoCommunicator->setServer('live');
+        } else {
+            $byjunoCommunicator->setServer('test');
+        }
+        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
+        if ($response) {
+            $byjunoResponse->setRawResponse($response);
+            $byjunoResponse->processResponse();
+            $status = $byjunoResponse->getProcessingInfoClassification();
+            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
+        } else {
+            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
+        }
         return $this;
     }
 
@@ -88,7 +125,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $payments = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
         $active = false;
         $plns = explode(",", $payments);
-        foreach($plns as $val) {
+        foreach ($plns as $val) {
             if (strstr($val, "_enable")) {
                 $active = true;
                 break;
@@ -103,8 +140,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     public function assignData($data)
     {
         $info = $this->getInfoInstance();
-        if ($data->getPaymentPlan())
-        {
+        if ($data->getPaymentPlan()) {
             $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
         }
         return $this;
@@ -113,7 +149,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function getTitle()
     {
-        return  Mage::getStoreConfig('payment/cdp/title_invoice', Mage::app()->getStore());
+        return Mage::getStoreConfig('payment/cdp/title_invoice', Mage::app()->getStore());
     }
 
     public function getCheckout()
@@ -121,7 +157,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         return Mage::getSingleton('checkout/session');
     }
 
-    private function getHelper(){
+    private function getHelper()
+    {
         return Mage::helper('byjuno');
     }
 

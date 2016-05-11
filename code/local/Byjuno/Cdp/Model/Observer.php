@@ -245,41 +245,6 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         if (!($methodInstance instanceof Byjuno_Cdp_Model_Standardinvoice) && !($methodInstance instanceof Byjuno_Cdp_Model_Standardinstallment)) {
             return;
         }
-
-        $stateNew = $order::STATE_NEW;
-        $stateProcessing = $order::STATE_PROCESSING;
-        $stateCanceled = $order::STATE_CANCELED;
-        $stateComplete = $order::STATE_COMPLETE;
-        // Only trigger when an order enters processing state.
-        if ($order->getState() == $stateProcessing && $order->getOrigData('state') != $stateProcessing && Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '1') {
-            if ($order->hasInvoices()) {
-                $invIncrementIDs = array();
-                foreach ($order->getInvoiceCollection() as $inv) {
-                    $invIncrementIDs[] = $inv->getIncrementId();
-                }
-            }
-            /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-            $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, end($invIncrementIDs));
-            $ByjunoRequestName = 'Byjuno S4';
-            $xml = $request->createRequest();
-            $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-            $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
-            if ($mode == 'production') {
-                $byjunoCommunicator->setServer('live');
-            } else {
-                $byjunoCommunicator->setServer('test');
-            }
-            $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
-            $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
-            if ($response) {
-                $byjunoResponse->setRawResponse($response);
-                $byjunoResponse->processResponse();
-                $status = $byjunoResponse->getProcessingInfoClassification();
-                $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
-            } else {
-                $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
-            }
-        }
     }
 
     public function checkandcall(Varien_Event_Observer $observer){

@@ -492,7 +492,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, $invoiceId) {
+    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, Mage_Sales_Model_Order_Invoice $invoice) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -509,11 +509,11 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setOrderId($order->getIncrementId());
         $request->setClientRef($order->getCustomerId());
         $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
-        $request->setTransactionAmount(number_format($order->getGrandTotal(), 2, '.', ''));
+        $request->setTransactionAmount(number_format($invoice->getGrandTotal(), 2, '.', ''));
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
         $request->setAdditional1("INVOICE");
-        $request->setAdditional2($invoiceId);
-        $request->setOpenBalance(number_format($order->getGrandTotal(), 2, '.', ''));
+        $request->setAdditional2($invoice->getIncrementId());
+        $request->setOpenBalance(number_format($invoice->getGrandTotal(), 2, '.', ''));
 
         return $request;
 
