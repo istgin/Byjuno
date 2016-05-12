@@ -8,21 +8,21 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
         $element->setStyle('display:block')
             ->setName($element->getName() . '[]');
 
-        $methodsAllowed["invoice_single"] = array(
-            'value' => "invoice_single_enable",
-        );
         $methodsAllowed["invoice_byjuno"] = array(
             'value' => "invoice_byjuno_enable",
         );
-
-        $methodsName["invoice_single"] = array(
-            'label'   => 'Single',
-            'value' => "invoice_single",
-            'toc' => "http://www.byjuno.ch",
+        $methodsAllowed["invoice_single"] = array(
+            'value' => "invoice_single_enable",
         );
+
         $methodsName["invoice_byjuno"] = array(
             'label'   => 'Byjuno Invoice',
             'value' => "invoice_byjuno",
+            'toc' => "http://www.byjuno.ch",
+        );
+        $methodsName["invoice_single"] = array(
+            'label'   => 'Single',
+            'value' => "invoice_single",
             'toc' => "http://www.byjuno.ch",
         );
 

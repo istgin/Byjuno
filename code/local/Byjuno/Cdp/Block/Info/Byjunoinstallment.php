@@ -20,6 +20,16 @@ class Byjuno_Cdp_Block_Info_Byjunoinstallment extends Mage_Payment_Block_Info
         $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore()));
 
         $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
+        $paymentSend = $this->getInfo()->getAdditionalInformation("payment_send");
+        $htmlAdd = '';
+        if ($paymentSend == 'email')
+        {
+            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore());
+        }
+        else if ($paymentSend == 'postal')
+        {
+            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore());
+        }
 
         $i = 0;
         $stringValues = Array();
@@ -29,6 +39,6 @@ class Byjuno_Cdp_Block_Info_Byjunoinstallment extends Mage_Payment_Block_Info
                 $i++;
             }
         }
-        return $stringValues[$plId] . ' - (<a href="'.$this->escapeHtml($stringValues[$plId + 6]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()).'</a>)';
+        return $stringValues[$plId] . ' - (<a href="'.$this->escapeHtml($stringValues[$plId + 6]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
     }
 }

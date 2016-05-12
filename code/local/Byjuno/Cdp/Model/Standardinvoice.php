@@ -143,6 +143,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if ($data->getPaymentPlan()) {
             $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
         }
+        if ($data->getPaymentSend()) {
+            $info->setAdditionalInformation("payment_send", $data->getPaymentSend());
+        }
         return $this;
     }
 
@@ -175,7 +178,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $payment = $order->getPayment();
         $paymentMethod = $payment->getMethod();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
-        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan);
+        $paymentSend = $payment->getAdditionalInformation("payment_send");
+        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend);
 
         $ByjunoRequestName = "Order request";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {

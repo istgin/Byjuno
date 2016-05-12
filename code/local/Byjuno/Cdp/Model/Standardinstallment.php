@@ -51,6 +51,10 @@ class Byjuno_Cdp_Model_Standardinstallment
 		{
 		    $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
 		}
+		if ($data->getPaymentSend())
+		{
+			$info->setAdditionalInformation("payment_send", $data->getPaymentSend());
+		}
 		return $this;
 	}
 

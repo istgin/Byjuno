@@ -113,7 +113,8 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
         $payment = $order->getPayment();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
-        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction);
+        $paymentSend = $payment->getAdditionalInformation("payment_send");
+        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend);
         $ByjunoRequestName = "Order paid";
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order paid for Company";

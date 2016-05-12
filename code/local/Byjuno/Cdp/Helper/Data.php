@@ -344,7 +344,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 */
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -424,6 +424,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Name"] = 'ORDERCURRENCY';
         $extraInfo["Value"] = $order->getBaseCurrencyCode();
         $request->setExtraInfo($extraInfo);
+
+        if ($invoiceDelivery == 'postal') {
+            $extraInfo["Name"] = 'PAPER_INVOICE';
+            $extraInfo["Value"] = 'YES';
+            $request->setExtraInfo($extraInfo);
+        }
 
         $sesId = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
         if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
@@ -544,7 +550,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment) {
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -605,6 +611,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Name"] = 'ORDERCURRENCY';
         $extraInfo["Value"] = $order->getBaseCurrencyCode();
         $request->setExtraInfo($extraInfo);
+
+        if ($invoiceDelivery == 'postal') {
+            $extraInfo["Name"] = 'PAPER_INVOICE';
+            $extraInfo["Value"] = 'YES';
+            $request->setExtraInfo($extraInfo);
+        }
 
         /* shipping information */
         if ($order->canShip()) {
