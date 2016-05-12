@@ -37,6 +37,11 @@
             $i++;
         }
         //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
+
+        $emailInstallment = Mage::getStoreConfig('payment/cdp/byjuno_installment_email', Mage::app()->getStore());
+        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+
+
         ?>
         <?php if (count($plans) > 1) { ?>
             <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_payment_message', Mage::app()->getStore()) ?></label>
@@ -72,6 +77,25 @@
                     </span>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="padding: 10px 0 5px 0">
+                        <?php
+                        if ($emailInstallment == 1) {
+                            ?>
+                            <input type="radio" checked="checked" name="payment[payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
+                            <input type="radio" name="payment[payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>
+
+                            <?php
+                        } else {
+                            ?>
+                            <input type="hidden" name="payment[payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </td>
+            <tr>
         </table>
         <br />
     </div>
