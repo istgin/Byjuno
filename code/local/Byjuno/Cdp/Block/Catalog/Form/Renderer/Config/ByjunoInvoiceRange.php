@@ -25,7 +25,8 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
             'value' => "invoice_single",
             'toc' => "http://www.byjuno.ch",
         );
-
+        //invoice_byjuno_enable,invoice_single_enable,Byjuno invoice,Single invoice,http://www.byjuno.ch/&3,http://www.byjuno.ch/&4
+        //var_dump($element->getValue());
         if ($element->getValue()) {
             $values = explode(',', $element->getValue());
         } else {

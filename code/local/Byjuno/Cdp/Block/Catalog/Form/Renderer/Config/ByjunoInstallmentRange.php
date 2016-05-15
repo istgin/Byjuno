@@ -51,6 +51,9 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
             'label'   => '4 installments in 10 months',
             'value' => "installment_4x10",
         );
+        //var_dump($element->getValue());
+        //installment_4x12_enable,3 monthly installments,10 monthly installments,12 monthly installments,24 monthly installments,4 installments in 12 months,4 installments in 10 months,http://www.byjuno.ch/&5,http://www.byjuno.ch/&6,http://www.byjuno.ch/&7,http://www.byjuno.ch/&8,http://www.byjuno.ch/&9,http://www.byjuno.ch/&10
+
         if ($element->getValue()) {
             $values = explode(',', $element->getValue());
         } else {

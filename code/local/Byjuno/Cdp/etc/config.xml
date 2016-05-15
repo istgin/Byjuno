@@ -158,6 +158,84 @@
             </byjuno_setup>
         </resources>
     </global>
+    <stores>
+        <german>
+            <payment>
+                <cdp>
+                    <byjuno_invoice_payments>invoice_byjuno_enable,invoice_single_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_invoice_payments>
+                    <byjuno_installment_payments>installment_4x12_enable,3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,4 Raten innerhalb von 10 Monaten,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_installment_payments>
+                    <title_invoice>Byjuno Rechnung</title_invoice>
+                    <title_installment>Byjuno Ratenzahlung</title_installment>
+                    <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>
+                    <byjuno_installment_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_installment_payment_message>
+                    <byjuno_fail_message>Der Anbieter dieser Zahlungsart hat die gewählte Bezahlmethode abgelehnt. Bitte wählen Sie eine andere Zahlungsart.</byjuno_fail_message>
+                    <byjuno_invoice_toc_string>AGB</byjuno_invoice_toc_string>
+                    <byjuno_invoice_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_invoice_payment_message>
+                    <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.50) an</byjuno_invoice_postal_text>
+                    <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
+                    <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
+                    <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
+                </cdp>
+            </payment>
+        </german>
+        <french>
+            <payment>
+                <cdp>
+                    <byjuno_invoice_payments>invoice_byjuno_enable,invoice_single_enable,Byjuno Facture avec option de paiement partiel,Byjuno facture unique,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms</byjuno_invoice_payments>
+                    <byjuno_installment_payments>installment_4x12_enable,3 tranches,10 tranches,12 tranches,24 tranches,4 tranches dans 12 mois,4 tranches dans 10 mois,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms</byjuno_installment_payments>
+                    <title_invoice>Facture Byjuno</title_invoice>
+                    <title_installment>Byjuno Paiement échelonné</title_installment>
+                    <byjuno_installment_toc_string>CGV</byjuno_installment_toc_string>
+                    <byjuno_installment_payment_message>Veuillez choisir le type de paiement et accepter les conditions générales</byjuno_installment_payment_message>
+                    <byjuno_fail_message>Le prestataire de ce type de paiement a rejeté la méthode de paiement choisie. Veuillez choisir un autre mode de paiement.</byjuno_fail_message>
+                    <byjuno_invoice_toc_string>CGV</byjuno_invoice_toc_string>
+                    <byjuno_invoice_payment_message>Veuillez choisir le type de paiement et accepter les conditions générales</byjuno_invoice_payment_message>
+                    <byjuno_invoice_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50) à</byjuno_invoice_postal_text>
+                    <byjuno_invoice_email_text>Expédition facture via e-mail (sans frais) à</byjuno_invoice_email_text>
+                    <byjuno_installment_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50 par tranche) à</byjuno_installment_postal_text>
+                    <byjuno_installment_email_text>Expédition facture via e-mail (sans frais) à</byjuno_installment_email_text>
+                </cdp>
+            </payment>
+        </french>
+        <italian>
+            <payment>
+                <cdp>
+                    <byjuno_invoice_payments>invoice_byjuno_enable,invoice_single_enable,Byjuno fattura con opzione di pagamento parziale,Byjuno fattura singola,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms</byjuno_invoice_payments>
+                    <byjuno_installment_payments>installment_4x12_enable,3 rate,10 rate,12 rate,24 rate,4 rate in 12 mesi,4 rate in 10 mesi,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms</byjuno_installment_payments>
+                    <title_invoice>Fattura Byjuno</title_invoice>
+                    <title_installment>Byjuno Pagamento rateale</title_installment>
+                    <byjuno_installment_toc_string>CGC</byjuno_installment_toc_string>
+                    <byjuno_installment_payment_message>La preghiamo di scegliere la modalità di pagamento e di accettare le condizioni generali di contratto</byjuno_installment_payment_message>
+                    <byjuno_fail_message>L’operatore del servizio di pagamento ha rifiutato la modalità di pagamento da Lei scelta. La preghiamo di scegliere un’altra modalità di pagamento.</byjuno_fail_message>
+                    <byjuno_invoice_toc_string>CGC</byjuno_invoice_toc_string>
+                    <byjuno_invoice_payment_message>La preghiamo di scegliere la modalità di pagamento e di accettare le condizioni generali di contratto</byjuno_invoice_payment_message>
+                    <byjuno_invoice_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50) all’indirizzo</byjuno_invoice_postal_text>
+                    <byjuno_invoice_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_invoice_email_text>
+                    <byjuno_installment_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50 per ogni rata) all’indirizzo</byjuno_installment_postal_text>
+                    <byjuno_installment_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_installment_email_text>
+                </cdp>
+            </payment>
+        </italian>
+        <english>
+            <payment>
+                <cdp>
+                    <byjuno_invoice_payments>invoice_byjuno_enable,invoice_single_enable,Byjuno Invoice (with partial payment option),Byjuno Single Invoice,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms</byjuno_invoice_payments>
+                    <byjuno_installment_payments>installment_4x12_enable,3 Installments,10 installments,12 installments,24 installments,4 installments in 12 months,4 installments in 10 months,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms</byjuno_installment_payments>
+                    <title_invoice>Byjuno INVOICE</title_invoice>
+                    <title_installment>Byjuno INSTALLMENT</title_installment>
+                    <byjuno_installment_toc_string>T&amp;C</byjuno_installment_toc_string>
+                    <byjuno_installment_payment_message>Please select payment option and agree to Terms and Conditions</byjuno_installment_payment_message>
+                    <byjuno_fail_message>Payment Method Provider have refused selected payment method, please select different payment method.</byjuno_fail_message>
+                    <byjuno_invoice_toc_string>T&amp;C</byjuno_invoice_toc_string>
+                    <byjuno_invoice_payment_message>Please select payment option and agree to Terms and Conditions</byjuno_invoice_payment_message>
+                    <byjuno_invoice_postal_text>Invoice Delivery method by Post (postage fee 3.50 CHF) to</byjuno_invoice_postal_text>
+                    <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
+                    <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
+                    <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
+                </cdp>
+            </payment>
+        </english>
+    </stores>
     <default>
         <payment>
             <cdp_invoice>
@@ -168,25 +246,29 @@
             </cdp_installment>
             <cdp>
                 <active>0</active>
-                <title_invoice>Byjuno invoice</title_invoice>
-                <title_installment>Byjuno installment</title_installment>
                 <currentmode>test</currentmode>
                 <minamount>10</minamount>
-                <maxamount>1000</maxamount>
+                <maxamount>10000</maxamount>
                 <timeout>30</timeout>
                 <tmxenabled>disable</tmxenabled>
                 <businesstobusiness>disable</businesstobusiness>
-                <byjuno_installment_toc_string>Byjuno installment terms &amp; conditions</byjuno_installment_toc_string>
-                <byjuno_installment_payment_message>Please select payment plan</byjuno_installment_payment_message>
-                <byjuno_fail_message>Byjuno installment failed</byjuno_fail_message>
-                <byjuno_invoice_toc_string>Byjuno installment terms &amp; conditions</byjuno_invoice_toc_string>
-                <byjuno_invoice_payment_message>Please select payment plan</byjuno_invoice_payment_message>
                 <byjuno_invoice_paper>0</byjuno_invoice_paper>
-                <byjuno_invoice_postal_text>Invoice delivery method: by post (fee 3.50 CHF)</byjuno_invoice_postal_text>
-                <byjuno_invoice_email_text>Invoice delivery method: by email</byjuno_invoice_email_text>
                 <byjuno_installment_paper>0</byjuno_installment_paper>
-                <byjuno_installment_postal_text>Invoice delivery method: by post (fee 3.50 CHF)</byjuno_installment_postal_text>
-                <byjuno_installment_email_text>Invoice delivery method: by email</byjuno_installment_email_text>
+
+                <byjuno_invoice_payments>invoice_byjuno_enable,invoice_single_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_invoice_payments>
+                <byjuno_installment_payments>installment_4x12_enable,3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,4 Raten innerhalb von 10 Monaten,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_installment_payments>
+                <title_invoice>Byjuno Rechnung</title_invoice>
+                <title_installment>Byjuno Ratenzahlung</title_installment>
+                <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>
+                <byjuno_installment_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_installment_payment_message>
+                <byjuno_fail_message>Der Anbieter dieser Zahlungsart hat die gewählte Bezahlmethode abgelehnt. Bitte wählen Sie eine andere Zahlungsart.</byjuno_fail_message>
+                <byjuno_invoice_toc_string>AGB</byjuno_invoice_toc_string>
+                <byjuno_invoice_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_invoice_payment_message>
+                <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.50) an</byjuno_invoice_postal_text>
+                <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
+                <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
+                <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
+
             </cdp>
         </payment>
     </default>
