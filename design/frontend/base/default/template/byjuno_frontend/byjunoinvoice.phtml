@@ -32,7 +32,7 @@
             $i++;
         }
 
-        $emailInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_email', Mage::app()->getStore());
+        $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
 
         ?>
@@ -51,7 +51,7 @@
                         <?php
                         $i = 0;
                         if (count($plans) == 1) { ?>
-                            <input type="hidden" name="payment[payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?>
+                            <input type="hidden" name="payment[invoice_payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?>
                             (<a href="<?php echo $this->htmlEscape($plans[0]["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
                             <br />
 
@@ -59,7 +59,7 @@
                             foreach($plans as $plan) { ?>
                                 <input type="radio" <?php if ($i == 0) {
                                     echo 'checked="checked"';
-                                } ?> name="payment[payment_plan]"
+                                } ?> name="payment[invoice_payment_plan]"
                                        value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
                                        (<a href="<?php echo $this->htmlEscape($plan["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
                                 <br/>
@@ -74,15 +74,15 @@
                 <td colspan="2">
                     <div style="padding: 10px 0 5px 0">
                         <?php
-                            if ($emailInvoice == 1) {
+                            if ($paperInvoice == 1) {
                             ?>
-                                <input type="radio" checked="checked" name="payment[payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
-                                <input type="radio" name="payment[payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>
+                                <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
+                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>, <?php echo (String)$quote->getBillingAddress()->getCity(); ?>, <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?>
 
                                 <?php
                             } else {
                             ?>
-                                <input type="hidden" name="payment[payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>
+                                <input type="hidden" name="payment[invoice_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?>
                             <?php
                             }
                         ?>
