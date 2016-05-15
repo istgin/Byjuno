@@ -35,6 +35,22 @@
         $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
 
+        $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
+        switch ($lang) {
+            case 'de':
+                $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
+                break;
+            case 'fr':
+                $logo = 'https://byjuno.ch/Content/logo/fr/6639/BJ_Facture_BLK.gif';
+                break;
+            case 'it':
+                $logo = 'https://byjuno.ch/Content/logo/it/6639/BJ_Fattura_BLK.gif';
+                break;
+            case 'en':
+                $logo = 'https://byjuno.ch/Content/logo/en/6639/BJ_Invoice_BLK.gif';
+                break;
+        }
+
         ?>
         <?php if (count($plans) > 1) { ?>
             <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
@@ -44,7 +60,7 @@
         <table>
             <tr>
                 <td style="vertical-align: middle; padding: 0 10px 0 0">
-                    <?php echo '<img src="http://byjuno.ch/Content/logo/'.$lang.'/6639/BJ_Rechnung_BLK.gif" border="0" />'; ?>
+                    <?php echo '<img src="'.$logo.'" border="0" />'; ?>
                 </td>
                 <td style="vertical-align: middle">
                     <span>
