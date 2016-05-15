@@ -47,13 +47,13 @@ class Byjuno_Cdp_Model_Standardinstallment
 	public function assignData($data)
 	{
 		$info = $this->getInfoInstance();
-		if ($data->getPaymentPlan())
+		if ($data->getInstallmentPaymentPlan())
 		{
-		    $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
+		    $info->setAdditionalInformation("payment_plan", $data->getInstallmentPaymentPlan());
 		}
-		if ($data->getPaymentSend())
+		if ($data->getInstallmentPaymentSend())
 		{
-			$info->setAdditionalInformation("payment_send", $data->getPaymentSend());
+			$info->setAdditionalInformation("payment_send", $data->getInstallmentPaymentSend());
 		}
 		return $this;
 	}

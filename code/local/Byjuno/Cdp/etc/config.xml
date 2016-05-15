@@ -181,10 +181,10 @@
                 <byjuno_fail_message>Byjuno installment failed</byjuno_fail_message>
                 <byjuno_invoice_toc_string>Byjuno installment terms &amp; conditions</byjuno_invoice_toc_string>
                 <byjuno_invoice_payment_message>Please select payment plan</byjuno_invoice_payment_message>
-                <byjuno_invoice_email>1</byjuno_invoice_email>
+                <byjuno_invoice_paper>0</byjuno_invoice_paper>
                 <byjuno_invoice_postal_text>Invoice delivery method: by post (fee 3.50 CHF)</byjuno_invoice_postal_text>
                 <byjuno_invoice_email_text>Invoice delivery method: by email</byjuno_invoice_email_text>
-                <byjuno_installment_email>1</byjuno_installment_email>
+                <byjuno_installment_paper>0</byjuno_installment_paper>
                 <byjuno_installment_postal_text>Invoice delivery method: by post (fee 3.50 CHF)</byjuno_installment_postal_text>
                 <byjuno_installment_email_text>Invoice delivery method: by email</byjuno_installment_email_text>
             </cdp>

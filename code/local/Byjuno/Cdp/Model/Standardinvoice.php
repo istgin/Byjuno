@@ -140,11 +140,11 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     public function assignData($data)
     {
         $info = $this->getInfoInstance();
-        if ($data->getPaymentPlan()) {
-            $info->setAdditionalInformation("payment_plan", $data->getPaymentPlan());
+        if ($data->getInvoicePaymentPlan()) {
+            $info->setAdditionalInformation("payment_plan", $data->getInvoicePaymentPlan());
         }
-        if ($data->getPaymentSend()) {
-            $info->setAdditionalInformation("payment_send", $data->getPaymentSend());
+        if ($data->getInvoicePaymentSend()) {
+            $info->setAdditionalInformation("payment_send", $data->getInvoicePaymentSend());
         }
         return $this;
     }
