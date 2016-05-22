@@ -175,6 +175,8 @@
                     <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
+                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
+                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
                 </cdp>
             </payment>
         </german>
@@ -194,6 +196,8 @@
                     <byjuno_invoice_email_text>Expédition facture via e-mail (sans frais) à</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50 par tranche) à</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Expédition facture via e-mail (sans frais) à</byjuno_installment_email_text>
+                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
+                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
                 </cdp>
             </payment>
         </french>
@@ -213,6 +217,8 @@
                     <byjuno_invoice_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50 per ogni rata) all’indirizzo</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_installment_email_text>
+                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
+                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
                 </cdp>
             </payment>
         </italian>
@@ -232,6 +238,8 @@
                     <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
+                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
+                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
                 </cdp>
             </payment>
         </english>
@@ -268,6 +276,8 @@
                 <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
                 <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
                 <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
+                <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
+                <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
 
             </cdp>
         </payment>
