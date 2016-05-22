@@ -525,7 +525,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount) {
+    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount, $transactionType, $invoiceId = '') {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -544,7 +544,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
         $request->setTransactionAmount(number_format($amount, 2, '.', ''));
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
-        $request->setTransactionType("CANCEL");
+        $request->setTransactionType($transactionType);
+        $request->setAdditional1($invoiceId);
 
         return $request;
 

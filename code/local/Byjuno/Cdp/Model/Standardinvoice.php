@@ -85,9 +85,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
             return $this;
         }
+        /* @var $payment Mage_Sales_Model_Order_Payment */
         $order = $payment->getOrder();
+        /* @var $memo Mage_Sales_Model_Order_Creditmemo */
+        $memo = $payment->getCreditmemo();
+        $incoiceId = $memo->getInvoice()->getIncrementId();
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $requestedAmount);
+        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $requestedAmount, "REFUND", $incoiceId);
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
@@ -127,7 +131,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         /* @var $order Mage_Sales_Model_Order */
         $order = $payment->getOrder();
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue());
+        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue(), "EXPIRE");
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();

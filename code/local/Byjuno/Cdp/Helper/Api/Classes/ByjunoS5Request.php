@@ -21,6 +21,23 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
     private $TransactionAmount;
     private $TransactionCurrency;
     private $TransactionType;
+    private $Additional1;
+
+    /**
+     * @return mixed
+     */
+    public function getAdditional1()
+    {
+        return $this->Additional1;
+    }
+
+    /**
+     * @param mixed $Additional1
+     */
+    public function setAdditional1($Additional1)
+    {
+        $this->Additional1 = $Additional1;
+    }
 
     /**
      * @return mixed
@@ -235,6 +252,9 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
         $Transaction->TransactionDate = $this->TransactionDate;
         $Transaction->TransactionAmount = $this->TransactionAmount;
         $Transaction->TransactionCurrency = $this->TransactionCurrency;
+        if ($this->Additional1 != '') {
+            $Transaction->Additional1 = $this->Additional1;
+        }
         $Transaction->OpenBalance = '';
 
         return $xml->asXML();
