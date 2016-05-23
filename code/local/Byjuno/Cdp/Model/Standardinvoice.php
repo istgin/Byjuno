@@ -131,7 +131,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         /* @var $order Mage_Sales_Model_Order */
         $order = $payment->getOrder();
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue(), "EXPIRE");
+        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue(), "EXPIRED");
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
