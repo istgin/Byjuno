@@ -389,7 +389,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setCustomerReference("guest_".$order->getBillingAddress()->getId());
+            $request->setCustomerReference("guest_".$order->getId());
         } else {
             $request->setCustomerReference($order->getCustomerId());
         }
@@ -513,7 +513,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
 
         $request->setOrderId($order->getIncrementId());
-        $request->setClientRef($order->getCustomerId());
+        $reference = $order->getCustomerId();
+        if (empty($reference)) {
+            $request->setClientRef("guest_".$order->getId());
+        } else {
+            $request->setClientRef($order->getCustomerId());
+        }
         $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
         $request->setTransactionAmount(number_format($invoice->getGrandTotal(), 2, '.', ''));
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
@@ -540,7 +545,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
 
         $request->setOrderId($order->getIncrementId());
-        $request->setClientRef($order->getCustomerId());
+        $reference = $order->getCustomerId();
+        if (empty($reference)) {
+            $request->setClientRef("guest_".$order->getId());
+        } else {
+            $request->setClientRef($order->getCustomerId());
+        }
         $request->setTransactionDate($order->getCreatedAtStoreDate()->toString(Varien_Date::DATE_INTERNAL_FORMAT));
         $request->setTransactionAmount(number_format($amount, 2, '.', ''));
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
@@ -581,7 +591,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setRequestId($requestId);
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setCustomerReference("guest_".$order->getBillingAddress()->getId());
+            $request->setCustomerReference("guest_".$order->getId());
         } else {
             $request->setCustomerReference($order->getCustomerId());
         }
