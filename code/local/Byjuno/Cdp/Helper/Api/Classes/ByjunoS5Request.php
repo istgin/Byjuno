@@ -21,22 +21,22 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
     private $TransactionAmount;
     private $TransactionCurrency;
     private $TransactionType;
-    private $Additional1;
+    private $Additional2;
 
     /**
      * @return mixed
      */
-    public function getAdditional1()
+    public function getAdditional2()
     {
-        return $this->Additional1;
+        return $this->Additional2;
     }
 
     /**
-     * @param mixed $Additional1
+     * @param mixed $Additional2
      */
-    public function setAdditional1($Additional1)
+    public function setAdditional2($Additional2)
     {
-        $this->Additional1 = $Additional1;
+        $this->Additional2 = $Additional2;
     }
 
     /**
@@ -252,8 +252,8 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
         $Transaction->TransactionDate = $this->TransactionDate;
         $Transaction->TransactionAmount = $this->TransactionAmount;
         $Transaction->TransactionCurrency = $this->TransactionCurrency;
-        if ($this->Additional1 != '') {
-            $Transaction->Additional1 = $this->Additional1;
+        if ($this->Additional2 != '') {
+            $Transaction->Additional2 = $this->Additional2;
         }
         $Transaction->OpenBalance = '';
 

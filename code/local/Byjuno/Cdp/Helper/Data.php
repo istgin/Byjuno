@@ -83,7 +83,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             return "1";
         } else if ($type == 'installment_4x10_enable') {
             return "2";
-        } else if ($type == 'cdp_installment') {
+        } else if ($type == 'invoice_single_enable') {
             return "3";
         } else {
             return "4";
@@ -545,7 +545,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setTransactionAmount(number_format($amount, 2, '.', ''));
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
         $request->setTransactionType($transactionType);
-        $request->setAdditional1($invoiceId);
+        $request->setAdditional2($invoiceId);
 
         return $request;
 
