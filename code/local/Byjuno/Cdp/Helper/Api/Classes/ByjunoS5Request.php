@@ -22,6 +22,23 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
     private $TransactionCurrency;
     private $TransactionType;
     private $Additional2;
+    private $OpenBalance;
+
+    /**
+     * @return mixed
+     */
+    public function getOpenBalance()
+    {
+        return $this->OpenBalance;
+    }
+
+    /**
+     * @param mixed $OpenBalance
+     */
+    public function setOpenBalance($OpenBalance)
+    {
+        $this->OpenBalance = $OpenBalance;
+    }
 
     /**
      * @return mixed
@@ -255,7 +272,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request
         if ($this->Additional2 != '') {
             $Transaction->Additional2 = $this->Additional2;
         }
-        $Transaction->OpenBalance = '';
+        $Transaction->OpenBalance = $this->OpenBalance;
 
         return $xml->asXML();
     }

@@ -163,7 +163,7 @@
             <payment>
                 <cdp>
                     <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,4 Raten innerhalb von 10 Monaten,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_installment_payments>
+                    <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,N/A</byjuno_installment_payments>
                     <title_invoice>Byjuno Rechnung</title_invoice>
                     <title_installment>Byjuno Ratenzahlung</title_installment>
                     <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>
@@ -175,8 +175,8 @@
                     <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
-                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
-                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
+                    <byjuno_s4_fail>Das Senden der Rechnung an Byjuno ist fehlgeschlagen. Die Rechnung wurde nicht generiert. Bitte versuchen Sie es erneut.</byjuno_s4_fail>
+                    <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
                 </cdp>
             </payment>
         </german>
@@ -184,7 +184,7 @@
             <payment>
                 <cdp>
                     <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Facture avec option de paiement partiel,Byjuno facture unique,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 tranches,10 tranches,12 tranches,24 tranches,4 tranches dans 12 mois,4 tranches dans 10 mois,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms</byjuno_installment_payments>
+                    <byjuno_installment_payments>3 tranches,10 tranches,12 tranches,24 tranches,4 tranches dans 12 mois,N/A,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,http://byjuno.ch/fr/terms,N/A</byjuno_installment_payments>
                     <title_invoice>Facture Byjuno</title_invoice>
                     <title_installment>Byjuno Paiement échelonné</title_installment>
                     <byjuno_installment_toc_string>CGV</byjuno_installment_toc_string>
@@ -196,8 +196,8 @@
                     <byjuno_invoice_email_text>Expédition facture via e-mail (sans frais) à</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50 par tranche) à</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Expédition facture via e-mail (sans frais) à</byjuno_installment_email_text>
-                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
-                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
+                    <byjuno_s4_fail>La transmission de la facture à Byjuno a échoué. La facture n’a pas été produite, veuillez essayer à nouveau.</byjuno_s4_fail>
+                    <byjuno_s5_fail>La transmission de la commande modifiée a échoué. L’annulation/le remboursement n’a pas pu être exécuté. Veuillez essayer à nouveau.</byjuno_s5_fail>
                 </cdp>
             </payment>
         </french>
@@ -205,7 +205,7 @@
             <payment>
                 <cdp>
                     <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno fattura con opzione di pagamento parziale,Byjuno fattura singola,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 rate,10 rate,12 rate,24 rate,4 rate in 12 mesi,4 rate in 10 mesi,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms</byjuno_installment_payments>
+                    <byjuno_installment_payments>3 rate,10 rate,12 rate,24 rate,4 rate in 12 mesi,N/A,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,http://byjuno.ch/it/terms,N/A</byjuno_installment_payments>
                     <title_invoice>Fattura Byjuno</title_invoice>
                     <title_installment>Byjuno Pagamento rateale</title_installment>
                     <byjuno_installment_toc_string>CGC</byjuno_installment_toc_string>
@@ -217,8 +217,8 @@
                     <byjuno_invoice_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50 per ogni rata) all’indirizzo</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_installment_email_text>
-                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
-                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
+                    <byjuno_s4_fail>La trasmissione della fattura a Byjuno non é riuscita. La fattura non é stata generata. La preghiamo di riprovare.</byjuno_s4_fail>
+                    <byjuno_s5_fail>La trasmissione della modifica dell’ordine non é riuscita. Storno/Rimborso non é stato eseguito. La preghiamo di riprovare.</byjuno_s5_fail>
                 </cdp>
             </payment>
         </italian>
@@ -226,7 +226,7 @@
             <payment>
                 <cdp>
                     <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Invoice (with partial payment option),Byjuno Single Invoice,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 Installments,10 installments,12 installments,24 installments,4 installments in 12 months,4 installments in 10 months,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms</byjuno_installment_payments>
+                    <byjuno_installment_payments>3 Installments,10 installments,12 installments,24 installments,4 installments in 12 months,N/A,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,http://byjuno.ch/en/terms,N/A</byjuno_installment_payments>
                     <title_invoice>Byjuno INVOICE</title_invoice>
                     <title_installment>Byjuno INSTALLMENT</title_installment>
                     <byjuno_installment_toc_string>T&amp;C</byjuno_installment_toc_string>
@@ -238,8 +238,8 @@
                     <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
-                    <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
-                    <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
+                    <byjuno_s4_fail>The invoice transfer to Byjuno failed; the invoice could not be generated, please retry.</byjuno_s4_fail>
+                    <byjuno_s5_fail>The transfer of the updated order to Byjuno failed; Cancel/Refund could not be completed, please retry.</byjuno_s5_fail>
                 </cdp>
             </payment>
         </english>
@@ -264,7 +264,7 @@
                 <byjuno_installment_paper>0</byjuno_installment_paper>
 
                 <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_invoice_payments>
-                <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,4 Raten innerhalb von 10 Monaten,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_installment_payments>
+                <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,N/A</byjuno_installment_payments>
                 <title_invoice>Byjuno Rechnung</title_invoice>
                 <title_installment>Byjuno Ratenzahlung</title_installment>
                 <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>
@@ -276,8 +276,8 @@
                 <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
                 <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
                 <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
-                <byjuno_s4_fail>Processing invoice failed</byjuno_s4_fail>
-                <byjuno_s5_fail>Cancelation of invoice failed</byjuno_s5_fail>
+                <byjuno_s4_fail>Das Senden der Rechnung an Byjuno ist fehlgeschlagen. Die Rechnung wurde nicht generiert. Bitte versuchen Sie es erneut.</byjuno_s4_fail>
+                <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
 
             </cdp>
         </payment>

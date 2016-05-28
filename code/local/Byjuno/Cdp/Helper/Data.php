@@ -556,6 +556,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setTransactionCurrency($order->getBaseCurrencyCode());
         $request->setTransactionType($transactionType);
         $request->setAdditional2($invoiceId);
+        if ($transactionType == "EXPIRED") {
+            $request->setOpenBalance("0");
+        }
 
         return $request;
 
