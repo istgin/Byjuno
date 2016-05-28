@@ -72,7 +72,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     public function mapRepayment($type) {
         if ($type == 'installment_3_enable') {
-            return "4";
+            return "10";
         } else if ($type == 'installment_10_enable') {
             return "5";
         } else if ($type == 'installment_12_enable') {
