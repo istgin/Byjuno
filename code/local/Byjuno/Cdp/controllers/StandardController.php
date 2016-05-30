@@ -149,6 +149,11 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
         if ($statusRequest == 2 && $status == 2) {
+            try {
+                $order->queueNewOrderEmail();
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
         } else {
