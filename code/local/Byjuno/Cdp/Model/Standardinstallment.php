@@ -46,6 +46,7 @@ class Byjuno_Cdp_Model_Standardinstallment
   
 	public function assignData($data)
 	{
+		/* @var $info Mage_Sales_Model_Quote_Payment */
 		$info = $this->getInfoInstance();
 		if ($data->getInstallmentPaymentPlan())
 		{
@@ -53,7 +54,14 @@ class Byjuno_Cdp_Model_Standardinstallment
 		}
 		if ($data->getInstallmentPaymentSend())
 		{
-			$info->setAdditionalInformation("payment_send", $data->getInstallmentPaymentSend());
+			$send = $data->getInstallmentPaymentSend();
+			$info->setAdditionalInformation("payment_send", $send);
+			if ($send == 'postal') {
+				$sentTo = (String)$info->getQuote()->getBillingAddress()->getStreetFull().', '.(String)$info->getQuote()->getBillingAddress()->getCity().', '.(String)$info->getQuote()->getBillingAddress()->getPostcode();
+			} else {
+				$sentTo = $info->getQuote()->getBillingAddress()->getEmail();
+			}
+			$info->setAdditionalInformation("payment_send_to", $sentTo);
 		}
 		return $this;
 	}

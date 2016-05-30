@@ -189,12 +189,20 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function assignData($data)
     {
+        /* @var $info Mage_Sales_Model_Quote_Payment */
         $info = $this->getInfoInstance();
         if ($data->getInvoicePaymentPlan()) {
             $info->setAdditionalInformation("payment_plan", $data->getInvoicePaymentPlan());
         }
         if ($data->getInvoicePaymentSend()) {
-            $info->setAdditionalInformation("payment_send", $data->getInvoicePaymentSend());
+            $send = $data->getInvoicePaymentSend();
+            $info->setAdditionalInformation("payment_send", $send);
+            if ($send == 'postal') {
+                $sentTo = (String)$info->getQuote()->getBillingAddress()->getStreetFull().', '.(String)$info->getQuote()->getBillingAddress()->getCity().', '.(String)$info->getQuote()->getBillingAddress()->getPostcode();
+            } else {
+                $sentTo = $info->getQuote()->getBillingAddress()->getEmail();
+            }
+            $info->setAdditionalInformation("payment_send_to", $sentTo);
         }
         return $this;
     }

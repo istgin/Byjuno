@@ -24,11 +24,11 @@ class Byjuno_Cdp_Block_Info_Byjunoinstallment extends Mage_Payment_Block_Info
         $htmlAdd = '';
         if ($paymentSend == 'email')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore());
+            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
         }
         else if ($paymentSend == 'postal')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore());
+            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
         }
 
         $i = 0;
