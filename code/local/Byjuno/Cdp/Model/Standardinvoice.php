@@ -51,9 +51,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
         $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
         $order = $invoice->getOrder();
+        $webshopProfileId = $order->getPayment()->getAdditionalInformation("webshop_profile_id");
+        if (!isset($webshopProfileId) || $webshopProfileId == "") {
+            $webshopProfileId = $order->getStoreId();
+        }
+        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         $invoice->setIncrementId($invoiceId);
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice);
+        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
         $ByjunoRequestName = 'Byjuno S4';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
@@ -87,11 +92,16 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         /* @var $payment Mage_Sales_Model_Order_Payment */
         $order = $payment->getOrder();
+        $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
+        if (!isset($webshopProfileId) || $webshopProfileId == "") {
+            $webshopProfileId = $order->getStoreId();
+        }
+        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         /* @var $memo Mage_Sales_Model_Order_Creditmemo */
         $memo = $payment->getCreditmemo();
         $incoiceId = $memo->getInvoice()->getIncrementId();
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $requestedAmount, "REFUND", $incoiceId);
+        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $requestedAmount, "REFUND", $webshopProfile, $incoiceId);
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
@@ -123,6 +133,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         return $this;
     }
 
+    /* @var $payment Mage_Sales_Model_Order_Payment */
     public function cancel(Varien_Object $payment)
     {
         if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
@@ -130,8 +141,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         /* @var $order Mage_Sales_Model_Order */
         $order = $payment->getOrder();
+        $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
+        if (!isset($webshopProfileId) || $webshopProfileId == "") {
+            $webshopProfileId = $order->getStoreId();
+        }
+        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue(), "EXPIRED");
+        $request = $this->getHelper()->CreateMagentoShopRequestS5Paid($order, $order->getTotalDue(), "EXPIRED", $webshopProfile);
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
@@ -204,6 +220,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             }
             $info->setAdditionalInformation("payment_send_to", $sentTo);
         }
+        $info->setAdditionalInformation("webshop_profile_id", Mage::app()->getStore()->getId());
         return $this;
     }
 

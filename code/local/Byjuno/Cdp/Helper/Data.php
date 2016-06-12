@@ -498,15 +498,15 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, Mage_Sales_Model_Order_Invoice $invoice) {
+    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, Mage_Sales_Model_Order_Invoice $invoice, $webshopProfile) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',$webshopProfile));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',$webshopProfile));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',$webshopProfile));
         $request->setVersion("1.3");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',$webshopProfile));
         } catch (Exception $e) {
 
         }
@@ -530,15 +530,15 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount, $transactionType, $invoiceId = '') {
+    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount, $transactionType, $webshopProfile, $invoiceId = '') {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',$webshopProfile));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',$webshopProfile));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',$webshopProfile));
         $request->setVersion("1.3");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',$webshopProfile));
         } catch (Exception $e) {
 
         }
