@@ -20,10 +20,27 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     protected $_canCapturePartial = true;
     protected $_canVoid = true;
     protected $_canAuthorize = true;
+    protected $_canRefundInvoicePartial = true;
 
     public function validate()
     {
         parent::validate();
+
+        /* @var $info Mage_Sales_Model_Quote_Payment */
+        $info = $this->getInfoInstance();
+        $paymentInfo = $this->getInfoInstance();
+        if ($paymentInfo instanceof Mage_Sales_Model_Order_Payment) {
+            $q = $paymentInfo->getOrder();
+        } else {
+            $q = $paymentInfo->getQuote();
+        }
+        $pattern = "/^\d{4}/";
+        if (strtolower($q->getBillingAddress()->getCountry()) == 'ch' && !preg_match($pattern, $q->getBillingAddress()->getPostcode())){
+            Mage::throwException("Postal code of billing address is incorrect");
+        }
+        if (!preg_match("/^[0-9\+\(\)]/", $q->getBillingAddress()->getTelephone())) {
+            Mage::throwException("Telephone of billing address is incorrect: ". $q->getBillingAddress()->getTelephone());
+        }
         return $this;
     }
 
@@ -223,7 +240,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $info->setAdditionalInformation("webshop_profile_id", Mage::app()->getStore()->getId());
         return $this;
     }
-
 
     public function getTitle()
     {
