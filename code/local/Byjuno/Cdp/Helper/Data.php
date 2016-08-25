@@ -121,229 +121,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $order->setByjunoCreditLevel($ByjunoResponse->getCustomerCreditRatingLevel());
         $order->save();
     }
-/*
-    function CreateMagentoShopRequest(Mage_Sales_Model_Quote $quote) {
 
-        $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('byjuno/api/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('byjuno/api/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('byjuno/api/password',Mage::app()->getStore()));
-        $request->setVersion("1.00");
-        try {
-            $request->setRequestEmail(Mage::getStoreConfig('byjuno/api/mail',Mage::app()->getStore()));
-        } catch (Exception $e) {
-
-        }
-        $b = $quote->getCustomerDob();
-        if (!empty($b)) {
-            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
-        }
-        Mage::getSingleton('checkout/session')->setData('dob_amasty', '');
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["dob"])) {
-            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($_POST["billing"]["dob"])));
-            Mage::getSingleton('checkout/session')->setData('dob_amasty', $_POST["billing"]["dob"]);
-        }
-
-        $g = $quote->getCustomerGender();
-        if (!empty($g)) {
-            if ($g == '1') {
-                $request->setGender('1');
-            } else if ($g == '2') {
-                $request->setGender('2');
-            }
-        }
-
-        $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId()."_"));
-        $reference = $quote->getCustomer()->getId();
-        if (empty($reference)) {
-            $request->setCustomerReference("guest_".$quote->getBillingAddress()->getId());
-        } else {
-            $request->setCustomerReference($quote->getCustomer()->getId());
-        }
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["method"]) && $_POST["method"] == 'guest') {
-            $request->setCustomerReference(uniqid("guest_"));
-        }
-
-        $request->setFirstName((String)$quote->getBillingAddress()->getFirstname());
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["firstname"])) {
-            $request->setFirstName((String)$_POST["billing"]["firstname"]);
-        }
-
-        $request->setLastName((String)$quote->getBillingAddress()->getLastname());
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["lastname"])) {
-            $request->setLastName((String)$_POST["billing"]["lastname"]);
-        }
-
-        $request->setFirstLine(trim((String)$quote->getBillingAddress()->getStreetFull()));
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["street"])) {
-            $street = '';
-            if (!empty($_POST["billing"]["street"][0])) {
-                $street .= $_POST["billing"]["street"][0];
-            }
-            if (!empty($_POST["billing"]["street"][1])) {
-                $street .= $_POST["billing"]["street"][1];
-            }
-            $request->setFirstLine((String)trim($street));
-        }
-
-        $request->setCountryCode(strtoupper((String)$quote->getBillingAddress()->getCountry()));
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["country_id"])) {
-            $request->setCountryCode((String)$_POST["billing"]["country_id"]);
-        }
-
-        $request->setPostCode((String)$quote->getBillingAddress()->getPostcode());
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["postcode"])) {
-            $request->setPostCode($_POST["billing"]["postcode"]);
-        }
-
-        $request->setTown((String)$quote->getBillingAddress()->getCity());
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["city"])) {
-            $request->setTown($_POST["billing"]["city"]);
-        }
-
-        $request->setFax((String)trim($quote->getBillingAddress()->getFax(), '-'));
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["fax"])) {
-            $request->setFax(trim($_POST["billing"]["fax"], '-'));
-        }
-
-        $request->setLanguage((String)substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
-        if ($quote->getBillingAddress()->getCompany()) {
-            $request->setCompanyName1($quote->getBillingAddress()->getCompany());
-        }
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["company"])) {
-            $request->setCompanyName1(trim($_POST["billing"]["company"], '-'));
-        }
-
-
-        $request->setTelephonePrivate((String)trim($quote->getBillingAddress()->getTelephone(), '-'));
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["telephone"])) {
-            $request->setTelephonePrivate(trim($_POST["billing"]["telephone"], '-'));
-        }
-
-        $request->setEmail((String)$quote->getBillingAddress()->getEmail());
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["email"])) {
-            $request->setEmail((String)$_POST["billing"]["email"]);
-        }
-
-        Mage::getSingleton('checkout/session')->setData('gender_amasty', '');
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty') {
-            $g = isset($_POST["billing"]["gender"]) ? $_POST["billing"]["gender"] : '';
-            $request->setGender($g);
-            Mage::getSingleton('checkout/session')->setData('gender_amasty', $g);
-        }
-        if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && !empty($_POST["billing"]["prefix"])) {
-            if (strtolower($_POST["billing"]["prefix"]) == 'herr') {
-                $request->setGender('1');
-                Mage::getSingleton('checkout/session')->setData('gender_amasty', '1');
-            } else if (strtolower($_POST["billing"]["prefix"]) == 'frau') {
-                $request->setGender('2');
-                Mage::getSingleton('checkout/session')->setData('gender_amasty', '2');
-            }
-        }
-
-        $extraInfo["Name"] = 'ORDERCLOSED';
-        $extraInfo["Value"] = 'NO';
-        $request->setExtraInfo($extraInfo);
-
-        $extraInfo["Name"] = 'ORDERAMOUNT';
-        $extraInfo["Value"] = number_format($quote->getGrandTotal(), 2, '.', '');
-        $request->setExtraInfo($extraInfo);
-
-        $extraInfo["Name"] = 'ORDERCURRENCY';
-        $extraInfo["Value"] = $quote->getBaseCurrencyCode();
-        $request->setExtraInfo($extraInfo);
-
-        $extraInfo["Name"] = 'IP';
-        $extraInfo["Value"] = $this->getClientIp();
-        $request->setExtraInfo($extraInfo);
-
-        $sesId = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
-        if (Mage::getStoreConfig('byjuno/api/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
-            $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
-            $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
-            $request->setExtraInfo($extraInfo);
-        }
-
-
-        if (!$quote->isVirtual()) {
-            $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-            $extraInfo["Value"] = $quote->getShippingAddress()->getFirstname();
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($_POST["shipping"]["same_as_billing"])) {
-                if (!empty($_POST["shipping"]["firstname"])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["firstname"];
-                }
-            }
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_LASTNAME';
-            $extraInfo["Value"] = $quote->getShippingAddress()->getLastname();
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($_POST["shipping"]["same_as_billing"])) {
-                if (!empty($_POST["shipping"]["lastname"])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["lastname"];
-                }
-            }
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
-            $extraInfo["Value"] = trim($quote->getShippingAddress()->getStreetFull());
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($_POST["shipping"]["same_as_billing"])) {
-                $extraInfo["Value"] = '';
-                if (!empty($_POST["shipping"]["street"][0])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["street"][0];
-                }
-                if (!empty($_POST["shipping"]["street"][1])) {
-                    $extraInfo["Value"] .= ' '.$_POST["shipping"]["street"][1];
-                }
-                $extraInfo["Value"] = trim($extraInfo["Value"]);
-            }
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_HOUSENUMBER';
-            $extraInfo["Value"] = '';
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_COUNTRYCODE';
-            $extraInfo["Value"] = strtoupper($quote->getShippingAddress()->getCountry());
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($_POST["shipping"]["same_as_billing"])) {
-                if (!empty($_POST["shipping"]["country_id"])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["country_id"];
-                }
-            }
-            $request->setExtraInfo($extraInfo);
-            $extraInfo["Name"] = 'DELIVERY_POSTCODE';
-            $extraInfo["Value"] = $quote->getShippingAddress()->getPostcode();
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($_POST["shipping"]["same_as_billing"])) {
-                if (!empty($_POST["shipping"]["postcode"])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["postcode"];
-                }
-            }
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_TOWN';
-            $extraInfo["Value"] = $quote->getShippingAddress()->getCity();
-            if (Mage::getStoreConfig('byjuno/api/plugincheckouttype', Mage::app()->getStore()) == 'amasty') {
-                if (!empty($_POST["shipping"]["same_as_billing"]) && $_POST["shipping"]["same_as_billing"] == '1' && !empty($_POST["billing"]["city"])) {
-                    $extraInfo["Value"] = $_POST["billing"]["city"];
-                } else if (!empty($_POST["shipping"]["city"])) {
-                    $extraInfo["Value"] = $_POST["shipping"]["city"];
-                }
-            }
-            $request->setExtraInfo($extraInfo);
-
-            if ($quote->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('byjuno/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
-                $extraInfo["Value"] = $quote->getShippingAddress()->getCompany();
-                $request->setExtraInfo($extraInfo);
-            }
-        }
-
-		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.0.0';
-		$request->setExtraInfo($extraInfo);
-        return $request;
-
-    }
-*/
     function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
@@ -358,15 +136,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
         $b = $order->getCustomerDob();
         if (!empty($b)) {
-            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
-        }
+            try {
+                $dobObject = new DateTime($b);
+                if ($dobObject != null) {
+                    $request->setDateOfBirth($dobObject->format('Y-m-d'));
+                }
+            } catch (Exception $e) {
 
-        if (Mage::getStoreConfig('payment/cdp/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($b)) {
-            $dob = Mage::getSingleton('checkout/session')->getData('dob_amasty');
-            if (!empty($dob)) {
-                $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($dob)));
             }
-            Mage::getSingleton('checkout/session')->setData('dob_amasty', '');
         }
 
         $g = $order->getCustomerGender();
@@ -376,14 +153,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             } else if ($g == '2') {
                 $request->setGender('2');
             }
-        }
-
-        if (Mage::getStoreConfig('payment/cdp/plugincheckouttype', Mage::app()->getStore()) == 'amasty' && empty($g)) {
-            $gender = Mage::getSingleton('checkout/session')->getData('gender_amasty');
-            if (!empty($gender)) {
-                $request->setGender($gender);
+        } else {
+            if (strtolower($order->getCustomerPrefix()) == 'herr') {
+                $request->setGender('1');
+            } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
+                $request->setGender('2');
             }
-            Mage::getSingleton('checkout/session')->setData('gender_amasty', '');
         }
 
         $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
@@ -491,7 +266,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno magento payment module 1.0.0';
+		$extraInfo["Value"] = 'Byjuno magento payment module 1.1.0';
 		$request->setExtraInfo($extraInfo);	
 
         return $request;
@@ -578,14 +353,28 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
         $b = $order->getCustomerDob();
         if (!empty($b)) {
-            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
+            try {
+                $dobObject = new DateTime($b);
+                if ($dobObject != null) {
+                    $request->setDateOfBirth($dobObject->format('Y-m-d'));
+                }
+            } catch (Exception $e) {
+
+            }
         }
+
 
         $g = $order->getCustomerGender();
         if (!empty($g)) {
             if ($g == '1') {
                 $request->setGender('1');
             } else if ($g == '2') {
+                $request->setGender('2');
+            }
+        } else {
+            if (strtolower($order->getCustomerPrefix()) == 'herr') {
+                $request->setGender('1');
+            } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
                 $request->setGender('2');
             }
         }
@@ -690,7 +479,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.0.0';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.1.0';
 		$request->setExtraInfo($extraInfo);
         return $request;
     }
