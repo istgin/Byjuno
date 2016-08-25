@@ -6,4 +6,10 @@
             <block type="page/html" name="byjuno_frontend" as="byjuno_frontend" template="byjuno_frontend/byjuno_frontend.phtml" />
         </reference>
     </checkout_onepage_index>
+    <opc_index_index>
+        <!-- Mage_GoogleAnalytics -->
+        <reference name="after_body_start">
+            <block type="page/html" name="byjuno_frontend" as="byjuno_frontend" template="byjuno_frontend/byjuno_frontend.phtml" />
+        </reference>
+    </opc_index_index>
 </layout>
