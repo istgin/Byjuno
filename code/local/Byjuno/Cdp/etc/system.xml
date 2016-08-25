@@ -223,7 +223,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </byjuno_fail_message>
-
                         <businesstobusiness translate="label comment">
                             <label>Enable B2B check</label>
                             <comment>B2B integration allow to to do credit check if customer provide company
@@ -347,11 +346,29 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </maxamount>
+                        <tmxenabled translate="label comment">
+                            <label>Enable ThreatMetrix security check</label>
+                            <comment>ThreatMetrix will place invisible JavaScript in checkout process</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>130</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tmxenabled>
+                        <tmxkey translate="label">
+                            <label>ThreatMetrix Org Id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </tmxkey>
                         <timeout translate="label">
                             <label>Connection timeout to Byjuno CDP server in seconds</label>
                             <frontend_type>text</frontend_type>
                             <validate>required-entry validate-digits</validate>
-                            <sort_order>130</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

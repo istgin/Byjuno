@@ -283,6 +283,13 @@
         </payment>
     </default>
     <frontend>
+        <layout>
+            <updates>
+                <mymodule>
+                    <file>byjuno_frontend.xml</file> <!-- Our layout file name-->
+                </mymodule>
+            </updates>
+        </layout>
         <routers>
             <cdp>
                 <use>standard</use>
