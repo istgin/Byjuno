@@ -1,9 +1,9 @@
 <?php
-if (Mage::getStoreConfig('byjuno/api/tmxenabled', Mage::app()->getStore()) == 'enable'
-    && Mage::getStoreConfig('byjuno/api/tmxkey', Mage::app()->getStore()) != ''
-    && Mage::getStoreConfig('byjuno/api/pluginenabled', Mage::app()->getStore()) == 'enable') {
+if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == '1'
+    && Mage::getStoreConfig('payment/cdp/tmxkey', Mage::app()->getStore()) != ''
+    && Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == '1') {
     $sesId = Mage::getSingleton('checkout/session')->getEncryptedSessionId();
-    $tmkKey = Mage::getStoreConfig('byjuno/api/tmxkey', Mage::app()->getStore());
+    $tmkKey = Mage::getStoreConfig('payment/cdp/tmxkey', Mage::app()->getStore());
     Mage::getSingleton('checkout/session')->setData("byjuno_session_id", $sesId);
     echo '
     <script type="text/javascript" src="https://h.online-metrix.net/fp/tags.js?org_id='.$tmkKey.'&session_id='.$sesId.'&pageid=checkout"></script>
