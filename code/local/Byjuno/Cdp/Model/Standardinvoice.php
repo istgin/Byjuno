@@ -25,7 +25,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     public function validate()
     {
         parent::validate();
-
         /* @var $info Mage_Sales_Model_Quote_Payment */
         $info = $this->getInfoInstance();
         $paymentInfo = $this->getInfoInstance();
@@ -34,12 +33,12 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         } else {
             $q = $paymentInfo->getQuote();
         }
-        $pattern = "/^\d{4}/";
-        if (strtolower($q->getBillingAddress()->getCountry()) == 'ch' && !preg_match($pattern, $q->getBillingAddress()->getPostcode())){
-            Mage::throwException("Postal code of billing address is incorrect");
+        $pattern = "/^[0-9]{4}$/";
+        if (strtolower($q->getBillingAddress()->getCountry()) == 'ch' && !preg_match($pattern, $q->getBillingAddress()->getPostcode())) {
+            Mage::throwException(Mage::getStoreConfig('payment/cdp/postal_code_wrong', Mage::app()->getStore()).": ". $q->getBillingAddress()->getPostcode());
         }
-        if (!preg_match("/^[0-9\+\(\)]/", $q->getBillingAddress()->getTelephone())) {
-            Mage::throwException("Telephone of billing address is incorrect: ". $q->getBillingAddress()->getTelephone());
+        if (!preg_match("/^[0-9\+\(\)]+$/", $q->getBillingAddress()->getTelephone())) {
+            Mage::throwException(Mage::getStoreConfig('payment/cdp/telephone_code_wrong', Mage::app()->getStore()).": ". $q->getBillingAddress()->getTelephone());
         }
         return $this;
     }

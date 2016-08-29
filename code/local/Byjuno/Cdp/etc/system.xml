@@ -373,6 +373,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </timeout>
+						
+						<postal_code_wrong translate="label">
+                            <label>*Localization* Postal code of billing address is incorrect</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>160</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </postal_code_wrong>
+						
+						<telephone_code_wrong translate="label">
+                            <label>*Localization* Telephone of billing address is incorrect</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </telephone_code_wrong>
                     </fields>
                 </cdp>
             </groups>
