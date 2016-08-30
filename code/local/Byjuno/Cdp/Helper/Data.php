@@ -152,13 +152,17 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('1');
             } else if ($g == '2') {
                 $request->setGender('2');
-            }
+            } else {			
+                $request->setGender('0');
+			}
         } else {
             if (strtolower($order->getCustomerPrefix()) == 'herr') {
                 $request->setGender('1');
             } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
                 $request->setGender('2');
-            }
+            } else {			
+                $request->setGender('0');
+			}
         }
 
         $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
@@ -374,13 +378,17 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('1');
             } else if ($g == '2') {
                 $request->setGender('2');
-            }
+            } else {			
+                $request->setGender('0');
+			}
         } else {
             if (strtolower($order->getCustomerPrefix()) == 'herr') {
                 $request->setGender('1');
             } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
                 $request->setGender('2');
-            }
+            } else {			
+                $request->setGender('0');
+			}
         }
 
         $requestId = uniqid((String)$order->getBillingAddress()->getId()."_");
