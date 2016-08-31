@@ -2,6 +2,25 @@
 
 class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
+
+    function getByjunoErrorMessage($status, $paymentType = 'b2c') {
+        $message = '';
+        if ($status == 10 && $paymentType == 'b2b') {
+            if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'en') {
+                $message = 'Company is not found in Register of Commerce';
+            } else if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'fr') {
+                $message = 'La société n‘est pas inscrit au registre du commerce';
+            } else if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'it') {
+                $message = 'L‘azienda non é registrata nel registro di commercio';
+            } else {
+                $message = 'Die Firma ist nicht im Handelsregister eingetragen';
+            }
+        } else {
+            $message = Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore());
+        }
+        return $message;
+    }
+
     function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type) {
         $data = array( 'firstname'  => $request->getFirstName(),
             'lastname'   => $request->getLastName(),

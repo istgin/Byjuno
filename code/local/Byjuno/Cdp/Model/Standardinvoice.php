@@ -272,8 +272,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend);
 
         $ByjunoRequestName = "Order request";
+        $requestType = 'b2c';
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order request for Company";
+            $requestType = 'b2b';
             $xml = $request->createRequestCompany();
         } else {
             $xml = $request->createRequest();
@@ -313,14 +315,15 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $transaction->save();
         $payment->save();
         $session->setData("intrum_status", $status);
+        $session->setData("intrum_request_type", $requestType);
         $session->setData("intrum_order", $order->getId());
         if ($status == 2) {
             return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
-            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()));
+            $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
             return Mage::getUrl('cdp/standard/cancel');
         } else {
-            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()));
+            $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
             return Mage::getUrl('cdp/standard/cancel');
         }
     }

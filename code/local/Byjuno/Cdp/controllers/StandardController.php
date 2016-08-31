@@ -79,28 +79,32 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
      */
     public function resultAction()
     {
+        $helper = Mage::helper('byjuno');
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
 
 
         $status = $session->getData("intrum_status");
+        $statusRequestType = $session->getData("intrum_request_type");
         if ($status == 2) {
             $this->_redirect('cdp/standard/success');
         } else {
-            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 90)");
+            $session->addError($helper->getByjunoErrorMessage($status, $statusRequestType) . " (S1 Redirect)");
             $this->_redirect('cdp/standard/cancel');
         }
     }
 
     public function  successAction()
     {
+        $helper = Mage::helper('byjuno');
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
         $statusRequest = $session->getData("intrum_status");
+        $statusRequestType = $session->getData("intrum_request_type");
         $byjunoTransaction = $session->getData("byjuno_transaction");
         $orderId = $session->getData("intrum_order");
         if ($statusRequest != 2) {
-            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 102)");
+            $session->addError($helper->getByjunoErrorMessage($statusRequest, $statusRequestType) . " (S1 Redirect-2)");
             $this->_redirect('cdp/standard/cancel');
         }
 
@@ -109,15 +113,16 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $session = Mage::getSingleton('checkout/session');
         $session->setQuoteId($session->getByjunoStandardQuoteId(true));
         $order = Mage::getModel('sales/order')->load($orderId);
-        $helper = Mage::helper('byjuno');
 
         $payment = $order->getPayment();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
         $paymentSend = $payment->getAdditionalInformation("payment_send");
         $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend);
         $ByjunoRequestName = "Order paid";
+        $requestType = 'b2c';
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
             $ByjunoRequestName = "Order paid for Company";
+            $requestType = 'b2b';
             $xml = $request->createRequestCompany();
         } else {
             $xml = $request->createRequest();
@@ -157,7 +162,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
         } else {
-            $session->addError(Mage::getStoreConfig('payment/cdp/byjuno_fail_message', Mage::app()->getStore()) . " (Internal error 153)");
+            $session->addError($helper->getByjunoErrorMessage($status, $requestType) . " (S3)");
             $this->_redirect('cdp/standard/cancel');
         }
     }
