@@ -241,13 +241,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         if ($order->canShip()) {
-            $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-            $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_LASTNAME';
-            $extraInfo["Value"] = $order->getShippingAddress()->getLastname();
-            $request->setExtraInfo($extraInfo);
 
             $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
             $extraInfo["Value"] = trim($order->getShippingAddress()->getStreetFull());
@@ -273,7 +266,26 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
-            }
+			
+				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+				$extraInfo["Value"] = '';
+				$request->setExtraInfo($extraInfo);
+
+				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getCompany();
+				$request->setExtraInfo($extraInfo);
+				
+            } else {
+			
+				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
+				$request->setExtraInfo($extraInfo);
+
+				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getLastname();
+				$request->setExtraInfo($extraInfo);
+			
+			}
         }
 
         $extraInfo["Name"] = 'ORDERID';
@@ -464,14 +476,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         /* shipping information */
-        if ($order->canShip()) {
-            $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-            $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
-            $request->setExtraInfo($extraInfo);
-
-            $extraInfo["Name"] = 'DELIVERY_LASTNAME';
-            $extraInfo["Value"] = $order->getShippingAddress()->getLastname();
-            $request->setExtraInfo($extraInfo);
+        if ($order->canShip()) {            
 
             $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
             $extraInfo["Value"] = trim($order->getShippingAddress()->getStreetFull());
@@ -493,11 +498,29 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $extraInfo["Value"] = $order->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
-            if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
-            }
+			
+				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+				$extraInfo["Value"] = '';
+				$request->setExtraInfo($extraInfo);
+
+				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getCompany();
+				$request->setExtraInfo($extraInfo);
+				
+            } else {
+			
+				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
+				$request->setExtraInfo($extraInfo);
+
+				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
+				$extraInfo["Value"] = $order->getShippingAddress()->getLastname();
+				$request->setExtraInfo($extraInfo);
+			}
         }
 
         $extraInfo["Name"] = 'PP_TRANSACTION_NUMBER';
