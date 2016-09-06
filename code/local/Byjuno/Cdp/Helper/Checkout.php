@@ -27,6 +27,29 @@ class Byjuno_CDP_Helper_Checkout extends Mage_Core_Helper_Abstract
         return false;
     }
 
+    public function restoreCart($order)
+    {
+        $cart = Mage::getSingleton('checkout/cart');
+
+        if (0 < $cart->getQuote()->getItemsCollection()->count()) {
+            return;
+        }
+        foreach ($order->getItemsCollection() as $item) {
+            try {
+                $cart->addOrderItem($item);
+            } catch (Exception $e) {
+                Mage::log($e->getMessage());
+            }
+        }
+        $cart->save();
+
+        $coupon = $order->getCouponCode();
+        $session = Mage::getSingleton('checkout/session');
+        if (false == is_null($coupon)) {
+            $session->getQuote()->setCouponCode($coupon)->save();
+        }
+    }
+
     /**
      * Cancel last placed order with specified comment message
      *

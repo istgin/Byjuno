@@ -19,21 +19,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         return $this->_order;
     }
 
-    /**
-     * Send expire header to ajax response
-     *
-     */
-    protected function _expireAjax()
-    {
-        if (!Mage::getSingleton('checkout/session')->getQuote()->hasItems()) {
-            $this->getResponse()->setHeader('HTTP/1.1','403 Session Expired');
-            exit;
-        }
-    }
 
-    /**
-     * When a customer cancel payment from paypal.
-     */
     public function cancelAction()
     {
         $session = Mage::getSingleton('checkout/session');
@@ -43,41 +29,11 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             if ($order->getId()) {
                 $order->cancel()->save();
             }
-            if ($session->getLastRealOrderId())
-            {
-                $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
-                if ($order->getId())
-                {
-                    //Cancel order
-                    if ($order->getState() != Mage_Sales_Model_Order::STATE_CANCELED)
-                    {
-                        $order->registerCancellation("Canceled by Payment Provider")->save();
-                    }
-                    $quote = Mage::getModel('sales/quote')
-                        ->load($order->getQuoteId());
-                    //Return quote
-                    if ($quote->getId())
-                    {
-                        $quote->setIsActive(1)
-                            ->setReservedOrderId(NULL)
-                            ->save();
-                        $session->replaceQuote($quote);
-                    }
-
-                    //Unset data
-                    $session->unsLastRealOrderId();
-                }
-            }
+            Mage::helper('byjuno/checkout')->restoreCart($order);
         }
         $this->_redirect('checkout/cart');
     }
 
-    /**
-     * when paypal returns
-     * The order information at this point is in POST
-     * variables.  However, you don't want to "process" the order until you
-     * get validation from the IPN.
-     */
     public function resultAction()
     {
         $helper = Mage::helper('byjuno');
