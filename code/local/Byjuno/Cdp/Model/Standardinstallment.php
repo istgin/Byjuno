@@ -48,20 +48,35 @@ class Byjuno_Cdp_Model_Standardinstallment
 	{
 		/* @var $info Mage_Sales_Model_Quote_Payment */
 		$info = $this->getInfoInstance();
-		if ($data->getInstallmentPaymentPlan())
-		{
-		    $info->setAdditionalInformation("payment_plan", $data->getInstallmentPaymentPlan());
-		}
-		if ($data->getInstallmentPaymentSend())
-		{
-			$send = $data->getInstallmentPaymentSend();
-			$info->setAdditionalInformation("payment_send", $send);
-			if ($send == 'postal') {
-				$sentTo = (String)$info->getQuote()->getBillingAddress()->getStreetFull().', '.(String)$info->getQuote()->getBillingAddress()->getCity().', '.(String)$info->getQuote()->getBillingAddress()->getPostcode();
-			} else {
-				$sentTo = $info->getQuote()->getBillingAddress()->getEmail();
+		if (is_array($data)) {
+			if (isset($data["installment_payment_plan"])) {
+				$info->setAdditionalInformation("payment_plan", $data["installment_payment_plan"]);
 			}
-			$info->setAdditionalInformation("payment_send_to", $sentTo);
+			if (isset($data["installment_payment_send"])) {
+				$send = $data["installment_payment_send"];
+				$info->setAdditionalInformation("payment_send", $send);
+				if ($send == 'postal') {
+					$sentTo = (String)$info->getQuote()->getBillingAddress()->getStreetFull() . ', ' . (String)$info->getQuote()->getBillingAddress()->getCity() . ', ' . (String)$info->getQuote()->getBillingAddress()->getPostcode();
+				} else {
+					$sentTo = $info->getQuote()->getBillingAddress()->getEmail();
+				}
+				$info->setAdditionalInformation("payment_send_to", $sentTo);
+			}
+		}
+		elseif ($data instanceof Varien_Object) {
+			if ($data->getInstallmentPaymentPlan()) {
+				$info->setAdditionalInformation("payment_plan", $data->getInstallmentPaymentPlan());
+			}
+			if ($data->getInstallmentPaymentSend()) {
+				$send = $data->getInstallmentPaymentSend();
+				$info->setAdditionalInformation("payment_send", $send);
+				if ($send == 'postal') {
+					$sentTo = (String)$info->getQuote()->getBillingAddress()->getStreetFull() . ', ' . (String)$info->getQuote()->getBillingAddress()->getCity() . ', ' . (String)$info->getQuote()->getBillingAddress()->getPostcode();
+				} else {
+					$sentTo = $info->getQuote()->getBillingAddress()->getEmail();
+				}
+				$info->setAdditionalInformation("payment_send_to", $sentTo);
+			}
 		}
 		$info->setAdditionalInformation("webshop_profile", Mage::app()->getStore()->getId());
 		return $this;
