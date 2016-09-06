@@ -32,29 +32,6 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
     }
 
     /**
-     * Get singleton with paypal strandard order transaction information
-     *
-     * @return Mage_Paypal_Model_Standard
-     */
-    public function getStandard()
-    {
-        return Mage::getSingleton('paypal/standard');
-    }
-
-    /**
-     * When a customer chooses Paypal on Checkout/Payment page
-     *
-     */
-    public function redirectAction()
-    {
-        $session = Mage::getSingleton('checkout/session');
-        $session->setPaypalStandardQuoteId($session->getQuoteId());
-        $this->getResponse()->setBody($this->getLayout()->createBlock('paypal/standard_redirect')->toHtml());
-        $session->unsQuoteId();
-        $session->unsRedirectUrl();
-    }
-
-    /**
      * When a customer cancel payment from paypal.
      */
     public function cancelAction()
@@ -66,7 +43,31 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             if ($order->getId()) {
                 $order->cancel()->save();
             }
-            Mage::helper('byjuno/checkout')->restoreQuote();
+            if ($session->getLastRealOrderId())
+            {
+                $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
+                if ($order->getId())
+                {
+                    //Cancel order
+                    if ($order->getState() != Mage_Sales_Model_Order::STATE_CANCELED)
+                    {
+                        $order->registerCancellation("Canceled by Payment Provider")->save();
+                    }
+                    $quote = Mage::getModel('sales/quote')
+                        ->load($order->getQuoteId());
+                    //Return quote
+                    if ($quote->getId())
+                    {
+                        $quote->setIsActive(1)
+                            ->setReservedOrderId(NULL)
+                            ->save();
+                        $session->replaceQuote($quote);
+                    }
+
+                    //Unset data
+                    $session->unsLastRealOrderId();
+                }
+            }
         }
         $this->_redirect('checkout/cart');
     }
