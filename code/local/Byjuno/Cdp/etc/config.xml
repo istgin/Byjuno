@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -266,7 +266,8 @@
                 <minamount>10</minamount>
                 <maxamount>10000</maxamount>
                 <timeout>30</timeout>
-                <tmxenabled>disable</tmxenabled>
+                <tmxenabled>enable</tmxenabled>
+                <tmxkey>lq866c5i</tmxkey>
                 <businesstobusiness>disable</businesstobusiness>
                 <byjuno_invoice_paper>0</byjuno_invoice_paper>
                 <byjuno_installment_paper>0</byjuno_installment_paper>
