@@ -92,6 +92,30 @@
                     </span>
                 </td>
             </tr>
+            <?php if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                $_gender2 = $this->getLayout()->createBlock('byjuno/widget_gender');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px"><br />
+                            <?php echo $_gender2->setGender(0)->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml() ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
+            <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                $_dob2 = $this->getLayout()->createBlock('byjuno/widget_dob2');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px">
+                            <?php echo $_dob2->setDate(0)->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml(); ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
             <tr>
                 <td colspan="2">
                     <div style="padding: 10px 0 5px 0">

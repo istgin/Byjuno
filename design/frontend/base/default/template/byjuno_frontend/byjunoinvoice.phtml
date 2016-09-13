@@ -86,6 +86,30 @@
                     </span>
                 </td>
             </tr>
+            <?php if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                $_gender = $this->getLayout()->createBlock('byjuno/widget_gender');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px"><br />
+                            <?php echo $_gender->setGender(0)->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml() ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
+            <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                $_dob = $this->getLayout()->createBlock('byjuno/widget_dob');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px">
+                            <?php echo $_dob->setDate(0)->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml(); ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
             <tr>
                 <td colspan="2">
                     <div style="padding: 10px 0 5px 0">
