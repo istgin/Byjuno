@@ -27,6 +27,18 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         {
             $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
         }
+        if ($this->getInfo()->getAdditionalInformation("gender_custom") != "") {
+            $gendername = "";
+            if ($this->getInfo()->getAdditionalInformation("gender_custom") == '1') {
+                $gendername = $this->__("Male");
+            } else if ($this->getInfo()->getAdditionalInformation("gender_custom") == '2') {
+                $gendername = $this->__("Female");
+            }
+            $htmlAdd .= '<br>'.$this->__("Gender").": ".$gendername;
+        }
+        if ($this->getInfo()->getAdditionalInformation("dob_custom") != "") {
+            $htmlAdd .= '<br>'.$this->__("Date of birth").": ".$this->getInfo()->getAdditionalInformation("dob_custom");
+        }
         $i = 0;
         $stringValues = Array();
         foreach($pl as $val) {

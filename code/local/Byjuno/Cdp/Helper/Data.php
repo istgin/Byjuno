@@ -141,7 +141,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $order->save();
     }
 
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -182,6 +182,25 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             } else {			
                 $request->setGender('0');
 			}
+        }
+
+        if (!empty($dob_custom)) {
+            try {
+                $dobObject = new DateTime($dob_custom);
+                if ($dobObject != null) {
+                    $request->setDateOfBirth($dobObject->format('Y-m-d'));
+                }
+            } catch (Exception $e) {
+
+            }
+        }
+
+        if (!empty($gender_custom)) {
+            if ($gender_custom == '1') {
+                $request->setGender('1');
+            } else if ($gender_custom == '2') {
+                $request->setGender('2');
+            }
         }
 
         $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
@@ -378,7 +397,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery) {
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -394,6 +413,17 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         if (!empty($b)) {
             try {
                 $dobObject = new DateTime($b);
+                if ($dobObject != null) {
+                    $request->setDateOfBirth($dobObject->format('Y-m-d'));
+                }
+            } catch (Exception $e) {
+
+            }
+        }
+
+        if (!empty($dob_custom)) {
+            try {
+                $dobObject = new DateTime($dob_custom);
                 if ($dobObject != null) {
                     $request->setDateOfBirth($dobObject->format('Y-m-d'));
                 }
@@ -420,6 +450,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             } else {			
                 $request->setGender('0');
 			}
+        }
+
+        if (!empty($gender_custom)) {
+            if ($gender_custom == '1') {
+                $request->setGender('1');
+            } else if ($gender_custom == '2') {
+                $request->setGender('2');
+            }
         }
 
         $requestId = uniqid((String)$order->getBillingAddress()->getId()."_");

@@ -227,6 +227,16 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             if (isset($data["invoice_payment_plan"])) {
                 $info->setAdditionalInformation("payment_plan", $data["invoice_payment_plan"]);
             }
+            if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                if (isset($data["invoice_gender"])) {
+                    $info->setAdditionalInformation("gender_custom", $data["invoice_gender"]);
+                }
+            }
+            if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                if (isset($data["invoice_dob"])) {
+                    $info->setAdditionalInformation("dob_custom", $data["invoice_dob"]);
+                }
+            }
             if (isset($data["invoice_payment_send"])) {
                 $send = $data["invoice_payment_send"];
                 $info->setAdditionalInformation("payment_send", $send);
@@ -241,6 +251,16 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         elseif ($data instanceof Varien_Object) {
             if ($data->getInvoicePaymentPlan()) {
                 $info->setAdditionalInformation("payment_plan", $data->getInvoicePaymentPlan());
+            }
+            if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                if ($data->getInvoiceGender()) {
+                    $info->setAdditionalInformation("gender_custom", $data->getInvoiceGender());
+                }
+            }
+            if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                if ($data->getInvoiceDob()) {
+                    $info->setAdditionalInformation("dob_custom", $data->getInvoiceDob());
+                }
             }
             if ($data->getInvoicePaymentSend()) {
                 $send = $data->getInvoicePaymentSend();
@@ -286,7 +306,17 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $paymentMethod = $payment->getMethod();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
         $paymentSend = $payment->getAdditionalInformation("payment_send");
-        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend);
+
+        $gender_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+            $gender_custom = $payment->getAdditionalInformation("gender_custom");
+        }
+        $dob_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+            $dob_custom = $payment->getAdditionalInformation("dob_custom");
+        }
+
+        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
 
         $ByjunoRequestName = "Order request";
         $requestType = 'b2c';

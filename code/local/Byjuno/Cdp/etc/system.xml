@@ -373,11 +373,31 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </timeout>
+                        <gender_enable translate="label">
+                            <label>Enable gender selection</label>
+                            <comment>Enable gender selection if gender is not provided in checkout</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>160</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </gender_enable>
+                        <birthday_enable translate="label">
+                            <label>Enable birthday checking</label>
+                            <comment>Enable birthday selection if birthday is not provided in checkout</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>160</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </birthday_enable>
 						
 						<postal_code_wrong translate="label">
                             <label>*Localization* Postal code of billing address is incorrect</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>160</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -386,7 +406,7 @@
 						<telephone_code_wrong translate="label">
                             <label>*Localization* Telephone of billing address is incorrect</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>170</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

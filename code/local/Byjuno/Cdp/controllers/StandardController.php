@@ -74,7 +74,16 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $payment = $order->getPayment();
         $paymentPlan = $payment->getAdditionalInformation("payment_plan");
         $paymentSend = $payment->getAdditionalInformation("payment_send");
-        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend);
+        $gender_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+            $gender_custom = $payment->getAdditionalInformation("gender_custom");
+        }
+        $dob_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+            $dob_custom = $payment->getAdditionalInformation("dob_custom");
+        }
+
+        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend, $gender_custom, $dob_custom);
         $ByjunoRequestName = "Order paid";
         $requestType = 'b2c';
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {

@@ -52,6 +52,16 @@ class Byjuno_Cdp_Model_Standardinstallment
 			if (isset($data["installment_payment_plan"])) {
 				$info->setAdditionalInformation("payment_plan", $data["installment_payment_plan"]);
 			}
+			if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+				if (isset($data["installment_gender"])) {
+					$info->setAdditionalInformation("gender_custom", $data["installment_gender"]);
+				}
+			}
+			if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+				if (isset($data["installment_dob"])) {
+					$info->setAdditionalInformation("dob_custom", $data["installment_dob"]);
+				}
+			}
 			if (isset($data["installment_payment_send"])) {
 				$send = $data["installment_payment_send"];
 				$info->setAdditionalInformation("payment_send", $send);
@@ -66,6 +76,16 @@ class Byjuno_Cdp_Model_Standardinstallment
 		elseif ($data instanceof Varien_Object) {
 			if ($data->getInstallmentPaymentPlan()) {
 				$info->setAdditionalInformation("payment_plan", $data->getInstallmentPaymentPlan());
+			}
+			if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+				if ($data->getInstallmentGender()) {
+					$info->setAdditionalInformation("gender_custom", $data->getInstallmentGender());
+				}
+			}
+			if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+				if ($data->getInstallmentDob()) {
+					$info->setAdditionalInformation("dob_custom", $data->getInstallmentDob());
+				}
 			}
 			if ($data->getInstallmentPaymentSend()) {
 				$send = $data->getInstallmentPaymentSend();
