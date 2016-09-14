@@ -39,6 +39,7 @@
         //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
 
         $paperInstallment = Mage::getStoreConfig('payment/cdp/byjuno_installment_paper', Mage::app()->getStore());
+        /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
 
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif';
@@ -98,19 +99,19 @@
                 <tr>
                     <td>
                         <div class="field" style="width: 200px"><br />
-                            <?php echo $_gender2->setGender(0)->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml() ?>
+                            <?php echo $_gender2->setGender($quote->getCustomerGender())->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml() ?>
                         </div>
                     </td>
                 </tr>
 
             <?php } ?>
             <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
-                $_dob2 = $this->getLayout()->createBlock('byjuno/widget_dob2');
+                $_dob2 = $this->getLayout()->createBlock('byjuno/widget_dobinstallment');
                 ?>
                 <tr>
                     <td>
                         <div class="field" style="width: 200px">
-                            <?php echo $_dob2->setDate(0)->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml(); ?>
+                            <?php echo $_dob2->setDate($quote->getCustomerDob())->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml(); ?>
                         </div>
                     </td>
                 </tr>

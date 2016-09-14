@@ -33,8 +33,8 @@
         }
 
         $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
+        /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
-
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
         switch ($lang) {
             case 'de':
@@ -92,19 +92,19 @@
                 <tr>
                     <td>
                         <div class="field" style="width: 200px"><br />
-                            <?php echo $_gender->setGender(0)->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml() ?>
+                            <?php echo $_gender->setGender($quote->getCustomerGender())->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml() ?>
                         </div>
                     </td>
                 </tr>
 
             <?php } ?>
             <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
-                $_dob = $this->getLayout()->createBlock('byjuno/widget_dob');
+                $_dob = $this->getLayout()->createBlock('byjuno/widget_dobinvoice');
                 ?>
                 <tr>
                     <td>
                         <div class="field" style="width: 200px">
-                            <?php echo $_dob->setDate(0)->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml(); ?>
+                            <?php echo $_dob->setDate($quote->getCustomerDob())->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml(); ?>
                         </div>
                     </td>
                 </tr>
