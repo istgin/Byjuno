@@ -87,8 +87,8 @@ class Byjuno_Cdp_Model_Standardinstallment
 				}
 			}
 			if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
-				if ($data->getInstallmenMonth() && $data->getInstallmenDay() && $data->getInstallmenYear()) {
-					$dob = intval($data->getInstallmenDay()).'.'.intval($data->getInstallmenMonth()).'.'.intval($data->getInstallmenYear());
+				if ($data->getInstallmentMonth() && $data->getInstallmentDay() && $data->getInstallmentYear()) {
+					$dob = intval($data->getInstallmentDay()).'.'.intval($data->getInstallmentMonth()).'.'.intval($data->getInstallmentYear());
 					$info->setAdditionalInformation("dob_custom", $dob);
 				}
 			}
