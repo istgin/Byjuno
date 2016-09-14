@@ -1,6 +1,6 @@
 <?php
 
-class Byjuno_Cdp_Block_Widget_Dob2 extends Mage_Customer_Block_Widget_Dob
+class Byjuno_Cdp_Block_Widget_Dobinstallment extends Mage_Customer_Block_Widget_Dob
 {
     /**
      * Date inputs

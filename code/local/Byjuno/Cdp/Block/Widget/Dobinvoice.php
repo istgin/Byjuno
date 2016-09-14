@@ -1,6 +1,6 @@
 <?php
 
-class Byjuno_Cdp_Block_Widget_Dob extends Mage_Customer_Block_Widget_Dob
+class Byjuno_Cdp_Block_Widget_Dobinvoice extends Mage_Customer_Block_Widget_Dob
 {
     /**
      * Date inputs
@@ -14,7 +14,7 @@ class Byjuno_Cdp_Block_Widget_Dob extends Mage_Customer_Block_Widget_Dob
         parent::_construct();
 
         // default template location
-        $this->setTemplate('customer/widget/dob.phtml');
+        $this->setTemplate('byjuno_frontend/dob_invoice.phtml');
     }
 
     public function isEnabled()
