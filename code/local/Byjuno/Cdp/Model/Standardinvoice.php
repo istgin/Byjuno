@@ -234,7 +234,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             }
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 if (isset($data["invoice_month"]) && isset($data["invoice_day"]) && isset($data["invoice_year"])) {
-                    $dob = intval($data["invoice_month"]).'/'.intval($data["invoice_day"]).'/'.intval($data["invoice_year"]);
+                    $dob = intval($data["invoice_day"]).'.'.intval($data["invoice_month"]).'.'.intval($data["invoice_year"]);
                     $info->setAdditionalInformation("dob_custom", $dob);
                 }
             }
@@ -260,7 +260,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             }
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 if ($data->getInvoiceMonth() && $data->getInvoiceDay() && $data->getInvoiceYear()) {
-                    $dob = intval($data->getInvoiceMonth()).'/'.intval($data->getInvoiceDay()).'/'.intval($data->getInvoiceYear());
+                    $dob = intval($data->getInvoiceDay()).'.'.intval($data->getInvoiceMonth()).'.'.intval($data->getInvoiceYear());
                     $info->setAdditionalInformation("dob_custom", $dob);
                 }
             }
