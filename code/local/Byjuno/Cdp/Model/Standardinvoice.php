@@ -369,9 +369,11 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if ($status == 2) {
             return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
+            $order->cancel()->save();
             $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
             return Mage::getUrl('cdp/standard/cancel');
         } else {
+            $order->cancel()->save();
             $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
             return Mage::getUrl('cdp/standard/cancel');
         }
