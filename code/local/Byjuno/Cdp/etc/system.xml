@@ -364,6 +364,25 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </tmxkey>
+                        <cdpbeforeshow translate="label comment">
+                            <label>Credit check before submit</label>
+                            <comment>Enable credit check before show byjuno payment methods</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>145</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cdpbeforeshow>
+                        <cdpplaces translate="label">
+                            <label>Provide activation places when to call risk managment (Each place on new line (ModuleName, ControllerName))</label>
+                            <comment>Risk managment activation places</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>146</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cdpplaces>
                         <timeout translate="label">
                             <label>Connection timeout to Byjuno CDP server in seconds</label>
                             <frontend_type>text</frontend_type>

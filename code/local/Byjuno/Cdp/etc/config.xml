@@ -289,7 +289,15 @@
                 <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
 				<postal_code_wrong>Die PLZ der Rechnungsadresse ist fehlerhaft</postal_code_wrong>
 				<telephone_code_wrong>Die Telefonnummer der Rechnungsadresse ist fehlerhaft</telephone_code_wrong>
-
+                <cdpplaces>checkout,onepage
+onestepcheckout,index
+onestepcheckout,onepage
+PostFinanceCw,onepage
+PostFinanceCw,process
+SaferpayCw,onepage
+SaferpayCw,process
+DatatransCw,onepage
+DatatransCw,process</cdpplaces>
             </cdp>
         </payment>
     </default>
