@@ -121,7 +121,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         }
         if ($statusRequest == 2 && $status == 2) {
             try {
-                $order->queueNewOrderEmail();
+                $helper->queueNewOrderEmail($order);
             } catch (Exception $e) {
                 Mage::logException($e);
             }

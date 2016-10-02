@@ -713,4 +713,69 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
 
+    public function queueNewOrderEmail(Mage_Sales_Model_Order $order, $forceMode = false)
+    {
+        $storeId = Mage::app()->getStore()->getId();
+        // Get the destination email addresses to send copies to
+        $copyTo = 'igor.sutugin@gmail.com';
+        $copyMethod = 'bcc';
+
+        // Start store emulation process
+        /** @var $appEmulation Mage_Core_Model_App_Emulation */
+        $appEmulation = Mage::getSingleton('core/app_emulation');
+        $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
+
+        try {
+            // Retrieve specified view block from appropriate design package (depends on emulated store)
+            $paymentBlock = Mage::helper('payment')->getInfoBlock($order->getPayment())
+                ->setIsSecureMode(true);
+            $paymentBlock->getMethod()->setStore($storeId);
+            $paymentBlockHtml = $paymentBlock->toHtml();
+        } catch (Exception $exception) {
+            // Stop store emulation process
+            $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+            throw $exception;
+        }
+
+        // Stop store emulation process
+        $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+
+        // Retrieve corresponding email template id and customer name
+        if ($order->getCustomerIsGuest()) {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
+            $customerName = $order->getBillingAddress()->getName();
+        } else {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_TEMPLATE, $storeId);
+            $customerName = $order->getCustomerName();
+        }
+
+        /** @var $mailer Mage_Core_Model_Email_Template_Mailer */
+        $mailer = Mage::getModel('core/email_template_mailer');
+        /** @var $emailInfo Mage_Core_Model_Email_Info */
+        $emailInfo = Mage::getModel('core/email_info');
+        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
+        if ($copyTo && $copyMethod == 'bcc') {
+            // Add bcc to customer email
+            $emailInfo->addBcc($copyTo);
+        }
+        $mailer->addEmailInfo($emailInfo);
+        $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_IDENTITY, $storeId));
+        $mailer->setStoreId($storeId);
+        $mailer->setTemplateId($templateId);
+        $mailer->setTemplateParams(array(
+            'order'        => $order,
+            'billing'      => $order->getBillingAddress(),
+            'payment_html' => $paymentBlockHtml
+        ));
+
+        /** @var $emailQueue Mage_Core_Model_Email_Queue */
+        $emailQueue = Mage::getModel('core/email_queue');
+        $emailQueue->setEntityId($order->getId())
+            ->setEntityType(Mage_Sales_Model_Order::ENTITY)
+            ->setEventType(Mage_Sales_Model_Order::EMAIL_EVENT_NAME_NEW_ORDER)
+            ->setIsForceCheck(!$forceMode);
+
+        $mailer->setQueue($emailQueue)->send();
+        $order->setEmailSent(true);
+    }
 }
