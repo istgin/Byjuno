@@ -723,7 +723,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
-        $copyMethod = 'bcc';
 
         // Start store emulation process
         /** @var $appEmulation Mage_Core_Model_App_Emulation */
@@ -748,21 +747,15 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Retrieve corresponding email template id and customer name
         if ($order->getCustomerIsGuest()) {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
-            $customerName = $order->getBillingAddress()->getName();
         } else {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_TEMPLATE, $storeId);
-            $customerName = $order->getCustomerName();
         }
 
         /** @var $mailer Mage_Core_Model_Email_Template_Mailer */
         $mailer = Mage::getModel('core/email_template_mailer');
         /** @var $emailInfo Mage_Core_Model_Email_Info */
         $emailInfo = Mage::getModel('core/email_info');
-        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
-        if ($copyTo && $copyMethod == 'bcc') {
-            // Add bcc to customer email
-            $emailInfo->addBcc($copyTo);
-        }
+        $emailInfo->addTo($copyTo);
         $mailer->addEmailInfo($emailInfo);
         $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order::XML_PATH_EMAIL_IDENTITY, $storeId));
         $mailer->setStoreId($storeId);
@@ -797,7 +790,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
-        $copyMethod = 'bcc';
 
         // Start store emulation process
         $appEmulation = Mage::getSingleton('core/app_emulation');
@@ -821,18 +813,13 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Retrieve corresponding email template id and customer name
         if ($order->getCustomerIsGuest()) {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
-            $customerName = $order->getBillingAddress()->getName();
         } else {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_TEMPLATE, $storeId);
-            $customerName = $order->getCustomerName();
         }
 
         $mailer = Mage::getModel('core/email_template_mailer');
         $emailInfo = Mage::getModel('core/email_info');
-        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
-        if ($copyTo && $copyMethod == 'bcc') {
-            $emailInfo->addBcc($copyTo);
-        }
+        $emailInfo->addTo($copyTo);
         $mailer->addEmailInfo($emailInfo);
 
         $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_IDENTITY, $storeId));
@@ -863,7 +850,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
-        $copyMethod = 'bcc';
 
         // Start store emulation process
         $appEmulation = Mage::getSingleton('core/app_emulation');
@@ -887,18 +873,13 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Retrieve corresponding email template id and customer name
         if ($order->getCustomerIsGuest()) {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
-            $customerName = $order->getBillingAddress()->getName();
         } else {
             $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_TEMPLATE, $storeId);
-            $customerName = $order->getCustomerName();
         }
 
         $mailer = Mage::getModel('core/email_template_mailer');
         $emailInfo = Mage::getModel('core/email_info');
-        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
-        if ($copyTo && $copyMethod == 'bcc') {
-            $emailInfo->addBcc($copyTo);
-        }
+        $emailInfo->addTo($copyTo);
         $mailer->addEmailInfo($emailInfo);
         // Set all required params and send emails
         $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_IDENTITY, $storeId));
