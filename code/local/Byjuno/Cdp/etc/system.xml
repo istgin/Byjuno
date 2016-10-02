@@ -178,15 +178,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </byjuno_global_heading>
-
-                        <byjuno_settings_check translate="label">
-                            <label>Byjuno email settings check</label>
-                            <frontend_model>byjuno/catalog_form_renderer_config_byjunoSettingsCheck</frontend_model>
-                            <sort_order>22</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </byjuno_settings_check>
                         <!--<order_status translate="label">
                             <label>New Order Status</label>
                             <frontend_type>select</frontend_type>
@@ -383,6 +374,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </cdpplaces>
+                        <byjuno_prod_email translate="label">
+                            <label>Production email of Byjuno</label>
+                            <comment>Email used to send orders, invoices and credit memos</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>147</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </byjuno_prod_email>
+                        <byjuno_test_email translate="label">
+                            <label>Test email of byjuno</label>
+                            <comment>Email used to send test orders, invoices and credit memos</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>148</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </byjuno_test_email>
                         <timeout translate="label">
                             <label>Connection timeout to Byjuno CDP server in seconds</label>
                             <frontend_type>text</frontend_type>

@@ -719,9 +719,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Get the destination email addresses to send copies to
         $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
         if ($mode == 'production') {
-            $copyTo = 'invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', Mage::app()->getStore());
         } else {
-            $copyTo = 'test-invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
         $copyMethod = 'bcc';
 
@@ -793,9 +793,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Get the destination email addresses to send copies to
         $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
         if ($mode == 'production') {
-            $copyTo = 'invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', Mage::app()->getStore());
         } else {
-            $copyTo = 'test-invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
         $copyMethod = 'bcc';
 
@@ -859,9 +859,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         // Get the destination email addresses to send copies to
         $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
         if ($mode == 'production') {
-            $copyTo = 'invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', Mage::app()->getStore());
         } else {
-            $copyTo = 'test-invoices@byjuno.ch';
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
         }
         $copyMethod = 'bcc';
 
