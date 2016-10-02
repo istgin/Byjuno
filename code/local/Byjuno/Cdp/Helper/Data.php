@@ -717,7 +717,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     {
         $storeId = Mage::app()->getStore()->getId();
         // Get the destination email addresses to send copies to
-        $copyTo = 'igor.sutugin@gmail.com';
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $copyTo = 'invoices@byjuno.ch';
+        } else {
+            $copyTo = 'test-invoices@byjuno.ch';
+        }
         $copyMethod = 'bcc';
 
         // Start store emulation process
@@ -777,5 +782,139 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
         $mailer->setQueue($emailQueue)->send();
         $order->setEmailSent(true);
+        $order->getResource()->saveAttribute($order, 'email_sent');
     }
+
+    public function sendEmailInvoice(Mage_Sales_Model_Order_Invoice $invoice, $comment = '')
+    {
+        $order = $invoice->getOrder();
+        $storeId = $order->getStore()->getId();
+
+        // Get the destination email addresses to send copies to
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $copyTo = 'invoices@byjuno.ch';
+        } else {
+            $copyTo = 'test-invoices@byjuno.ch';
+        }
+        $copyMethod = 'bcc';
+
+        // Start store emulation process
+        $appEmulation = Mage::getSingleton('core/app_emulation');
+        $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
+
+        try {
+            // Retrieve specified view block from appropriate design package (depends on emulated store)
+            $paymentBlock = Mage::helper('payment')->getInfoBlock($order->getPayment())
+                ->setIsSecureMode(true);
+            $paymentBlock->getMethod()->setStore($storeId);
+            $paymentBlockHtml = $paymentBlock->toHtml();
+        } catch (Exception $exception) {
+            // Stop store emulation process
+            $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+            throw $exception;
+        }
+
+        // Stop store emulation process
+        $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+
+        // Retrieve corresponding email template id and customer name
+        if ($order->getCustomerIsGuest()) {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
+            $customerName = $order->getBillingAddress()->getName();
+        } else {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_TEMPLATE, $storeId);
+            $customerName = $order->getCustomerName();
+        }
+
+        $mailer = Mage::getModel('core/email_template_mailer');
+        $emailInfo = Mage::getModel('core/email_info');
+        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
+        if ($copyTo && $copyMethod == 'bcc') {
+            $emailInfo->addBcc($copyTo);
+        }
+        $mailer->addEmailInfo($emailInfo);
+
+        $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order_Invoice::XML_PATH_EMAIL_IDENTITY, $storeId));
+        $mailer->setStoreId($storeId);
+        $mailer->setTemplateId($templateId);
+        $mailer->setTemplateParams(array(
+                'order' => $order,
+                'invoice' => $invoice,
+                'comment' => $comment,
+                'billing' => $order->getBillingAddress(),
+                'payment_html' => $paymentBlockHtml
+            )
+        );
+        $mailer->send();
+        $invoice->setEmailSent(true);
+        $invoice->getResource()->saveAttribute($invoice, 'email_sent');
+    }
+
+    public function sendEmailCreditMemo(Mage_Sales_Model_Order_Creditmemo $creditMemo, $comment = '')
+    {
+        $order = $creditMemo->getOrder();
+        $storeId = $order->getStore()->getId();
+
+        // Get the destination email addresses to send copies to
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $copyTo = 'invoices@byjuno.ch';
+        } else {
+            $copyTo = 'test-invoices@byjuno.ch';
+        }
+        $copyMethod = 'bcc';
+
+        // Start store emulation process
+        $appEmulation = Mage::getSingleton('core/app_emulation');
+        $initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($storeId);
+
+        try {
+            // Retrieve specified view block from appropriate design package (depends on emulated store)
+            $paymentBlock = Mage::helper('payment')->getInfoBlock($order->getPayment())
+                ->setIsSecureMode(true);
+            $paymentBlock->getMethod()->setStore($storeId);
+            $paymentBlockHtml = $paymentBlock->toHtml();
+        } catch (Exception $exception) {
+            // Stop store emulation process
+            $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+            throw $exception;
+        }
+
+        // Stop store emulation process
+        $appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+
+        // Retrieve corresponding email template id and customer name
+        if ($order->getCustomerIsGuest()) {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_GUEST_TEMPLATE, $storeId);
+            $customerName = $order->getBillingAddress()->getName();
+        } else {
+            $templateId = Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_TEMPLATE, $storeId);
+            $customerName = $order->getCustomerName();
+        }
+
+        $mailer = Mage::getModel('core/email_template_mailer');
+        $emailInfo = Mage::getModel('core/email_info');
+        $emailInfo->addTo($order->getCustomerEmail(), $customerName);
+        if ($copyTo && $copyMethod == 'bcc') {
+            $emailInfo->addBcc($copyTo);
+        }
+        $mailer->addEmailInfo($emailInfo);
+        // Set all required params and send emails
+        $mailer->setSender(Mage::getStoreConfig(Mage_Sales_Model_Order_Creditmemo::XML_PATH_EMAIL_IDENTITY, $storeId));
+        $mailer->setStoreId($storeId);
+        $mailer->setTemplateId($templateId);
+        $mailer->setTemplateParams(array(
+                'order'        => $order,
+                'creditmemo'   => $creditMemo,
+                'comment'      => $comment,
+                'billing'      => $order->getBillingAddress(),
+                'payment_html' => $paymentBlockHtml
+            )
+        );
+        $mailer->send();
+        $creditMemo->setEmailSent(true);
+        $creditMemo->getResource()->saveAttribute($creditMemo, 'email_sent');
+    }
+
 }

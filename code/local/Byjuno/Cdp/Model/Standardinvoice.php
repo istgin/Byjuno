@@ -107,6 +107,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         if ($status == 'ERR') {
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())));
+        } else {
+            $this->getHelper()->sendEmailInvoice($invoice);
         }
         return $this;
     }
@@ -150,6 +152,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         if ($status == 'ERR') {
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', Mage::app()->getStore())));
+        } else {
+            $this->getHelper()->sendEmailCreditMemo($memo);
         }
         /* @var $payent Mage_Sales_Model_Order_Payment */
         $payment->setTransactionId($payment->getParentTransactionId().'-refund');
@@ -398,6 +402,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         return Mage::getSingleton('checkout/session');
     }
 
+    /**
+     * @return Byjuno_Cdp_Helper_Data
+     */
     private function getHelper()
     {
         return Mage::helper('byjuno');
