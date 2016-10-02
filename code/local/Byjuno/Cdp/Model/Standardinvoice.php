@@ -230,16 +230,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             || $request->getPostCode() != $this->_savedUser["PostCode"]
             || $request->getTown() != $this->_savedUser["Town"]
         ) {
-            $this->_savedUser = Array(
-                "FirstName" => $request->getFirstName(),
-                "LastName" => $request->getLastName(),
-                "FirstLine" => $request->getFirstLine(),
-                "CountryCode" => $request->getCountryCode(),
-                "PostCode" => $request->getPostCode(),
-                "Town" => $request->getTown(),
-            );
-            $session = Mage::getSingleton('checkout/session');
-            $session->setData("isTheSame", $this->_savedUser);
             return false;
         }
         return true;
@@ -268,9 +258,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (!$active) {
             return false;
         }
-        $session = Mage::getSingleton('checkout/session');
         if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1' && $this->isInCheckoutProcess() && $quote->getShippingAddress()->getFirstname() != null) {
 
+            $session = Mage::getSingleton('checkout/session');
             $theSame = $session->getData("isTheSame");
             $CDPStatus = $session->getData("CDPStatus");
 
@@ -283,7 +273,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 {
                     return false;
                 }
-                if (!$this->isTheSame($request)) {
+                if (!$this->isTheSame($request) || $CDPStatus == null) {
                     $ByjunoRequestName = "Credit check request";
                     if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                         $ByjunoRequestName = "Credit check request for Company";
@@ -312,13 +302,21 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     } else {
                         $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
                     }
-
+                    $this->_savedUser = Array(
+                        "FirstName" => $request->getFirstName(),
+                        "LastName" => $request->getLastName(),
+                        "FirstLine" => $request->getFirstLine(),
+                        "CountryCode" => $request->getCountryCode(),
+                        "PostCode" => $request->getPostCode(),
+                        "Town" => $request->getTown(),
+                    );
+                    $session->setData("isTheSame", $this->_savedUser);
+                    $session->setData("CDPStatus", $status);
                     if ($status != 2) {
                         return false;
                     }
                 }
             } catch (Exception $e) {
-
             }
         }
 
