@@ -258,12 +258,18 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (!$active) {
             return false;
         }
-        if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1' && $this->isInCheckoutProcess() && $quote->getShippingAddress()->getFirstname() != null) {
+        $CDPresponse = $this->CDPRequest($quote);
+        if ($CDPresponse !== null) {
+            return false;
+        }
+        return true;
+    }
 
+    public function CDPRequest($quote) {
+        if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1' && $this->isInCheckoutProcess() && $quote->getShippingAddress()->getFirstname() != null) {
             $session = Mage::getSingleton('checkout/session');
             $theSame = $session->getData("isTheSame");
             $CDPStatus = $session->getData("CDPStatus");
-
             if ($theSame != null) {
                 $this->_savedUser = $theSame;
             }
@@ -319,8 +325,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             } catch (Exception $e) {
             }
         }
-
-        return true;
+        return null;
     }
 
     public function assignData($data)
