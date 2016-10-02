@@ -22,6 +22,16 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     protected $_canAuthorize = true;
     protected $_canRefundInvoicePartial = true;
 
+
+    protected $_savedUser = Array(
+        "FirstName" => "",
+        "LastName" => "",
+        "FirstLine" => "",
+        "CountryCode" => "",
+        "PostCode" => "",
+        "Town" => "",
+    );
+
     public function validate()
     {
         parent::validate();
@@ -193,6 +203,48 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         return $this;
     }
 
+    public function isInCheckoutProcess() {
+        $places = Mage::getStoreConfig('payment/cdp/cdpplaces', Mage::app()->getStore());
+        $pl = explode("\n", $places);
+        foreach ($pl as $place) {
+            $segments = explode(',', trim($place));
+            if (count($segments) == 2) {
+                list($moduleName, $controllerName) = $segments;
+                if (Mage::app()->getRequest()->getModuleName() == trim($moduleName) &&
+                    Mage::app()->getRequest()->getControllerName() == trim($controllerName)
+                ) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public function isTheSame(Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request) {
+
+        if ($request->getFirstName() != $this->_savedUser["FirstName"]
+            || $request->getLastName() != $this->_savedUser["LastName"]
+            || $request->getFirstLine() != $this->_savedUser["FirstLine"]
+            || $request->getCountryCode() != $this->_savedUser["CountryCode"]
+            || $request->getPostCode() != $this->_savedUser["PostCode"]
+            || $request->getTown() != $this->_savedUser["Town"]
+        ) {
+            $this->_savedUser = Array(
+                "FirstName" => $request->getFirstName(),
+                "LastName" => $request->getLastName(),
+                "FirstLine" => $request->getFirstLine(),
+                "CountryCode" => $request->getCountryCode(),
+                "PostCode" => $request->getPostCode(),
+                "Town" => $request->getTown(),
+            );
+            $session = Mage::getSingleton('checkout/session');
+            $session->setData("isTheSame", $this->_savedUser);
+            return false;
+        }
+        return true;
+    }
+
     public function isAvailable($quote = null)
     {
         if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
@@ -216,6 +268,60 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (!$active) {
             return false;
         }
+        $session = Mage::getSingleton('checkout/session');
+        if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1' && $this->isInCheckoutProcess() && $quote->getShippingAddress()->getFirstname() != null) {
+
+            $theSame = $session->getData("isTheSame");
+            $CDPStatus = $session->getData("CDPStatus");
+
+            if ($theSame != null) {
+                $this->_savedUser = $theSame;
+            }
+            try {
+                $request = $this->getHelper()->CreateMagentoShopRequestCreditCheck($quote);
+                if ($CDPStatus != null && intval($CDPStatus) != 2 && $this->isTheSame($request))
+                {
+                    return false;
+                }
+                if (!$this->isTheSame($request)) {
+                    $ByjunoRequestName = "Credit check request";
+                    if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+                        $ByjunoRequestName = "Credit check request for Company";
+                        $xml = $request->createRequestCompany();
+                    } else {
+                        $xml = $request->createRequest();
+                    }
+                    $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+                    $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+                    if ($mode == 'production') {
+                        $byjunoCommunicator->setServer('live');
+                    } else {
+                        $byjunoCommunicator->setServer('test');
+                    }
+                    $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+                    $status = 0;
+                    $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
+                    if ($response) {
+                        $byjunoResponse->setRawResponse($response);
+                        $byjunoResponse->processResponse();
+                        $status = (int)$byjunoResponse->getCustomerRequestStatus();
+                        $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
+                        if (intval($status) > 15) {
+                            $status = 0;
+                        }
+                    } else {
+                        $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
+                    }
+
+                    if ($status != 2) {
+                        return false;
+                    }
+                }
+            } catch (Exception $e) {
+
+            }
+        }
+
         return true;
     }
 

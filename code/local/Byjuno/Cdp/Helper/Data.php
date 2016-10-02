@@ -397,6 +397,131 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
+    function CreateMagentoShopRequestCreditCheck(Mage_Sales_Model_Quote $quote)
+    {
+        $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
+        $request->setClientId(Mage::getStoreConfig('intrum/api/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('intrum/api/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('intrum/api/password',Mage::app()->getStore()));
+        $request->setVersion("1.00");
+        try {
+            $request->setRequestEmail(Mage::getStoreConfig('intrum/api/mail',Mage::app()->getStore()));
+        } catch (Exception $e) {
+
+        }
+        $b = $quote->getCustomerDob();
+        if (!empty($b)) {
+            $request->setDateOfBirth(Mage::getModel('core/date')->date('Y-m-d', strtotime($b)));
+        }
+
+        $g = $quote->getCustomerGender();
+        if (!empty($g)) {
+            if ($g == '1') {
+                $request->setGender('1');
+            } else if ($g == '2') {
+                $request->setGender('2');
+            }
+        }
+        if (!$request->getGender()) {
+            $p = $quote->getCustomerPrefix();
+            if (strtolower($p) == 'herr') {
+                $request->setGender('1');
+            } else if (strtolower($p) == 'frau') {
+                $request->setGender('2');
+            }
+        }
+
+        $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId()."_"));
+        $reference = $quote->getCustomer()->getId();
+        if (empty($reference)) {
+            $request->setCustomerReference("guest_".$quote->getBillingAddress()->getId());
+        } else {
+            $request->setCustomerReference($quote->getCustomer()->getId());
+        }
+
+        $request->setFirstName((String)$quote->getBillingAddress()->getFirstname());
+
+        $request->setLastName((String)$quote->getBillingAddress()->getLastname());
+
+        $request->setFirstLine(trim((String)$quote->getBillingAddress()->getStreetFull()));
+
+        $request->setCountryCode(strtoupper((String)$quote->getBillingAddress()->getCountry()));
+        $request->setPostCode((String)$quote->getBillingAddress()->getPostcode());
+        $request->setTown((String)$quote->getBillingAddress()->getCity());
+        $request->setFax((String)trim($quote->getBillingAddress()->getFax(), '-'));
+        $request->setLanguage((String)substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2));
+        if ($quote->getBillingAddress()->getCompany()) {
+            $request->setCompanyName1($quote->getBillingAddress()->getCompany());
+        }
+        $request->setTelephonePrivate((String)trim($quote->getBillingAddress()->getTelephone(), '-'));
+
+        $request->setEmail((String)$quote->getBillingAddress()->getEmail());
+
+        $extraInfo["Name"] = 'ORDERCLOSED';
+        $extraInfo["Value"] = 'NO';
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'ORDERAMOUNT';
+        $extraInfo["Value"] = number_format($quote->getGrandTotal(), 2, '.', '');
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'ORDERCURRENCY';
+        $extraInfo["Value"] = $quote->getBaseCurrencyCode();
+        $request->setExtraInfo($extraInfo);
+
+        $extraInfo["Name"] = 'IP';
+        $extraInfo["Value"] = $this->getClientIp();
+        $request->setExtraInfo($extraInfo);
+
+        $sesId = Mage::getSingleton('checkout/session')->getData("intrum_session_id");
+        if (Mage::getStoreConfig('intrum/api/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
+            $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
+            $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("intrum_session_id");
+            $request->setExtraInfo($extraInfo);
+        }
+
+        /* shipping information */
+        if (!$quote->isVirtual()) {
+            $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+            $extraInfo["Value"] = $quote->getShippingAddress()->getFirstname();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+            $extraInfo["Value"] = $quote->getShippingAddress()->getLastname();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
+            $extraInfo["Value"] = trim($quote->getShippingAddress()->getStreetFull());
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_HOUSENUMBER';
+            $extraInfo["Value"] = '';
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_COUNTRYCODE';
+            $extraInfo["Value"] = strtoupper($quote->getShippingAddress()->getCountry());
+            $request->setExtraInfo($extraInfo);
+            $extraInfo["Name"] = 'DELIVERY_POSTCODE';
+            $extraInfo["Value"] = $quote->getShippingAddress()->getPostcode();
+            $request->setExtraInfo($extraInfo);
+
+            $extraInfo["Name"] = 'DELIVERY_TOWN';
+            $extraInfo["Value"] = $quote->getShippingAddress()->getCity();
+            $request->setExtraInfo($extraInfo);
+
+            if ($quote->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('intrum/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+                $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
+                $extraInfo["Value"] = $quote->getShippingAddress()->getCompany();
+                $request->setExtraInfo($extraInfo);
+            }
+        }
+
+        $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.2.1';
+        $request->setExtraInfo($extraInfo);
+        return $request;
+    }
+
     function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
