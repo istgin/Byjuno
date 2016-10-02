@@ -35,6 +35,10 @@ class Byjuno_Cdp_Model_Standardinstallment
 		if (!$active) {
 			return false;
 		}
+		$CDPresponse = $this->CDPRequest($quote);
+		if ($CDPresponse !== null) {
+			return false;
+		}
 		return true;
 	}
 	
