@@ -400,12 +400,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     function CreateMagentoShopRequestCreditCheck(Mage_Sales_Model_Quote $quote)
     {
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('intrum/api/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('intrum/api/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('intrum/api/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
         $request->setVersion("1.00");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('intrum/api/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
         } catch (Exception $e) {
 
         }
@@ -472,9 +472,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Name"] = 'IP';
         $extraInfo["Value"] = $this->getClientIp();
         $request->setExtraInfo($extraInfo);
-
-        $sesId = Mage::getSingleton('checkout/session')->getData("intrum_session_id");
-        if (Mage::getStoreConfig('intrum/api/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
+		
+        $sesId = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
+        if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
             $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
             $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("intrum_session_id");
             $request->setExtraInfo($extraInfo);
@@ -509,7 +509,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             $extraInfo["Value"] = $quote->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
-            if ($quote->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('intrum/api/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            if ($quote->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $quote->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
