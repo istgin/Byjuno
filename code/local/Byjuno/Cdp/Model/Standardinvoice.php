@@ -36,7 +36,15 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         "Fax",
         "TelephonePrivate",
         "TelephoneOffice",
-        "Gender"
+        "Gender",
+        "DELIVERY_FIRSTNAME",
+        "DELIVERY_LASTNAME",
+        "DELIVERY_FIRSTLINE",
+        "DELIVERY_HOUSENUMBER",
+        "DELIVERY_COUNTRYCODE",
+        "DELIVERY_POSTCODE",
+        "DELIVERY_TOWN",
+        "DELIVERY_COMPANYNAME"
     );
 
     public function validate()
@@ -247,6 +255,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             || $request->getTelephonePrivate() != $this->_savedUser["TelephonePrivate"]
             || $request->getTelephoneOffice() != $this->_savedUser["TelephoneOffice"]
             || $request->getGender() != $this->_savedUser["Gender"]
+            || $request->getExtraInfoByKey("DELIVERY_FIRSTNAME") != $this->_savedUser["DELIVERY_FIRSTNAME"]
+            || $request->getExtraInfoByKey("DELIVERY_LASTNAME") != $this->_savedUser["DELIVERY_LASTNAME"]
+            || $request->getExtraInfoByKey("DELIVERY_FIRSTLINE") != $this->_savedUser["DELIVERY_FIRSTLINE"]
+            || $request->getExtraInfoByKey("DELIVERY_HOUSENUMBER") != $this->_savedUser["DELIVERY_HOUSENUMBER"]
+            || $request->getExtraInfoByKey("DELIVERY_COUNTRYCODE") != $this->_savedUser["DELIVERY_COUNTRYCODE"]
+            || $request->getExtraInfoByKey("DELIVERY_POSTCODE") != $this->_savedUser["DELIVERY_POSTCODE"]
+            || $request->getExtraInfoByKey("DELIVERY_TOWN") != $this->_savedUser["DELIVERY_TOWN"]
+            || $request->getExtraInfoByKey("DELIVERY_COMPANYNAME") != $this->_savedUser["DELIVERY_COMPANYNAME"]
         ) {
             return false;
         }
@@ -339,7 +355,15 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                         "Fax" => $request->getFax(),
                         "TelephonePrivate" => $request->getTelephonePrivate(),
                         "TelephoneOffice" => $request->getTelephoneOffice(),
-                        "Gender" => $request->getGender()
+                        "Gender" => $request->getGender(),
+                        "DELIVERY_FIRSTNAME" => $request->getExtraInfoByKey("DELIVERY_FIRSTNAME"),
+                        "DELIVERY_LASTNAME" => $request->getExtraInfoByKey("DELIVERY_LASTNAME"),
+                        "DELIVERY_FIRSTLINE" => $request->getExtraInfoByKey("DELIVERY_FIRSTLINE"),
+                        "DELIVERY_HOUSENUMBER" => $request->getExtraInfoByKey("DELIVERY_HOUSENUMBER"),
+                        "DELIVERY_COUNTRYCODE" => $request->getExtraInfoByKey("DELIVERY_COUNTRYCODE"),
+                        "DELIVERY_POSTCODE" => $request->getExtraInfoByKey("DELIVERY_POSTCODE"),
+                        "DELIVERY_TOWN" => $request->getExtraInfoByKey("DELIVERY_TOWN"),
+                        "DELIVERY_COMPANYNAME" => $request->getExtraInfoByKey("DELIVERY_COMPANYNAME")
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);

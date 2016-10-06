@@ -142,6 +142,23 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         return $this->ExtraInfo;
     }
 
+
+    /**
+     * @return String
+     */
+    public function getExtraInfoByKey($searchKey)
+    {
+        if ($this->ExtraInfo == null) {
+            return "";
+        }
+        foreach($this->ExtraInfo as $key => $val) {
+            if ($val["Name"] == $searchKey) {
+                return $val["Value"];
+            }
+        }
+        return "";
+    }
+
     /**
      * @param mixed $Fax
      */
