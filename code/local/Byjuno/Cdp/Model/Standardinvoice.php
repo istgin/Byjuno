@@ -30,6 +30,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         "CountryCode" => "",
         "PostCode" => "",
         "Town" => "",
+        "CompanyName1",
+        "DateOfBirth",
+        "Email",
+        "Fax",
+        "TelephonePrivate",
+        "TelephoneOffice",
+        "Gender"
     );
 
     public function validate()
@@ -233,6 +240,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             || $request->getCountryCode() != $this->_savedUser["CountryCode"]
             || $request->getPostCode() != $this->_savedUser["PostCode"]
             || $request->getTown() != $this->_savedUser["Town"]
+            || $request->getCompanyName1() != $this->_savedUser["CompanyName1"]
+            || $request->getDateOfBirth() != $this->_savedUser["DateOfBirth"]
+            || $request->getEmail() != $this->_savedUser["Email"]
+            || $request->getFax() != $this->_savedUser["Fax"]
+            || $request->getTelephonePrivate() != $this->_savedUser["TelephonePrivate"]
+            || $request->getTelephoneOffice() != $this->_savedUser["TelephoneOffice"]
+            || $request->getGender() != $this->_savedUser["Gender"]
         ) {
             return false;
         }
@@ -319,6 +333,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                         "CountryCode" => $request->getCountryCode(),
                         "PostCode" => $request->getPostCode(),
                         "Town" => $request->getTown(),
+                        "CompanyName1" => $request->getCompanyName1(),
+                        "DateOfBirth" => $request->getDateOfBirth(),
+                        "Email" => $request->getEmail(),
+                        "Fax" => $request->getFax(),
+                        "TelephonePrivate" => $request->getTelephonePrivate(),
+                        "TelephoneOffice" => $request->getTelephoneOffice(),
+                        "Gender" => $request->getGender()
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);
