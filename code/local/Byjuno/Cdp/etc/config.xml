@@ -299,7 +299,8 @@ PostFinanceCw,process
 SaferpayCw,onepage
 SaferpayCw,process
 DatatransCw,onepage
-DatatransCw,process</cdpplaces>
+DatatransCw,process
+amscheckoutfront,onepage</cdpplaces>
             </cdp>
         </payment>
     </default>
