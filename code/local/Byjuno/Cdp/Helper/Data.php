@@ -79,7 +79,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             $ipaddress = 'UNKNOWN';
         }
-        return $ipaddress;
+		$ipd = explode(",", $ipaddress);
+		return trim(end($ipd));
     }
     public function mapMethod($method) {
 		if ($method == 'cdp_installment') {
