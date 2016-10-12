@@ -203,6 +203,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
+		
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
+                $request->setGender('1');
+            } else if ($_POST["billing"]["gender"] == '2') {
+                $request->setGender('2');
+            }
+        }
 
         $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
         $reference = $order->getCustomerId();
@@ -431,6 +439,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
+		
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
+                $request->setGender('1');
+            } else if ($_POST["billing"]["gender"] == '2') {
+                $request->setGender('2');
+            }
+        }
 
         $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId()."_"));
         $reference = $quote->getCustomer()->getId();
@@ -558,7 +574,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
-
         $g = $order->getCustomerGender();
         if (!empty($g)) {
             if ($g == '1') {
@@ -577,11 +592,19 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('0');
 			}
         }
-
+		
         if (!empty($gender_custom)) {
             if ($gender_custom == '1') {
                 $request->setGender('1');
             } else if ($gender_custom == '2') {
+                $request->setGender('2');
+            }
+        }
+		
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
+                $request->setGender('1');
+            } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
             }
         }
