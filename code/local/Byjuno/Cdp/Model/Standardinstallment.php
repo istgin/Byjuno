@@ -107,6 +107,7 @@ class Byjuno_Cdp_Model_Standardinstallment
 				$info->setAdditionalInformation("payment_send_to", $sentTo);
 			}
 		}
+		$info->setAdditionalInformation("s3_ok", 'false');
 		$info->setAdditionalInformation("webshop_profile", Mage::app()->getStore()->getId());
 		return $this;
 	}

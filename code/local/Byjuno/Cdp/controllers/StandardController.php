@@ -121,6 +121,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
         if ($statusRequest == 2 && $status == 2) {
+            $payment->setAdditionalInformation("s3_ok", 'true')->save();
             $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null)->save();
             try {
                 $helper->queueNewOrderEmail($order);

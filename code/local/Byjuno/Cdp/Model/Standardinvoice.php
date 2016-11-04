@@ -89,6 +89,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '0') {
             return $this;
         }
+        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
+            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())). " (error code: S3_NOT_CREATED)");
+        }
         $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
         $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
         $order = $invoice->getOrder();
@@ -433,6 +436,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 $info->setAdditionalInformation("payment_send_to", $sentTo);
             }
         }
+        $info->setAdditionalInformation("s3_ok", 'false');
         $info->setAdditionalInformation("webshop_profile_id", Mage::app()->getStore()->getId());
         return $this;
     }
