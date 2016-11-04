@@ -79,7 +79,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         } else {
             $ipaddress = 'UNKNOWN';
         }
-        return $ipaddress;
+		$ipd = explode(",", $ipaddress);
+		return trim(end($ipd));
     }
     public function mapMethod($method) {
 		if ($method == 'cdp_installment') {
@@ -174,15 +175,24 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             } else {			
                 $request->setGender('0');
 			}
-        } else {
-            if (strtolower($order->getCustomerPrefix()) == 'herr') {
+        } 
+		
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
-            } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
+            } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
-            } else {			
-                $request->setGender('0');
-			}
+            }
         }
+		
+		$p = $order->getBillingAddress()->getPrefix(); 
+        if (!empty($p)) {
+			if (strtolower($p) == 'herr') {
+				$request->setGender('1');
+			} else if (strtolower($p) == 'frau') {
+				$request->setGender('2');
+			}
+		}
 
         if (!empty($dob_custom)) {
             try {
@@ -422,14 +432,21 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
-        if (!$request->getGender()) {
-            $p = $quote->getCustomerPrefix();
-            if (strtolower($p) == 'herr') {
+			
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
-            } else if (strtolower($p) == 'frau') {
+            } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
             }
         }
+		
+		$p = $quote->getBillingAddress()->getPrefix(); 
+		if (!empty($p) && strtolower($p) == 'herr') {
+			$request->setGender('1');
+		} else if (!empty($p) && strtolower($p) == 'frau') {
+			$request->setGender('2');
+		}
 
         $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId()."_"));
         $reference = $quote->getCustomer()->getId();
@@ -557,7 +574,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
-
         $g = $order->getCustomerGender();
         if (!empty($g)) {
             if ($g == '1') {
@@ -567,16 +583,24 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             } else {			
                 $request->setGender('0');
 			}
-        } else {
-            if (strtolower($order->getCustomerPrefix()) == 'herr') {
+        } 
+		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
-            } else if (strtolower($order->getCustomerPrefix()) == 'frau') {
+            } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
-            } else {			
-                $request->setGender('0');
-			}
+            }
         }
-
+		
+		$p = $order->getBillingAddress()->getPrefix(); 
+        if (!empty($p)) {
+			if (strtolower($p) == 'herr') {
+				$request->setGender('1');
+			} else if (strtolower($p) == 'frau') {
+				$request->setGender('2');
+			}
+		}
+		
         if (!empty($gender_custom)) {
             if ($gender_custom == '1') {
                 $request->setGender('1');
@@ -584,6 +608,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
+		
+		
 
         $requestId = uniqid((String)$order->getBillingAddress()->getId()."_");
         $request->setRequestId($requestId);
