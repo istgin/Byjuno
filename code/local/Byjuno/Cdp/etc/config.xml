@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.3.0</version>
+            <version>1.3.1</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -68,6 +68,24 @@
         </layout>
     </adminhtml>
     <global>
+        <sales>
+            <order>
+                <statuses>
+                    <byjuno_pending translate="label">
+                        <label>Byjuno pending</label>
+                    </byjuno_pending>
+                </statuses>
+                <states>
+                    <byjuno_pending translate="label">
+                        <label>Byjuno pending</label>
+                        <statuses>
+                            <byjuno_pending default="1"/>
+                        </statuses>
+                        <visible_on_front>1</visible_on_front>
+                    </byjuno_pending>
+                </states>
+            </order>
+        </sales>
         <fieldsets>
             <sales_convert_quote>
                 <byjuno_status>
@@ -256,9 +274,13 @@
         <payment>
             <cdp_invoice>
                 <model>cdp/standardinvoice</model>
+                <order_status>byjuno_pending</order_status>
+                <title>Byjuno Invoice</title>
             </cdp_invoice>
             <cdp_installment>
                 <model>cdp/standardinstallment</model>
+                <order_status>byjuno_pending</order_status>
+                <title>Byjuno Installment</title>
             </cdp_installment>
             <cdp>
                 <active>0</active>
