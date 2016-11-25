@@ -124,6 +124,13 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $payment->setAdditionalInformation("s3_ok", 'true')->save();
             $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null)->save();
             try {
+                if (Mage::getStoreConfig('payment/cdp/forsesendendcustomer', Mage::app()->getStore()) == '1') {
+
+                    $order->queueNewOrderEmail(true);
+                    $order->getResource()->saveAttribute($order, 'email_sent');
+                    $order->setEmailSent(true);
+                    $order->save();
+                }
                 $helper->queueNewOrderEmail($order);
             } catch (Exception $e) {
                 Mage::logException($e);

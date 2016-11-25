@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <byjuno translate="label" module="byjuno">
-            <label>Byjuno (1.3.1)</label>
+            <label>Byjuno (1.3.2)</label>
             <sort_order>301</sort_order>
         </byjuno>
     </tabs>
@@ -355,6 +355,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </tmxkey>
+                        <forsesendendcustomer translate="label">
+                            <label>Forse send email to end customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>142</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </forsesendendcustomer>
                         <cdpbeforeshow translate="label comment">
                             <label>Credit check before submit</label>
                             <comment>Enable credit check before show byjuno payment methods</comment>
@@ -369,7 +378,7 @@
                             <label>Provide activation places when to call risk managment (Each place on new line (ModuleName, ControllerName))</label>
                             <comment>Risk managment activation places</comment>
                             <frontend_type>textarea</frontend_type>
-                            <sort_order>146</sort_order>
+                            <sort_order>147</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -378,7 +387,7 @@
                             <label>Production email of Byjuno</label>
                             <comment>Email used to send orders, invoices and credit memos</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>147</sort_order>
+                            <sort_order>148</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -387,7 +396,7 @@
                             <label>Test email of byjuno</label>
                             <comment>Email used to send test orders, invoices and credit memos</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>148</sort_order>
+                            <sort_order>149</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -415,12 +424,21 @@
                             <label>Enable birthday checking</label>
                             <comment>Enable birthday selection if birthday is not provided in checkout</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>160</sort_order>
+                            <sort_order>170</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </birthday_enable>
+                        <country_phone_validation translate="label">
+                            <label>Enable country &amp; phone vaidation</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>175</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </country_phone_validation>
 						
 						<postal_code_wrong translate="label">
                             <label>*Localization* Postal code of billing address is incorrect</label>

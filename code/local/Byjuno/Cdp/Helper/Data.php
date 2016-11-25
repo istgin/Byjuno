@@ -334,7 +334,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno magento payment module 1.3.1';
+		$extraInfo["Value"] = 'Byjuno magento payment module 1.3.2';
 		$request->setExtraInfo($extraInfo);	
 
         return $request;
@@ -534,7 +534,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.3.1';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.3.2';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -733,7 +733,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.3.1';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.3.2';
 		$request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -800,8 +800,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             ->setIsForceCheck(!$forceMode);
 
         $mailer->setQueue($emailQueue)->send();
-        $order->setEmailSent(true);
-        $order->getResource()->saveAttribute($order, 'email_sent');
     }
 
     public function sendEmailInvoice(Mage_Sales_Model_Order_Invoice $invoice, $comment = '')
@@ -860,8 +858,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             )
         );
         $mailer->send();
-        $invoice->setEmailSent(true);
-        $invoice->getResource()->saveAttribute($invoice, 'email_sent');
     }
 
     public function sendEmailCreditMemo(Mage_Sales_Model_Order_Creditmemo $creditMemo, $comment = '')
@@ -920,8 +916,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             )
         );
         $mailer->send();
-        $creditMemo->setEmailSent(true);
-        $creditMemo->getResource()->saveAttribute($creditMemo, 'email_sent');
     }
 
 }
