@@ -424,12 +424,21 @@
                             <label>Enable birthday checking</label>
                             <comment>Enable birthday selection if birthday is not provided in checkout</comment>
                             <frontend_type>select</frontend_type>
-                            <sort_order>160</sort_order>
+                            <sort_order>170</sort_order>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </birthday_enable>
+                        <country_phone_validation translate="label">
+                            <label>Enable country &amp; phone vaidation</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>175</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </country_phone_validation>
 						
 						<postal_code_wrong translate="label">
                             <label>*Localization* Postal code of billing address is incorrect</label>

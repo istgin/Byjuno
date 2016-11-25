@@ -58,12 +58,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         } else {
             $q = $paymentInfo->getQuote();
         }
-        $pattern = "/^[0-9]{4}$/";
-        if (strtolower($q->getBillingAddress()->getCountry()) == 'ch' && !preg_match($pattern, $q->getBillingAddress()->getPostcode())) {
-            Mage::throwException(Mage::getStoreConfig('payment/cdp/postal_code_wrong', Mage::app()->getStore()).": ". $q->getBillingAddress()->getPostcode());
-        }
-        if (!preg_match("/^[0-9\+\(\)]+$/", $q->getBillingAddress()->getTelephone())) {
-            Mage::throwException(Mage::getStoreConfig('payment/cdp/telephone_code_wrong', Mage::app()->getStore()).": ". $q->getBillingAddress()->getTelephone());
+        if (Mage::getStoreConfig('payment/cdp/country_phone_validation', Mage::app()->getStore()) == '1') {
+            $pattern = "/^[0-9]{4}$/";
+            if (strtolower($q->getBillingAddress()->getCountry()) == 'ch' && !preg_match($pattern, $q->getBillingAddress()->getPostcode())) {
+                Mage::throwException(Mage::getStoreConfig('payment/cdp/postal_code_wrong', Mage::app()->getStore()) . ": " . $q->getBillingAddress()->getPostcode());
+            }
+            if (!preg_match("/^[0-9\+\(\)\s]+$/", $q->getBillingAddress()->getTelephone())) {
+                Mage::throwException(Mage::getStoreConfig('payment/cdp/telephone_code_wrong', Mage::app()->getStore()) . ": " . $q->getBillingAddress()->getTelephone());
+            }
         }
         return $this;
     }
