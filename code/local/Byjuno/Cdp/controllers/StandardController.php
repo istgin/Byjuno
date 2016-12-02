@@ -31,6 +31,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             }
             Mage::helper('byjuno/checkout')->restoreCart($order);
         }
+        Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
         $this->_redirect('checkout/cart');
     }
 
@@ -135,6 +136,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 Mage::logException($e);
             }
+            Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
         } else {

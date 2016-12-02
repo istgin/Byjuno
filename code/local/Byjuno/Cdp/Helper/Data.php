@@ -489,11 +489,11 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Name"] = 'IP';
         $extraInfo["Value"] = $this->getClientIp();
         $request->setExtraInfo($extraInfo);
-		
+
         $sesId = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
-        if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == 'enable' && !empty($sesId)) {
+        if (Mage::getStoreConfig('payment/cdp/tmxenabled', Mage::app()->getStore()) == '1' && !empty($sesId)) {
             $extraInfo["Name"] = 'DEVICE_FINGERPRINT_ID';
-            $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("intrum_session_id");
+            $extraInfo["Value"] = Mage::getSingleton('checkout/session')->getData("byjuno_session_id");
             $request->setExtraInfo($extraInfo);
         }
 
