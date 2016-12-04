@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <byjuno translate="label" module="byjuno">
-            <label>Byjuno (1.3.2)</label>
+            <label>Byjuno (1.3.3)</label>
             <sort_order>301</sort_order>
         </byjuno>
     </tabs>
