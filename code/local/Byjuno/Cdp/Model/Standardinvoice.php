@@ -232,10 +232,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $pl = explode("\n", $places);
         foreach ($pl as $place) {
             $segments = explode(',', trim($place));
-            if (count($segments) == 2) {
-                list($moduleName, $controllerName) = $segments;
+            if (count($segments) >= 2) {
+                list($moduleName, $controllerName, $actionName) = $segments;
+				if ($actionName == null) {
+					$actionName = 'saveShippingMethod';
+				}
                 if (Mage::app()->getRequest()->getModuleName() == trim($moduleName) &&
-                    Mage::app()->getRequest()->getControllerName() == trim($controllerName)
+                    Mage::app()->getRequest()->getControllerName() == trim($controllerName) &&
+                    Mage::app()->getRequest()->getActionName() == trim($actionName)
                 ) {
                     return true;
                 }
