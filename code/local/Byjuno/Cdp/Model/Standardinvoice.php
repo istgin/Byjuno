@@ -278,6 +278,11 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         return true;
     }
 
+    public function isAvailableSkip($quote = null)
+    {
+        return parent::isAvailable($quote);
+    }
+
     public function isAvailable($quote = null)
     {
         if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
@@ -305,7 +310,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if ($CDPresponse !== null) {
             return false;
         }
-        return true;
+        return parent::isAvailable();
     }
 
     public function CDPRequest($quote) {

@@ -39,7 +39,7 @@ class Byjuno_Cdp_Model_Standardinstallment
 		if ($CDPresponse !== null) {
 			return false;
 		}
-		return true;
+		return parent::isAvailableSkip($quote);
 	}
 	
 	public function validate()

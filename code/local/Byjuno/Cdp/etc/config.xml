@@ -276,13 +276,13 @@
                 <model>cdp/standardinvoice</model>
                 <order_status>byjuno_pending</order_status>
                 <title>Byjuno Invoice</title>
-                <active>true</active>
+                <active>1</active>
             </cdp_invoice>
             <cdp_installment>
                 <model>cdp/standardinstallment</model>
                 <order_status>byjuno_pending</order_status>
                 <title>Byjuno Installment</title>
-                <active>true</active>
+                <active>1</active>
             </cdp_installment>
             <cdp>
                 <active>0</active>
