@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.3.3</version>
+            <version>1.3.4</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -276,11 +276,13 @@
                 <model>cdp/standardinvoice</model>
                 <order_status>byjuno_pending</order_status>
                 <title>Byjuno Invoice</title>
+                <active>true</active>
             </cdp_invoice>
             <cdp_installment>
                 <model>cdp/standardinstallment</model>
                 <order_status>byjuno_pending</order_status>
                 <title>Byjuno Installment</title>
+                <active>true</active>
             </cdp_installment>
             <cdp>
                 <active>0</active>
