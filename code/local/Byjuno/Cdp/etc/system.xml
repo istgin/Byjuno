@@ -375,7 +375,7 @@
                             <show_in_store>1</show_in_store>
                         </cdpbeforeshow>
                         <cdpplaces translate="label">
-                            <label>Provide activation places when to call risk managment (Each place on new line (ModuleName, ControllerName))</label>
+                            <label>Provide activation places when to call risk managment (Each place on new line (ModuleName, ControllerName, ActionName))</label>
                             <comment>Risk managment activation places</comment>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>147</sort_order>

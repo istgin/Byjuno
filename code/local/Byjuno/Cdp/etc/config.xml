@@ -317,16 +317,16 @@
 				<telephone_code_wrong>Die Telefonnummer der Rechnungsadresse ist fehlerhaft</telephone_code_wrong>
                 <byjuno_prod_email>invoices@byjuno.ch</byjuno_prod_email>
                 <byjuno_test_email>test-invoices@byjuno.ch</byjuno_test_email>
-                <cdpplaces>checkout,onepage
-onestepcheckout,index
-onestepcheckout,onepage
-PostFinanceCw,onepage
-PostFinanceCw,process
-SaferpayCw,onepage
-SaferpayCw,process
-DatatransCw,onepage
-DatatransCw,process
-amscheckoutfront,onepage</cdpplaces>
+                <cdpplaces>checkout,onepage,saveShippingMethod
+onestepcheckout,index,saveShippingMethod
+onestepcheckout,onepage,saveShippingMethod
+PostFinanceCw,onepage,saveShippingMethod
+PostFinanceCw,process,saveShippingMethod
+SaferpayCw,onepage,saveShippingMethod
+SaferpayCw,process,saveShippingMethod
+DatatransCw,onepage,saveShippingMethod
+DatatransCw,process,saveShippingMethod
+amscheckoutfront,onepage,saveShippingMethod</cdpplaces>
             </cdp>
         </payment>
     </default>
