@@ -333,9 +333,9 @@ amscheckoutfront,onepage,saveShippingMethod</cdpplaces>
     <frontend>
         <layout>
             <updates>
-                <mymodule>
+                <byjuno_cdp>
                     <file>byjuno_frontend.xml</file> <!-- Our layout file name-->
-                </mymodule>
+                </byjuno_cdp>
             </updates>
         </layout>
         <routers>
