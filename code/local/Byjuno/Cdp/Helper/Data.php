@@ -41,7 +41,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $byjuno_model->save();
     }
 
-    function saveS4Log(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request $request, $xml_request, $xml_response, $status, $type) {
+    function saveS4Log(Mage_Sales_Model_Order $order, $request, $xml_request, $xml_response, $status, $type) {
 
         $data = array( 'firstname'  => $order->getCustomerFirstname(),
             'lastname'   => $order->getCustomerLastname(),
