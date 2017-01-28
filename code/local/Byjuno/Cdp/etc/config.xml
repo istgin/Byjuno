@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.3.4</version>
+            <version>1.3.5</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -297,6 +297,7 @@
                 <byjuno_installment_paper>0</byjuno_installment_paper>
                 <forsesendendcustomer>0</forsesendendcustomer>
                 <country_phone_validation>1</country_phone_validation>
+                <success_order_status>processing</success_order_status>
 
                 <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms</byjuno_invoice_payments>
                 <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,http://byjuno.ch/de/terms,http://byjuno.ch/en/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,http://byjuno.ch/de/terms,N/A</byjuno_installment_payments>

@@ -123,7 +123,25 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         }
         if ($statusRequest == 2 && $status == 2) {
             $payment->setAdditionalInformation("s3_ok", 'true')->save();
-            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null)->save();
+            $status = Mage::getStoreConfig('payment/cdp/success_order_status', Mage::app()->getStore());
+            /* @var $config Mage_Sales_Model_Order_Config */
+            $config = $order->getConfig();
+            $states = $config->getStatusStates($status);
+            if (!empty($states[0]) && $states[0] instanceof Mage_Sales_Model_Order_Status) {
+                /* @var $state Mage_Sales_Model_Order_Status */
+                $state = $states[0];
+                $st = $state->getData();
+                if (!empty($st["status"]) && !empty($st["state"])) {
+                    $order->setState($st["state"], true, '', null);
+                    $order->setStatus($st["status"]);
+                } else {
+                    $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null);
+                }
+            } else {
+                $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null);
+
+            }
+            $order->save();
             try {
                 if (Mage::getStoreConfig('payment/cdp/forsesendendcustomer', Mage::app()->getStore()) == '1') {
 
