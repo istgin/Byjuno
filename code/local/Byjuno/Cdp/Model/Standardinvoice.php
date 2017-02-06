@@ -95,14 +95,19 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())). " (error code: S3_NOT_CREATED)");
         }
         $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
-        $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
         $order = $invoice->getOrder();
         $webshopProfileId = $order->getPayment()->getAdditionalInformation("webshop_profile_id");
         if (!isset($webshopProfileId) || $webshopProfileId == "") {
             $webshopProfileId = $order->getStoreId();
         }
+
         $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
-        $invoice->setIncrementId($invoiceId);
+        $invoiceId = $invoice->getIncrementId();
+        if ($invoiceId == null) {
+            $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
+            $invoice->setIncrementId($invoiceId);
+        }
+
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
         $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
         $ByjunoRequestName = 'Byjuno S4';
