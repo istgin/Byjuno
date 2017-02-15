@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <byjuno translate="label" module="byjuno">
-            <label>Byjuno (1.3.5)</label>
+            <label>Byjuno (1.4.0)</label>
             <sort_order>301</sort_order>
         </byjuno>
     </tabs>
@@ -439,11 +439,42 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </country_phone_validation>
-						
+
+
+                        <s2_acceptance translate="label">
+                            <label>S2 Acceptance</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>byjuno/source_Riskstate</source_model>
+                            <sort_order>180</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </s2_acceptance>
+
+                        <byjuno_risk translate="label">
+                            <label>Accepted Byjuno Risk</label>
+                            <comment>Status codes for Byjuno risk (custom S2 Acceptance only!)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>185</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </byjuno_risk>
+
+                        <merchant_risk translate="label">
+                            <label>Accepted Merchant Risk</label>
+                            <comment>Status codes for merchant risk (custom S2 Acceptance only!)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </merchant_risk>
+
 						<postal_code_wrong translate="label">
                             <label>*Localization* Postal code of billing address is incorrect</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>180</sort_order>
+                            <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -452,7 +483,7 @@
 						<telephone_code_wrong translate="label">
                             <label>*Localization* Telephone of billing address is incorrect</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>190</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

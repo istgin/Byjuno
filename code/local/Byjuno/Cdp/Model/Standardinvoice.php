@@ -537,7 +537,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $payment->setTransactionId($trxId);
         $payment->setParentTransactionId($payment->getTransactionId());
         $transaction = $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH, null, true, "");
-        if ($status == 2) {
+        $helper = Mage::helper('byjuno');
+        if ($helper->isStatusOk($status)) {
             $transaction->setIsClosed(false);
         } else {
             $transaction->setIsClosed(true);
@@ -547,7 +548,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $session->setData("intrum_status", $status);
         $session->setData("intrum_request_type", $requestType);
         $session->setData("intrum_order", $order->getId());
-        if ($status == 2) {
+        if ($helper->isStatusOk($status)) {
             return Mage::getUrl('cdp/standard/result');
         } else if ($status == 0) {
             $order->cancel()->save();

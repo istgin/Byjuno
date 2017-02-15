@@ -2,6 +2,53 @@
 
 class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    function getStatusRisk($status) {
+        if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
+            try {
+                $ijStatus = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_risk'));
+                $merchantStatus = explode(",", Mage::getStoreConfig('payment/cdp/merchant_risk'));
+                if (in_array($status, $ijStatus)) {
+                    return "IJ";
+                } else if (in_array($status, $merchantStatus)) {
+                    return "Clinet";
+                }
+                return "No owner";
+
+            } catch (Exception $e) {
+                return "INTERNAL ERROR";
+            }
+
+        } else {
+            if ($status == 2) {
+                return "IJ";
+            }
+            return "INTERNAL ERROR";
+        }
+    }
+
+    function isStatusOk($status) {
+        if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
+            try {
+                $ijStatus = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_risk'));
+                $merchantStatus = explode(",", Mage::getStoreConfig('payment/cdp/merchant_risk'));
+                if (in_array($status, $ijStatus)) {
+                    return true;
+                } else if (in_array($status, $merchantStatus)) {
+                    return true;
+                }
+                return false;
+
+            } catch (Exception $e) {
+                return "INTERNAL ERROR";
+            }
+        } else {
+            if ($status == 2) {
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     function getByjunoErrorMessage($status, $paymentType = 'b2c') {
         $message = '';
@@ -142,7 +189,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $order->save();
     }
 
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom, $riskOwner) {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
         $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
@@ -330,11 +377,11 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'RISKOWNER';
-        $extraInfo["Value"] = 'IJ';
+        $extraInfo["Value"] = $riskOwner;
         $request->setExtraInfo($extraInfo);
 
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.3.5';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.4.0';
 		$request->setExtraInfo($extraInfo);	
 
         return $request;
@@ -534,7 +581,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.3.5';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.4.0';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -728,12 +775,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Value"] = $this->mapRepayment($repayment);
         $request->setExtraInfo($extraInfo);
 
-        $extraInfo["Name"] = 'RISKOWNER';
-        $extraInfo["Value"] = 'IJ';
-        $request->setExtraInfo($extraInfo);
-
 		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.3.5';
+		$extraInfo["Value"] = 'Byjuno Magento module 1.4.0';
 		$request->setExtraInfo($extraInfo);
         return $request;
     }

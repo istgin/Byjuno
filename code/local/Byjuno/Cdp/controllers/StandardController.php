@@ -44,7 +44,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
         $status = $session->getData("intrum_status");
         $statusRequestType = $session->getData("intrum_request_type");
-        if ($status == 2) {
+        if ($helper->isStatusOk($status)) {
             $this->_redirect('cdp/standard/success');
         } else {
             $session->addError($helper->getByjunoErrorMessage($status, $statusRequestType) . " (S1 Redirect)");
@@ -85,7 +85,9 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $dob_custom = $payment->getAdditionalInformation("dob_custom");
         }
 
-        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend, $gender_custom, $dob_custom);
+        $riskOwner = $helper->getStatusRisk($statusRequest);
+
+        $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend, $gender_custom, $dob_custom, $riskOwner);
         $ByjunoRequestName = "Order paid";
         $requestType = 'b2c';
         if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
@@ -121,7 +123,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         } else {
             $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
         }
-        if ($statusRequest == 2 && $status == 2) {
+        if ($helper->isStatusOk($statusRequest) && $status == 2) {
             $payment->setAdditionalInformation("s3_ok", 'true')->save();
             $status = Mage::getStoreConfig('payment/cdp/success_order_status', Mage::app()->getStore());
             /* @var $config Mage_Sales_Model_Order_Config */
