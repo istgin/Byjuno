@@ -61,9 +61,10 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $statusRequestType = $session->getData("intrum_request_type");
         $byjunoTransaction = $session->getData("byjuno_transaction");
         $orderId = $session->getData("intrum_order");
-        if ($statusRequest != 2) {
+        if (!$helper->isStatusOk($statusRequest)) {
             $session->addError($helper->getByjunoErrorMessage($statusRequest, $statusRequestType) . " (S1 Redirect-2)");
             $this->_redirect('cdp/standard/cancel');
+            exit();
         }
 
 
