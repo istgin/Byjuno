@@ -328,7 +328,8 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             }
             try {
                 $request = $this->getHelper()->CreateMagentoShopRequestCreditCheck($quote);
-                if ($CDPStatus != null && intval($CDPStatus) != 2 && $this->isTheSame($request))
+                $helper = Mage::helper('byjuno');
+                if ($CDPStatus != null && !$helper->isStatusOk($CDPStatus) && $this->isTheSame($request))
                 {
                     return false;
                 }
@@ -386,7 +387,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);
-                    if ($status != 2) {
+                    if (!$helper->isStatusOk($CDPStatus)) {
                         return false;
                     }
                 }

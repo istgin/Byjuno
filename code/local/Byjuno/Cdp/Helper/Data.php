@@ -10,7 +10,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 if (in_array($status, $ijStatus)) {
                     return "IJ";
                 } else if (in_array($status, $merchantStatus)) {
-                    return "Clinet";
+                    return "CLIENT";
                 }
                 return "No owner";
 

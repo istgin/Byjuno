@@ -454,6 +454,7 @@
                         <byjuno_risk translate="label">
                             <label>Accepted Byjuno Risk</label>
                             <comment>Status codes for Byjuno risk (custom S2 Acceptance only!)</comment>
+                            <validate>validate-comma-separated-numbers</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>185</sort_order>
                             <show_in_default>1</show_in_default>
@@ -464,6 +465,7 @@
                         <merchant_risk translate="label">
                             <label>Accepted Merchant Risk</label>
                             <comment>Status codes for merchant risk (custom S2 Acceptance only!)</comment>
+                            <validate>validate-comma-separated-numbers</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>

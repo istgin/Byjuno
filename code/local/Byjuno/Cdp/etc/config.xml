@@ -61,9 +61,9 @@
         </acl>
         <layout>
             <updates>
-                <Byjuno module="Byjuno_Cdp">
-                    <file>byjuno.xml</file>
-                </Byjuno>
+                <byjuno_cdp>
+                    <file>byjuno_backend.xml</file>
+                </byjuno_cdp>
             </updates>
         </layout>
     </adminhtml>
