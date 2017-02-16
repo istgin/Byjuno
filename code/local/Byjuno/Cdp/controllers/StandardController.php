@@ -87,6 +87,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         }
 
         $riskOwner = $helper->getStatusRisk($statusRequest);
+        $riskOwnerVisual = $helper->getStatusRiskVisual($riskOwner);
 
         $request = $helper->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend, $gender_custom, $dob_custom, $riskOwner);
         $ByjunoRequestName = "Order paid";
@@ -144,6 +145,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
                 $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null);
 
             }
+            $order->getPayment()->setAdditionalInformation("payment_riskowner", $riskOwnerVisual);
             $order->save();
             try {
                 if (Mage::getStoreConfig('payment/cdp/forsesendendcustomer', Mage::app()->getStore()) == '1') {

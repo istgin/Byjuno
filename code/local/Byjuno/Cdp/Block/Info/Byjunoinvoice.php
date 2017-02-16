@@ -18,6 +18,7 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
 
         $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
         $paymentSend = $this->getInfo()->getAdditionalInformation("payment_send");
+        $paymentRiskOwner = $this->getInfo()->getAdditionalInformation("payment_riskowner");
         $htmlAdd = '';
         if ($paymentSend == 'email')
         {
@@ -39,6 +40,10 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         if ($this->getInfo()->getAdditionalInformation("dob_custom") != "") {
             $htmlAdd .= '<br>'.$this->__("Date of birth").": ".$this->getInfo()->getAdditionalInformation("dob_custom");
         }
+        if ($paymentRiskOwner == null || $paymentRiskOwner == "") {
+            $paymentRiskOwner = "Check actual transaction RISKOWNER tag";
+        }
+        $htmlAdd .= '<br>'.$this->__("Risk owner").": ".$paymentRiskOwner;
         $i = 0;
         $stringValues = Array();
         foreach($pl as $val) {

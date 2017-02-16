@@ -2,6 +2,15 @@
 
 class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
+    function getStatusRiskVisual($status) {
+        if ($status == "IJ") {
+            return "Byjuno take a risk";
+        }
+        if ($status == "CLIENT") {
+            return "Client take a risk";
+        }
+        return "No information (check actual transaction)";
+    }
     function getStatusRisk($status) {
         if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
             try {
