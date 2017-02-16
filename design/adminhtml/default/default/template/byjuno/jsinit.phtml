@@ -1,0 +1,12 @@
+<script>
+    /**
+     * Created by Igor on 16.02.2017.
+     */
+    Validation.add('validate-comma-separated-numbers', 'Please enter a valid comma-separated numbers.', function(numbers) {
+        if (numbers == "") {
+            return true;
+        }
+        var re = /^[0-9]+(,[0-9]+)*$/;
+        return re.test(numbers);
+    });
+</script>
