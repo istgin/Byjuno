@@ -387,7 +387,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);
-                    if (!$helper->isStatusOk($CDPStatus)) {
+                    if (!$helper->isStatusOk($status)) {
                         return false;
                     }
                 }
