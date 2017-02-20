@@ -6,7 +6,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         if ($status == "IJ") {
             return "Byjuno take a risk";
         }
-        if ($status == "MERCHANT") {
+        if ($status == "CLIENT") {
             return "Client take a risk";
         }
         return "No information (check actual transaction)";
@@ -19,7 +19,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 if (in_array($status, $ijStatus)) {
                     return "IJ";
                 } else if (in_array($status, $merchantStatus)) {
-                    return "MERCHANT";
+                    return "CLIENT";
                 }
                 return "No owner";
 
