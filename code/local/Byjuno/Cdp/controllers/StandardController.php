@@ -167,8 +167,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $htmlAdd = $this->__("Risk owner").": ".$paymentRiskOwner;
 
             $historyItem = $order->addStatusHistoryComment($htmlAdd, $status);
-            $historyItem->setIsVisibleOnFront(false);
-            $historyItem->setIsCustomerNotified(true)->save();
+            $historyItem->setIsVisibleOnFront(false)->save();
 
             Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
