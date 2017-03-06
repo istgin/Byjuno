@@ -319,7 +319,19 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     }
 
     public function CDPRequest($quote) {
-        if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1' && $this->isInCheckoutProcess() && $quote->getShippingAddress()->getFirstname() != null) {
+        if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1'
+            && $this->isInCheckoutProcess()
+            && $quote->getShippingAddress()->getFirstname() != null) {
+
+            if ($quote == null ||
+                $quote->getBillingAddress() == null ||
+                $quote->getBillingAddress()->getFirstname() == null ||
+                $quote->getBillingAddress()->getLastname() == null  ||
+                $quote->getBillingAddress()->getFirstname() == "" ||
+                $quote->getBillingAddress()->getLastname() == "") {
+                return false;
+            }
+
             $session = Mage::getSingleton('checkout/session');
             $theSame = $session->getData("isTheSame");
             $CDPStatus = $session->getData("CDPStatus");
