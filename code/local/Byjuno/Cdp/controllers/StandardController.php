@@ -159,6 +159,17 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             } catch (Exception $e) {
                 Mage::logException($e);
             }
+            $paymentRiskOwner = $order->getPayment()->getAdditionalInformation("payment_riskowner");
+
+            if ($paymentRiskOwner == null || $paymentRiskOwner == "") {
+                $paymentRiskOwner = "Check actual transaction RISKOWNER tag";
+            }
+            $htmlAdd = $this->__("Risk owner").": ".$paymentRiskOwner;
+
+            $historyItem = $order->addStatusHistoryComment($htmlAdd, $status);
+            $historyItem->setIsVisibleOnFront(false);
+            $historyItem->setIsCustomerNotified(true)->save();
+
             Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
             Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
