@@ -1,0 +1,142 @@
+<div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
+    <div><?php
+        $locale = Mage::getStoreConfig('general/locale/code', Mage::app()->getStore());
+        $locale = strstr($locale, "_", true);
+        $lang = 'de';
+        if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
+            $lang = $locale;
+        }
+        if ($locale)
+        $pl = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+        $plns = explode(",", $pl);
+
+        $stringValues = Array();
+        $enablesValues = Array();
+
+        $methodsAllowed["installment_3_enable"] = 0;
+        $methodsAllowed["installment_10_enable"] = 1;
+        $methodsAllowed["installment_12_enable"] = 2;
+        $methodsAllowed["installment_24_enable"] = 3;
+        $methodsAllowed["installment_4x12_enable"] = 4;
+        $methodsAllowed["installment_4x10_enable"] = 5;
+
+        $i = 0;
+        foreach($plns as $val) {
+            if (strstr($val, "_enable")) {
+                $enablesValues[] = Array($val, $methodsAllowed[$val]);
+            } else {
+                $stringValues[$i] = $val;
+                $i++;
+            }
+        }
+
+        $i = 0;
+        $plans = Array();
+        foreach($enablesValues as $p) {
+            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]], "toc" => $stringValues[$p[1] + 6]);
+            $i++;
+        }
+        //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
+
+        $paperInstallment = Mage::getStoreConfig('payment/cdp/byjuno_installment_paper', Mage::app()->getStore());
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+
+        $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif';
+        switch ($lang) {
+            case 'de':
+                $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif';
+                break;
+            case 'fr':
+                $logo = 'https://byjuno.ch/Content/logo/fr/6639/BJ_Paiement_echelonne_BLK.gif';
+                break;
+            case 'it':
+                $logo = 'https://byjuno.ch/Content/logo/it/6639/BJ_Pagemento_Rateale_BLK.gif';
+                break;
+            case 'en':
+                $logo = 'https://byjuno.ch/Content/logo/en/6639/BJ_Installments_BLK.gif';
+                break;
+        }
+
+        ?>
+        <?php if (count($plans) > 1) { ?>
+            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_payment_message', Mage::app()->getStore()) ?></label>
+        <?php } else { ?>
+            <br />
+        <?php } ?>
+        <table width="100%">
+            <tr>
+                <td style="vertical-align: middle; padding: 0 10px 0 0" width="70">
+                     <?php echo '<img src="'.$logo.'" border="0" style="width:66px !important; max-width:66px !important" />'; ?>
+                </td>
+                <td style="vertical-align: middle" width="100%">
+                    <span>
+                        <?php
+                        $i = 0;
+                        if (count($plans) == 1) { ?>
+                            <input type="hidden" name="payment[installment_payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?>
+                            (<a href="<?php echo $this->htmlEscape($plans[0]["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                            <br />
+
+                        <?php } else {
+                            foreach($plans as $plan) { ?>
+                                <input type="radio" <?php if ($i == 0) {
+                                    echo 'checked="checked"';
+                                } ?> name="payment[installment_payment_plan]"
+                                       value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
+                                       (<a href="<?php echo $this->htmlEscape($plan["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                                <br/>
+                                <?php
+                                $i++;
+                            }
+                        } ?>
+                    </span>
+                </td>
+            </tr>
+            <?php if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                $_gender2 = $this->getLayout()->createBlock('byjuno/widget_gender');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px"><br />
+                            <?php echo $_gender2->setGender($quote->getCustomerGender())->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml() ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
+            <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                $_dob2 = $this->getLayout()->createBlock('byjuno/widget_dobinstallment');
+                ?>
+                <tr>
+                    <td>
+                        <div class="field" style="width: 200px">
+                            <?php echo $_dob2->setDate($quote->getCustomerDob())->setFieldIdFormat('installment_%s')->setFieldNameFormat('payment[installment_%s]')->toHtml(); ?>
+                        </div>
+                    </td>
+                </tr>
+
+            <?php } ?>
+            <tr>
+                <td colspan="2">
+                    <div style="padding: 10px 0 5px 0">
+                        <?php
+                        if ($paperInstallment == 1) {
+                            ?>
+                            <input type="radio" checked="checked" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
+                            <input type="radio" name="payment[installment_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>, <?php echo (String)$quote->getBillingAddress()->getCity(); ?>, <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?>
+
+                            <?php
+                        } else {
+                            ?>
+                            <input type="hidden" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </td>
+            <tr>
+        </table>
+        <br />
+    </div>
+</div>
