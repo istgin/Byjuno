@@ -13,7 +13,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     protected $_formBlockType = 'byjuno/form_byjunoinvoice';
     protected $_infoBlockType = 'byjuno/info_byjunoinvoice';
     protected $_isInitializeNeeded = true;
-    protected $_canUseInternal = false;
+    protected $_canUseInternal = true;
     protected $_canUseForMultishipping = false;
     protected $_canRefund = true;
     protected $_canCapture = true;
@@ -21,6 +21,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     protected $_canVoid = true;
     protected $_canAuthorize = true;
     protected $_canRefundInvoicePartial = true;
+    protected $_isGateway = true;
 
 
     protected $_savedUser = Array(
@@ -290,6 +291,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function isAvailable($quote = null)
     {
+        if (Mage::app()->getStore()->isAdmin())
+        {
+            return true;
+        }
         if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
             return false;
         }

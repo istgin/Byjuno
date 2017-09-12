@@ -14,6 +14,10 @@ class Byjuno_Cdp_Model_Standardinstallment
 
 	public function isAvailable($quote = null)
 	{
+		if (Mage::app()->getStore()->isAdmin())
+		{
+			return true;
+		}
 		if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
 			return false;
 		}

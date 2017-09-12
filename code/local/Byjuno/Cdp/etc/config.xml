@@ -146,6 +146,15 @@
             </sales_convert_quote>
         </fieldsets>
         <events>
+            <checkout_submit_all_after>
+                <observers>
+                    <byjuno_submit_order_admin>
+                        <type>singleton</type>
+                        <class>byjuno/observer</class>
+                        <method>saveOrderAdmin</method>
+                    </byjuno_submit_order_admin>
+                </observers>
+            </checkout_submit_all_after>
             <payment_method_is_active>
                 <observers>
                     <byjuno_before_load_payment_method>
