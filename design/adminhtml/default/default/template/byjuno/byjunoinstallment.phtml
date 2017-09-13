@@ -40,7 +40,7 @@
 
         $paperInstallment = Mage::getStoreConfig('payment/cdp/byjuno_installment_paper', Mage::app()->getStore());
         /* @var $quote Mage_Sales_Model_Quote */
-        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+        $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
 
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif';
         switch ($lang) {
@@ -123,13 +123,13 @@
                         <?php
                         if ($paperInstallment == 1) {
                             ?>
-                            <input type="radio" checked="checked" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
-                            <input type="radio" name="payment[installment_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>, <?php echo (String)$quote->getBillingAddress()->getCity(); ?>, <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?>
+                            <input type="radio" checked="checked" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?><br/>
+                            <input type="radio" name="payment[installment_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>
 
                             <?php
                         } else {
                             ?>
-                            <input type="hidden" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?>
+                            <input type="hidden" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>
                             <?php
                         }
                         ?>
