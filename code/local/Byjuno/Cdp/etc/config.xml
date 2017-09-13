@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.4.2</version>
+            <version>1.5.0</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
