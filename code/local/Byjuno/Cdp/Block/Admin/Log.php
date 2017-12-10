@@ -20,6 +20,19 @@ class Byjuno_Cdp_Block_Admin_Log extends Mage_Adminhtml_Block_Widget_Grid
 
         return parent::_prepareCollection();
     }
+
+    public function getMainButtonsHtml() {
+        $html = parent::getMainButtonsHtml();
+        $url = $this->getUrl('*/*/logexport', array('export' => 'true'));
+        $add_artwork_button = $this->getLayout()->createBlock('adminhtml/widget_button')
+            ->setData(array(
+                'label'     => Mage::helper('byjuno')->__('Export logs'),
+                'onclick'   => 'window.open(\'' . $url . '\', \'_blank\')',
+            ));
+        $html .= $add_artwork_button->toHtml();
+        return $html;
+    }
+
     public function getRowUrl($row)
     {
         // This is where our row data will link to

@@ -3,6 +3,10 @@ class Byjuno_Cdp_Model_Mysql4_Byjuno_Collection extends Varien_Data_Collection_D
 {
     protected $_byjunoTable;
 
+    public function getByjunoTable()
+    {
+        return $this->_byjunoTable;
+    }
     public function __construct()
     {
         $resources = Mage::getSingleton('core/resource');
@@ -13,4 +17,5 @@ class Byjuno_Cdp_Model_Mysql4_Byjuno_Collection extends Varien_Data_Collection_D
                 array('*'));
         $this->setItemObjectClass(Mage::getConfig()->getModelClassName('byjuno/byjuno'));
     }
+
 }
