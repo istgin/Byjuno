@@ -5,21 +5,21 @@
 <?php
     $this->setDateInput('d',
         '<div class="dob-day" style="width: 40px; float: left;  margin-right: 10px;">
-             <input type="text" id="' . $this->getFieldId('day') . '" name="' . $this->getFieldName('day') . '" value="' . $this->getDay() . '" title="' . $this->__('Day') . '" class="input-text validate-custom" ' . $this->getFieldParams() . ' />
+             <input type="text" maxlength="2" id="' . $this->getFieldId('day') . '" name="' . $this->getFieldName('day') . '" value="' . $this->getDay() . '" title="' . $this->__('Day') . '" class="input-text validate-custom" ' . $this->getFieldParams() . ' />
              <label for="' . $this->getFieldId('day') . '">' . $this->__('DD') . '</label>
          </div>'
     );
 
     $this->setDateInput('m',
         '<div class="dob-month" style="width: 40px; float: left;  margin-right: 10px;">
-             <input type="text" id="' . $this->getFieldId('month') . '" name="' . $this->getFieldName('month') . '" value="' . $this->getMonth()  . '" title="' . $this->__('Month')  . '" class="input-text validate-custom" ' . $this->getFieldParams()  . ' />
+             <input type="text" maxlength="2" id="' . $this->getFieldId('month') . '" name="' . $this->getFieldName('month') . '" value="' . $this->getMonth()  . '" title="' . $this->__('Month')  . '" class="input-text validate-custom" ' . $this->getFieldParams()  . ' />
              <label for="' . $this->getFieldId('month') . '">' . $this->__('MM')  . '</label>
          </div>'
     );
 
     $this->setDateInput('y',
         '<div class="dob-year" style="width: 80px; float: left;  margin-right: 10px;">
-             <input type="text" id="' . $this->getFieldId('year') . '" name="' . $this->getFieldName('year') . '" value="' . $this->getYear()  . '" title="' . $this->__('Year')  . '" class="input-text validate-custom" ' . $this->getFieldParams()  . ' />
+             <input type="text" maxlength="4" id="' . $this->getFieldId('year') . '" name="' . $this->getFieldName('year') . '" value="' . $this->getYear()  . '" title="' . $this->__('Year')  . '" class="input-text validate-custom" ' . $this->getFieldParams()  . ' />
              <label for="' . $this->getFieldId('year') . '">' . $this->__('YYYY')  . '</label>
          </div>'
     );
