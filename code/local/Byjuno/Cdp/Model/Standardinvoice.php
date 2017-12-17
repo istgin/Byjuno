@@ -89,6 +89,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     /* @var $payment Mage_Sales_Model_Order_Payment */
     public function processInvoice($invoice, $payment)
     {
+        $request_start = date('Y-m-d G:i:s');
         if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '0') {
             return $this;
         }
@@ -126,10 +127,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = $byjunoResponse->getProcessingInfoClassification();
-            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         } else {
             $status = "ERR";
-            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())));
@@ -141,6 +142,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function refund(Varien_Object $payment, $requestedAmount)
     {
+        $request_start = date('Y-m-d G:i:s');
         if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
             return $this;
         }
@@ -171,10 +173,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = $byjunoResponse->getProcessingInfoClassification();
-            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         } else {
             $status = 'ERR';
-            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', Mage::app()->getStore())));
@@ -192,6 +194,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     /* @var $payment Mage_Sales_Model_Order_Payment */
     public function cancel(Varien_Object $payment)
     {
+        $request_start = date('Y-m-d G:i:s');
         if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
             return $this;
         }
@@ -219,10 +222,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = $byjunoResponse->getProcessingInfoClassification();
-            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         } else {
             $status = 'ERR';
-            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName);
+            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
             Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', Mage::app()->getStore())));
@@ -324,6 +327,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     }
 
     public function CDPRequest($quote) {
+        $request_start = date('Y-m-d G:i:s');
         if (Mage::getStoreConfig('payment/cdp/cdpbeforeshow', Mage::app()->getStore()) == '1'
             && $this->isInCheckoutProcess()
             && $quote->getShippingAddress()->getFirstname() != null) {
@@ -372,12 +376,12 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                         $byjunoResponse->setRawResponse($response);
                         $byjunoResponse->processResponse();
                         $status = (int)$byjunoResponse->getCustomerRequestStatus();
-                        $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
+                        $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                         if (intval($status) > 15) {
                             $status = 0;
                         }
                     } else {
-                        $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
+                        $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                     }
                     $this->_savedUser = Array(
                         "FirstName" => $request->getFirstName(),
@@ -495,6 +499,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function getOrderPlaceRedirectUrl()
     {
+        $request_start = date('Y-m-d G:i:s');
         $session = Mage::getSingleton('checkout/session');
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/cart')->getQuote();
@@ -543,13 +548,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $byjunoResponse->processResponse();
             $status = (int)$byjunoResponse->getCustomerRequestStatus();
             $session->setData("byjuno_transaction", $byjunoResponse->getTransactionNumber());
-            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
+            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
             if (intval($status) > 15) {
                 $status = 0;
             }
             $trxId = $byjunoResponse->getResponseId();
         } else {
-            $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
+            $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
             $trxId = "empty";
         }
         $payment->setTransactionId($trxId);

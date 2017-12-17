@@ -40,7 +40,9 @@ class Byjuno_Cdp_Adminhtml_ByjunologController extends Mage_Adminhtml_Controller
                 $row["error"],
                 $row["request"],
                 $row["response"],
-                $row["creation_date"]
+                $row["creation_date"],
+                $row["request_start"],
+                $row["request_end"]
             );
         }
         $this->array_to_csv_download(

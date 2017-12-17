@@ -43,6 +43,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
 
     public function saveOrderAdmin(Varien_Event_Observer $observer)
     {
+        $request_start = date('Y-m-d G:i:s');
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getData('order');
         $methodInstance = $order->getPayment()->getMethodInstance();
@@ -91,13 +92,13 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                 $byjunoResponse->setRawResponse($response);
                 $byjunoResponse->processResponse();
                 $statusRequest = (int)$byjunoResponse->getCustomerRequestStatus();
-                $this->getHelper()->saveLogOrder($order, $request, $xml, $response, $statusRequest, $ByjunoRequestName);
+                $this->getHelper()->saveLogOrder($order, $request, $xml, $response, $statusRequest, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                 if (intval($statusRequest) > 15) {
                     $statusRequest = 0;
                 }
                 $trxId = $byjunoResponse->getResponseId();
             } else {
-                $this->getHelper()->saveLogOrder($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
+                $this->getHelper()->saveLogOrder($order, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                 $trxId = "empty";
             }
             $payment->setTransactionId($trxId);
@@ -153,9 +154,9 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                     if (intval($status) > 15) {
                         $status = 0;
                     }
-                    $this->getHelper()->saveLogOrder($order, $request, $xml, $response, $status, $ByjunoRequestName);
+                    $this->getHelper()->saveLogOrder($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                 } else {
-                    $this->getHelper()->saveLogOrder($order, $request, $xml, "empty response", "0", $ByjunoRequestName);
+                    $this->getHelper()->saveLogOrder($order, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                 }
                 if ($this->getHelper()->isStatusOk($statusRequest) && $status == 2) {
 

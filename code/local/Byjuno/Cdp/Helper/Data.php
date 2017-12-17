@@ -77,7 +77,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $message;
     }
 
-    function saveLogOrder(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type) {
+    function saveLogOrder(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
         $data = array( 'firstname'  => $request->getFirstName(),
             'lastname'   => $request->getLastName(),
             'postcode'   => $request->getPostCode(),
@@ -90,14 +90,16 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             'request'    => $xml_request,
             'response'   => $xml_response,
             'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR']);
+            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'request_start' => $request_start,
+            'request_end' => Mage::getSingleton('core/date')->gmtDate());
 
         $byjuno_model = Mage::getModel('byjuno/byjuno');
         $byjuno_model->setData($data);
         $byjuno_model->save();
     }
 
-    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type) {
+    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
         $data = array( 'firstname'  => $request->getFirstName(),
             'lastname'   => $request->getLastName(),
             'postcode'   => $request->getPostCode(),
@@ -110,14 +112,15 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             'request'    => $xml_request,
             'response'   => $xml_response,
             'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR']);
-
+            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'request_start' => $request_start,
+            'request_end' => $request_end);
         $byjuno_model = Mage::getModel('byjuno/byjuno');
         $byjuno_model->setData($data);
         $byjuno_model->save();
     }
 
-    function saveS4Log(Mage_Sales_Model_Order $order, $request, $xml_request, $xml_response, $status, $type) {
+    function saveS4Log(Mage_Sales_Model_Order $order, $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
 
         $data = array( 'firstname'  => $order->getCustomerFirstname(),
             'lastname'   => $order->getCustomerLastname(),
@@ -131,7 +134,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             'request'    => $xml_request,
             'response'   => $xml_response,
             'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR']);
+            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'request_start' => $request_start,
+            'request_end' => Mage::getSingleton('core/date')->gmtDate());
 
         $byjuno_model = Mage::getModel('byjuno/byjuno');
         $byjuno_model->setData($data);

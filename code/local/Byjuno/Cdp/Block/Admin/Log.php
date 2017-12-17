@@ -132,6 +132,30 @@ class Byjuno_Cdp_Block_Admin_Log extends Mage_Adminhtml_Block_Widget_Grid
             'escape'        => true,
         ));
 
+
+        $this->addColumn('request_start', array(
+            'header'        => Mage::helper('byjuno')->__('Request start time'),
+            'align'         => 'left',
+            'width'         => '150px',
+            'filter_index'  => 'request_start',
+            'index'         => 'request_start',
+            'type'          => 'datetime',
+            'truncate'      => 50,
+            'escape'        => true,
+        ));
+
+
+        $this->addColumn('request_end', array(
+            'header'        => Mage::helper('byjuno')->__('Request end time'),
+            'align'         => 'left',
+            'width'         => '150px',
+            'filter_index'  => 'request_end',
+            'index'         => 'request_end',
+            'type'          => 'datetime',
+            'truncate'      => 50,
+            'escape'        => true,
+        ));
+
         return parent::_prepareColumns();
     }
 

@@ -54,6 +54,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
 
     public function  successAction()
     {
+        $request_start = date('Y-m-d G:i:s');
         $helper = Mage::helper('byjuno');
         $session = Mage::getSingleton('checkout/session');
         $session->setByjunoStandardQuoteId($session->getQuoteId());
@@ -116,14 +117,14 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             if (intval($status) > 15) {
                 $status = 0;
             }
-            $helper->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName);
+            $helper->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
             $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
             $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
             if (!empty($statusToPayment) && !empty($ByjunoResponseSession)) {
                 $helper->saveStatusToOrder($order, $statusToPayment, unserialize($ByjunoResponseSession));
             }
         } else {
-            $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName);
+            $helper->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($helper->isStatusOk($statusRequest) && $status == 2) {
             $payment->setAdditionalInformation("s3_ok", 'true')->save();
