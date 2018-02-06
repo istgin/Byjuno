@@ -5,7 +5,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoS4Check extends Mage_A
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        $byjuno_s4_explain = Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore());
+        $byjuno_s4_explain = Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::getSingleton('adminhtml/config_data')->getStore());
         $message = 'S4 Transaction (Settlement/Invoice) must be delivered to Byjuno manually or from ERP system';
         $color = 'FFE5E6';
         if ($byjuno_s4_explain == 1) {

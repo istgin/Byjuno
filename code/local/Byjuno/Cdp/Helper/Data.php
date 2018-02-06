@@ -879,17 +879,17 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $mailer->setQueue($emailQueue)->send();
     }
 
-    public function sendEmailInvoice(Mage_Sales_Model_Order_Invoice $invoice, $comment = '')
+    public function sendEmailInvoice(Mage_Sales_Model_Order_Invoice $invoice, $webshopProfileId, $comment = '')
     {
         $order = $invoice->getOrder();
         $storeId = $order->getStore()->getId();
 
         // Get the destination email addresses to send copies to
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
         if ($mode == 'production') {
-            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', Mage::app()->getStore());
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', $webshopProfileId);
         } else {
-            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', $webshopProfileId);
         }
 
         // Start store emulation process
@@ -937,17 +937,17 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $mailer->send();
     }
 
-    public function sendEmailCreditMemo(Mage_Sales_Model_Order_Creditmemo $creditMemo, $comment = '')
+    public function sendEmailCreditMemo(Mage_Sales_Model_Order_Creditmemo $creditMemo, $webshopProfileId, $comment = '')
     {
         $order = $creditMemo->getOrder();
         $storeId = $order->getStore()->getId();
 
         // Get the destination email addresses to send copies to
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
         if ($mode == 'production') {
-            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', Mage::app()->getStore());
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_prod_email', $webshopProfileId);
         } else {
-            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', Mage::app()->getStore());
+            $copyTo = Mage::getStoreConfig('payment/cdp/byjuno_test_email', $webshopProfileId);
         }
 
         // Start store emulation process

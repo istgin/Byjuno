@@ -90,18 +90,18 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     public function processInvoice($invoice, $payment)
     {
         $request_start = date('Y-m-d G:i:s');
-        if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', Mage::app()->getStore()) == '0') {
-            return $this;
-        }
-        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())). " (error code: S3_NOT_CREATED)");
-        }
-        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
         $order = $invoice->getOrder();
         $webshopProfileId = $order->getPayment()->getAdditionalInformation("webshop_profile_id");
         if (!isset($webshopProfileId) || $webshopProfileId == "") {
             $webshopProfileId = $order->getStoreId();
         }
+        if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', $webshopProfileId) == '0') {
+            return $this;
+        }
+        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
+            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)). " (error code: S3_NOT_CREATED)");
+        }
+        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
 
         $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         $invoiceId = $invoice->getIncrementId();
@@ -115,13 +115,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $ByjunoRequestName = 'Byjuno S4';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
         if ($mode == 'production') {
             $byjunoCommunicator->setServer('live');
         } else {
             $byjunoCommunicator->setServer('test');
         }
-        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
         $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
         if ($response) {
             $byjunoResponse->setRawResponse($response);
@@ -133,24 +133,24 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', Mage::app()->getStore())));
+            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)));
         } else {
-            $this->getHelper()->sendEmailInvoice($invoice);
+            $this->getHelper()->sendEmailInvoice($invoice, $webshopProfileId);
         }
         return $this;
     }
 
     public function refund(Varien_Object $payment, $requestedAmount)
     {
-        $request_start = date('Y-m-d G:i:s');
-        if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
-            return $this;
-        }
-        /* @var $payment Mage_Sales_Model_Order_Payment */
         $order = $payment->getOrder();
+        /* @var $payment Mage_Sales_Model_Order_Payment */
         $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
         if (!isset($webshopProfileId) || $webshopProfileId == "") {
             $webshopProfileId = $order->getStoreId();
+        }
+        $request_start = date('Y-m-d G:i:s');
+        if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', $webshopProfileId) == '0') {
+            return $this;
         }
         $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         /* @var $memo Mage_Sales_Model_Order_Creditmemo */
@@ -161,13 +161,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
         if ($mode == 'production') {
             $byjunoCommunicator->setServer('live');
         } else {
             $byjunoCommunicator->setServer('test');
         }
-        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
         $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
         if ($response) {
             $byjunoResponse->setRawResponse($response);
@@ -179,9 +179,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', Mage::app()->getStore())));
+            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', $webshopProfileId)));
         } else {
-            $this->getHelper()->sendEmailCreditMemo($memo);
+            $this->getHelper()->sendEmailCreditMemo($memo, $webshopProfileId);
         }
         /* @var $payent Mage_Sales_Model_Order_Payment */
         $payment->setTransactionId($payment->getParentTransactionId().'-refund');
@@ -194,15 +194,15 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
     /* @var $payment Mage_Sales_Model_Order_Payment */
     public function cancel(Varien_Object $payment)
     {
-        $request_start = date('Y-m-d G:i:s');
-        if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', Mage::app()->getStore()) == '0') {
-            return $this;
-        }
-        /* @var $order Mage_Sales_Model_Order */
         $order = $payment->getOrder();
+        /* @var $order Mage_Sales_Model_Order */
         $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
         if (!isset($webshopProfileId) || $webshopProfileId == "") {
             $webshopProfileId = $order->getStoreId();
+        }
+        $request_start = date('Y-m-d G:i:s');
+        if (Mage::getStoreConfig('payment/cdp/byjunos5transacton', $webshopProfileId) == '0') {
+            return $this;
         }
         $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
         /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
@@ -210,13 +210,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $ByjunoRequestName = 'Byjuno S5';
         $xml = $request->createRequest();
         $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
         if ($mode == 'production') {
             $byjunoCommunicator->setServer('live');
         } else {
             $byjunoCommunicator->setServer('test');
         }
-        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
         $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
         if ($response) {
             $byjunoResponse->setRawResponse($response);
@@ -228,7 +228,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
         }
         if ($status == 'ERR') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', Mage::app()->getStore())));
+            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s5_fail', $webshopProfileId)));
         }
         $transaction = $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true, "Transaction canceled");
         $transaction->setIsClosed(true);
