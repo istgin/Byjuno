@@ -53,16 +53,16 @@
 
         ?>
         <?php if (count($plans) > 1) { ?>
-            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
+            <label style="padding: 0 0 10px 0; font-weight: normal"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
         <?php } else { ?>
             <br />
         <?php } ?>
         <table width="100%">
             <tr>
-                <td style="vertical-align: middle; padding: 0 10px 0 0" width="70">
+                <td style="vertical-align: top; padding: 0 10px 0 0; width: 70px" width="70">
                     <?php echo '<img src="'.$logo.'" border="0" style="width:66px !important; max-width:66px !important" />'; ?>
                 </td>
-                <td style="vertical-align: middle" width="100%">
+                <td style="vertical-align: top; width: 100%" width="100%">
                     <span>
                         <?php
                         $i = 0;
@@ -90,8 +90,8 @@
                 $_gender = $this->getLayout()->createBlock('byjuno/widget_gender');
                 ?>
                 <tr>
-                    <td>
-                        <div class="field" style="width: 200px"><br />
+                    <td colspan="2">
+                        <div class="field" style="width: 200px !important;"><br />
                             <?php echo $_gender->setGender($quote->getCustomerGender())->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml() ?>
                         </div>
                     </td>
@@ -102,8 +102,8 @@
                 $_dob = $this->getLayout()->createBlock('byjuno/widget_dobinvoice');
                 ?>
                 <tr>
-                    <td>
-                        <div class="field" style="width: 200px">
+                    <td colspan="2">
+                        <div class="field" style="width: 200px !important;">
                             <?php echo $_dob->setDate($quote->getCustomerDob())->setFieldIdFormat('payment:invoice_%s')->setFieldNameFormat('payment[invoice_%s]')->toHtml(); ?>
                         </div>
                     </td>
