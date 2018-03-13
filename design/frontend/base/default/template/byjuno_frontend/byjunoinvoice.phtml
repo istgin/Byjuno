@@ -52,11 +52,7 @@
         }
 
         ?>
-        <?php if (count($plans) > 1) { ?>
-            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
-        <?php } else { ?>
-            <br />
-        <?php } ?>
+        <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
         <table width="100%">
             <tr>
                 <td style="vertical-align: middle; padding: 0 10px 0 0" width="70">
