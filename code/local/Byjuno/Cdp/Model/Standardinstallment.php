@@ -56,6 +56,11 @@ class Byjuno_Cdp_Model_Standardinstallment
 	{
 		/* @var $info Mage_Sales_Model_Quote_Payment */
 		$info = $this->getInfoInstance();
+		if (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable' && $info->getQuote()->getBillingAddress()->getCompany() != "") {
+			$info->setAdditionalInformation("is_b2b", "true");
+		} else {
+			$info->setAdditionalInformation("is_b2b", "false");
+		}
 		if (is_array($data)) {
 			if (isset($data["installment_payment_plan"])) {
 				$info->setAdditionalInformation("payment_plan", $data["installment_payment_plan"]);

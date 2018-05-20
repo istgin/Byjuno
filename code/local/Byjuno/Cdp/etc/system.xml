@@ -55,7 +55,7 @@
                         </byjuno_invoice_payments>
 
                         <byjuno_invoice_paymentsb2b translate="label">
-                            <label>B2B Invoice payment methods (will be cactivated when B2B is allowed &amp; customer provide company name)</label>
+                            <label>B2B Invoice payment methods (will be activated when B2B is allowed &amp; customer provide company name)</label>
                             <frontend_type>Checkboxes</frontend_type>
                             <sort_order>7</sort_order>
                             <frontend_model>byjuno/catalog_form_renderer_config_byjunoInvoiceRange</frontend_model>
@@ -136,7 +136,7 @@
                         </byjuno_installment_payments>
 
                         <byjuno_installment_paymentsb2b translate="label">
-                            <label>B2B Installment payment methods (will be cactivated when B2B is allowed &amp; customer provide company name)</label>
+                            <label>B2B Installment payment methods (will be activated when B2B is allowed &amp; customer provide company name)</label>
                             <frontend_type>Checkboxes</frontend_type>
                             <sort_order>16</sort_order>
                             <frontend_model>byjuno/catalog_form_renderer_config_byjunoInstallmentRange</frontend_model>

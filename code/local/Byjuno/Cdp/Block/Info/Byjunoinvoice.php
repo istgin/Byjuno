@@ -14,7 +14,12 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         $methodsAllowed["invoice_byjuno_enable"] = 0;
         $methodsAllowed["invoice_single_enable"] = 1;
 
-        $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore()));
+        $info = $this->getInfo()->getAdditionalInformation("is_b2b");
+        if ($info == "true") {
+            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore()));
+        } else {
+            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore()));
+        }
 
         $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
         $paymentSend = $this->getInfo()->getAdditionalInformation("payment_send");
@@ -47,6 +52,12 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
                 $i++;
             }
         }
-        return $stringValues[$plId] . ' - (<a href="'.$this->escapeHtml($stringValues[$plId + 2]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
+        $out = '(B2C)';
+        if ($info == 'true') {
+            $out = '(B2B)';
+        } else if ($info == "") {
+            $out = '(-)';
+        }
+        return $stringValues[$plId] . ' '.$out.' - (<a href="'.$this->escapeHtml($stringValues[$plId + 2]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
     }
 }

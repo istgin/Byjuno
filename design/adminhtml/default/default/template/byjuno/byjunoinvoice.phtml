@@ -6,8 +6,17 @@
         if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
             $lang = $locale;
         }
-        if ($locale)
-            $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+        if ($locale) {
+            if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore());
+            } else {
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+            }
+        }
         $plns = explode(",", $pl);
 
         $stringValues = Array();
@@ -33,8 +42,6 @@
         }
 
         $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
-        /* @var $quote Mage_Sales_Model_Quote */
-        $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
         switch ($lang) {
             case 'de':
