@@ -5,8 +5,9 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
 
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
+        $elName = $element->getName();
         $element->setStyle('display:block')
-            ->setName($element->getName() . '[]');
+            ->setName($elName . '[]');
 
         $methodsAllowed["installment_3"] = array(
             'value' => "installment_3_enable",
@@ -98,7 +99,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
                     $checked = 'checked="checked" ';
                 }
             }
-            $from[] = '<div style="margin: 3px 0 0 0; height: 19px"><input type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" '.$checked.'value="' . $m['value'] . '" '.$disabled.'></div>';
+            $from[] = '<div style="margin: 3px 0 0 0; height: 19px"><input type="checkbox" name="'.$elName.'[]" '.$checked.'value="' . $m['value'] . '" '.$disabled.'></div>';
         }
         $i = 0;
         foreach($methodsName as $m) {
@@ -111,8 +112,8 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
             if (!empty($stringValues[$i + 6])) {
                 $toc = $stringValues[$i + 6];
             }
-            $to[] = '<input style="width: 200px" type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
-            $totoc[] = '<input style="width: 200px" style="width: 200px" type="text" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="'.htmlspecialchars($toc).'" '.$disabled.'>';
+            $to[] = '<input style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
+            $totoc[] = '<input style="width: 200px" style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($toc).'" '.$disabled.'>';
             $i++;
         }
         return '<div style="white-space: nowrap;">
