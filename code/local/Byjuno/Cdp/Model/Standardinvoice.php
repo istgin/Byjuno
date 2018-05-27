@@ -577,10 +577,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $session->setData("intrum_request_type", $requestType);
         $session->setData("intrum_order", $order->getId());
         if ($helper->isStatusOk($status)) {
-            if (false) {
-                return Mage::getUrl('cdp/standard/result');
-            } else {
+            if (Mage::getStoreConfig('payment/cdp/single_query_requests', Mage::app()->getStore())) {
                 return $helper->successAction();
+            } else {
+                return Mage::getUrl('cdp/standard/result');
             }
         } else if ($status == 0) {
             $order->cancel()->save();
