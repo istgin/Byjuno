@@ -1,8 +1,10 @@
 <?php
 
-class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
+class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
+{
 
-    function getStatusRiskVisual($status) {
+    function getStatusRiskVisual($status)
+    {
         if ($status == "IJ") {
             return "Byjuno take a risk";
         }
@@ -11,7 +13,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
         return "No information (check actual transaction)";
     }
-    function getStatusRisk($status) {
+
+    function getStatusRisk($status)
+    {
         if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
             try {
                 $ijStatus = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_risk'));
@@ -35,7 +39,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
     }
 
-    function isStatusOk($status) {
+    function isStatusOk($status)
+    {
         if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
             try {
                 $ijStatus = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_risk'));
@@ -59,14 +64,15 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function getByjunoErrorMessage($status, $paymentType = 'b2c') {
+    function getByjunoErrorMessage($status, $paymentType = 'b2c')
+    {
         $message = '';
         if ($status == 10 && $paymentType == 'b2b') {
-            if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'en') {
+            if (substr(Mage::getStoreConfig('general/locale/code'), 0, 2) == 'en') {
                 $message = 'Company is not found in Register of Commerce';
-            } else if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'fr') {
+            } else if (substr(Mage::getStoreConfig('general/locale/code'), 0, 2) == 'fr') {
                 $message = 'La société n‘est pas inscrit au registre du commerce';
-            } else if (substr(Mage::getStoreConfig('general/locale/code'),0,2) == 'it') {
+            } else if (substr(Mage::getStoreConfig('general/locale/code'), 0, 2) == 'it') {
                 $message = 'L‘azienda non é registrata nel registro di commercio';
             } else {
                 $message = 'Die Firma ist nicht im Handelsregister eingetragen';
@@ -77,20 +83,21 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $message;
     }
 
-    function saveLogOrder(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
-        $data = array( 'firstname'  => $request->getFirstName(),
-            'lastname'   => $request->getLastName(),
-            'postcode'   => $request->getPostCode(),
-            'town'       => $request->getTown(),
-            'country'    => $request->getCountryCode(),
-            'street1'    => $request->getFirstLine(),
+    function saveLogOrder(Mage_Sales_Model_Order $order, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end)
+    {
+        $data = array('firstname' => $request->getFirstName(),
+            'lastname' => $request->getLastName(),
+            'postcode' => $request->getPostCode(),
+            'town' => $request->getTown(),
+            'country' => $request->getCountryCode(),
+            'street1' => $request->getFirstLine(),
             'request_id' => $request->getRequestId(),
-            'status'     => ($status != 0) ? $status : 'Error',
-            'error'      => '',
-            'request'    => $xml_request,
-            'response'   => $xml_response,
-            'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'status' => ($status != 0) ? $status : 'Error',
+            'error' => '',
+            'request' => $xml_request,
+            'response' => $xml_response,
+            'type' => $type,
+            'ip' => $_SERVER['REMOTE_ADDR'],
             'request_start' => $request_start,
             'request_end' => Mage::getSingleton('core/date')->gmtDate());
 
@@ -99,20 +106,21 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $byjuno_model->save();
     }
 
-    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
-        $data = array( 'firstname'  => $request->getFirstName(),
-            'lastname'   => $request->getLastName(),
-            'postcode'   => $request->getPostCode(),
-            'town'       => $request->getTown(),
-            'country'    => $request->getCountryCode(),
-            'street1'    => $request->getFirstLine(),
+    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end)
+    {
+        $data = array('firstname' => $request->getFirstName(),
+            'lastname' => $request->getLastName(),
+            'postcode' => $request->getPostCode(),
+            'town' => $request->getTown(),
+            'country' => $request->getCountryCode(),
+            'street1' => $request->getFirstLine(),
             'request_id' => $request->getRequestId(),
-            'status'     => ($status != 0) ? $status : 'Error',
-            'error'      => '',
-            'request'    => $xml_request,
-            'response'   => $xml_response,
-            'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'status' => ($status != 0) ? $status : 'Error',
+            'error' => '',
+            'request' => $xml_request,
+            'response' => $xml_response,
+            'type' => $type,
+            'ip' => $_SERVER['REMOTE_ADDR'],
             'request_start' => $request_start,
             'request_end' => $request_end);
         $byjuno_model = Mage::getModel('byjuno/byjuno');
@@ -120,21 +128,22 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $byjuno_model->save();
     }
 
-    function saveS4Log(Mage_Sales_Model_Order $order, $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end) {
+    function saveS4Log(Mage_Sales_Model_Order $order, $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end)
+    {
 
-        $data = array( 'firstname'  => $order->getCustomerFirstname(),
-            'lastname'   => $order->getCustomerLastname(),
-            'postcode'   => '-',
-            'town'       => '-',
-            'country'    => '-',
-            'street1'    => '-',
+        $data = array('firstname' => $order->getCustomerFirstname(),
+            'lastname' => $order->getCustomerLastname(),
+            'postcode' => '-',
+            'town' => '-',
+            'country' => '-',
+            'street1' => '-',
             'request_id' => $request->getRequestId(),
-            'status'     => $status,
-            'error'      => '',
-            'request'    => $xml_request,
-            'response'   => $xml_response,
-            'type'       => $type,
-            'ip'         => $_SERVER['REMOTE_ADDR'],
+            'status' => $status,
+            'error' => '',
+            'request' => $xml_request,
+            'response' => $xml_response,
+            'type' => $type,
+            'ip' => $_SERVER['REMOTE_ADDR'],
             'request_start' => $request_start,
             'request_end' => Mage::getSingleton('core/date')->gmtDate());
 
@@ -143,35 +152,39 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $byjuno_model->save();
     }
 
-    public function getClientIp() {
+    public function getClientIp()
+    {
         $ipaddress = '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        } else if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else if(!empty($_SERVER['HTTP_X_FORWARDED'])) {
+        } else if (!empty($_SERVER['HTTP_X_FORWARDED'])) {
             $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        } else if(!empty($_SERVER['HTTP_FORWARDED_FOR'])) {
+        } else if (!empty($_SERVER['HTTP_FORWARDED_FOR'])) {
             $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        } else if(!empty($_SERVER['HTTP_FORWARDED'])) {
+        } else if (!empty($_SERVER['HTTP_FORWARDED'])) {
             $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        } else if(!empty($_SERVER['REMOTE_ADDR'])) {
+        } else if (!empty($_SERVER['REMOTE_ADDR'])) {
             $ipaddress = $_SERVER['REMOTE_ADDR'];
         } else {
             $ipaddress = 'UNKNOWN';
         }
-		$ipd = explode(",", $ipaddress);
-		return trim(end($ipd));
+        $ipd = explode(",", $ipaddress);
+        return trim(end($ipd));
     }
-    public function mapMethod($method) {
-		if ($method == 'cdp_installment') {
-			return "INSTALLMENT";
-		} else {
-			return "INVOICE";
-		}
-	}
 
-    public function mapRepayment($type) {
+    public function mapMethod($method)
+    {
+        if ($method == 'cdp_installment') {
+            return "INSTALLMENT";
+        } else {
+            return "INVOICE";
+        }
+    }
+
+    public function mapRepayment($type)
+    {
         if ($type == 'installment_3_enable') {
             return "10";
         } else if ($type == 'installment_10_enable') {
@@ -191,7 +204,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
     }
 
-    public function valueToStatus($val) {
+    public function valueToStatus($val)
+    {
         $status[0] = 'Fail to connect (status Error)';
         $status[1] = 'There are serious negative indicators (status 1)';
         $status[2] = 'All payment methods allowed (status 2)';
@@ -215,23 +229,25 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
 
-    public function saveStatusToOrder($order, $byjuno_status, Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse $ByjunoResponse) {
-        $order->addStatusHistoryComment('<b>Byjuno status: '.$this->valueToStatus($byjuno_status).'</b><br/>Credit rating: '.$ByjunoResponse->getCustomerCreditRating().'<br/>Credit rating level: '.$ByjunoResponse->getCustomerCreditRatingLevel().'<br/>Status code: '. $byjuno_status.'</b>');
+    public function saveStatusToOrder($order, $byjuno_status, Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse $ByjunoResponse)
+    {
+        $order->addStatusHistoryComment('<b>Byjuno status: ' . $this->valueToStatus($byjuno_status) . '</b><br/>Credit rating: ' . $ByjunoResponse->getCustomerCreditRating() . '<br/>Credit rating level: ' . $ByjunoResponse->getCustomerCreditRatingLevel() . '<br/>Status code: ' . $byjuno_status . '</b>');
         $order->setByjunoStatus($byjuno_status);
         $order->setByjunoCreditRating($ByjunoResponse->getCustomerCreditRating());
         $order->setByjunoCreditLevel($ByjunoResponse->getCustomerCreditRatingLevel());
         $order->save();
     }
 
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom, $riskOwner) {
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom, $riskOwner)
+    {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid', Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid', Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password', Mage::app()->getStore()));
         $request->setVersion("1.00");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail', Mage::app()->getStore()));
         } catch (Exception $e) {
 
         }
@@ -253,27 +269,27 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('1');
             } else if ($g == '2') {
                 $request->setGender('2');
-            } else {			
+            } else {
                 $request->setGender('0');
-			}
-        } 
-		
-		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            }
+        }
+
+        if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
             if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
             } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
             }
         }
-		
-		$p = $order->getBillingAddress()->getPrefix(); 
+
+        $p = $order->getBillingAddress()->getPrefix();
         if (!empty($p)) {
-			if (strtolower($p) == 'herr') {
-				$request->setGender('1');
-			} else if (strtolower($p) == 'frau') {
-				$request->setGender('2');
-			}
-		}
+            if (strtolower($p) == 'herr') {
+                $request->setGender('1');
+            } else if (strtolower($p) == 'frau') {
+                $request->setGender('2');
+            }
+        }
 
         if (!empty($dob_custom)) {
             try {
@@ -294,10 +310,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
             }
         }
 
-        $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId()."_"));
+        $request->setRequestId(uniqid((String)$order->getBillingAddress()->getId() . "_"));
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setCustomerReference("guest_".$order->getId());
+            $request->setCustomerReference("guest_" . $order->getId());
         } else {
             $request->setCustomerReference($order->getCustomerId());
         }
@@ -376,26 +392,26 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
-			
-				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-				$extraInfo["Value"] = '';
-				$request->setExtraInfo($extraInfo);
 
-				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getCompany();
-				$request->setExtraInfo($extraInfo);
-				
+                $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+                $extraInfo["Value"] = '';
+                $request->setExtraInfo($extraInfo);
+
+                $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
+                $request->setExtraInfo($extraInfo);
+
             } else {
-			
-				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
-				$request->setExtraInfo($extraInfo);
 
-				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getLastname();
-				$request->setExtraInfo($extraInfo);
-			
-			}
+                $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
+                $request->setExtraInfo($extraInfo);
+
+                $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getLastname();
+                $request->setExtraInfo($extraInfo);
+
+            }
         }
 
         $extraInfo["Name"] = 'ORDERID';
@@ -414,32 +430,33 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Value"] = $riskOwner;
         $request->setExtraInfo($extraInfo);
 
-		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
-		$request->setExtraInfo($extraInfo);	
+        $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
+        $request->setExtraInfo($extraInfo);
 
         return $request;
 
     }
 
-    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, Mage_Sales_Model_Order_Invoice $invoice, $webshopProfile) {
+    function CreateMagentoShopRequestS4Paid(Mage_Sales_Model_Order $order, Mage_Sales_Model_Order_Invoice $invoice, $webshopProfile)
+    {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',$webshopProfile));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',$webshopProfile));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',$webshopProfile));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid', $webshopProfile));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid', $webshopProfile));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password', $webshopProfile));
         $request->setVersion("1.3");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',$webshopProfile));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail', $webshopProfile));
         } catch (Exception $e) {
 
         }
-        $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
+        $request->setRequestId(uniqid((String)$order->getCustomerId() . "_"));
 
         $request->setOrderId($order->getIncrementId());
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setClientRef("guest_".$order->getId());
+            $request->setClientRef("guest_" . $order->getId());
         } else {
             $request->setClientRef($order->getCustomerId());
         }
@@ -454,24 +471,25 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
 
     }
 
-    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount, $transactionType, $webshopProfile, $invoiceId = '') {
+    function CreateMagentoShopRequestS5Paid(Mage_Sales_Model_Order $order, $amount, $transactionType, $webshopProfile, $invoiceId = '')
+    {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS5Request();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',$webshopProfile));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',$webshopProfile));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',$webshopProfile));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid', $webshopProfile));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid', $webshopProfile));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password', $webshopProfile));
         $request->setVersion("1.3");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',$webshopProfile));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail', $webshopProfile));
         } catch (Exception $e) {
 
         }
-        $request->setRequestId(uniqid((String)$order->getCustomerId()."_"));
+        $request->setRequestId(uniqid((String)$order->getCustomerId() . "_"));
 
         $request->setOrderId($order->getIncrementId());
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setClientRef("guest_".$order->getId());
+            $request->setClientRef("guest_" . $order->getId());
         } else {
             $request->setClientRef($order->getCustomerId());
         }
@@ -491,12 +509,12 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
     function CreateMagentoShopRequestCreditCheck(Mage_Sales_Model_Quote $quote)
     {
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid', Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid', Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password', Mage::app()->getStore()));
         $request->setVersion("1.00");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail', Mage::app()->getStore()));
         } catch (Exception $e) {
 
         }
@@ -513,26 +531,26 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
-			
-		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+
+        if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
             if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
             } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
             }
         }
-		
-		$p = $quote->getBillingAddress()->getPrefix(); 
-		if (!empty($p) && strtolower($p) == 'herr') {
-			$request->setGender('1');
-		} else if (!empty($p) && strtolower($p) == 'frau') {
-			$request->setGender('2');
-		}
 
-        $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId()."_"));
+        $p = $quote->getBillingAddress()->getPrefix();
+        if (!empty($p) && strtolower($p) == 'herr') {
+            $request->setGender('1');
+        } else if (!empty($p) && strtolower($p) == 'frau') {
+            $request->setGender('2');
+        }
+
+        $request->setRequestId(uniqid((String)$quote->getBillingAddress()->getId() . "_"));
         $reference = $quote->getCustomer()->getId();
         if (empty($reference)) {
-            $request->setCustomerReference("guest_".$quote->getBillingAddress()->getId());
+            $request->setCustomerReference("guest_" . $quote->getBillingAddress()->getId());
         } else {
             $request->setCustomerReference($quote->getCustomer()->getId());
         }
@@ -620,15 +638,16 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         return $request;
     }
 
-    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom) {
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom)
+    {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
-        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid',Mage::app()->getStore()));
-        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid',Mage::app()->getStore()));
-        $request->setPassword(Mage::getStoreConfig('payment/cdp/password',Mage::app()->getStore()));
+        $request->setClientId(Mage::getStoreConfig('payment/cdp/clientid', Mage::app()->getStore()));
+        $request->setUserID(Mage::getStoreConfig('payment/cdp/userid', Mage::app()->getStore()));
+        $request->setPassword(Mage::getStoreConfig('payment/cdp/password', Mage::app()->getStore()));
         $request->setVersion("1.00");
         try {
-            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail',Mage::app()->getStore()));
+            $request->setRequestEmail(Mage::getStoreConfig('payment/cdp/mail', Mage::app()->getStore()));
         } catch (Exception $e) {
 
         }
@@ -661,27 +680,27 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('1');
             } else if ($g == '2') {
                 $request->setGender('2');
-            } else {			
+            } else {
                 $request->setGender('0');
-			}
-        } 
-		if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
+            }
+        }
+        if (($request->getGender() == '0' || $request->getGender() == '') && isset($_POST["billing"]["gender"])) {
             if ($_POST["billing"]["gender"] == '1') {
                 $request->setGender('1');
             } else if ($_POST["billing"]["gender"] == '2') {
                 $request->setGender('2');
             }
         }
-		
-		$p = $order->getBillingAddress()->getPrefix(); 
+
+        $p = $order->getBillingAddress()->getPrefix();
         if (!empty($p)) {
-			if (strtolower($p) == 'herr') {
-				$request->setGender('1');
-			} else if (strtolower($p) == 'frau') {
-				$request->setGender('2');
-			}
-		}
-		
+            if (strtolower($p) == 'herr') {
+                $request->setGender('1');
+            } else if (strtolower($p) == 'frau') {
+                $request->setGender('2');
+            }
+        }
+
         if (!empty($gender_custom)) {
             if ($gender_custom == '1') {
                 $request->setGender('1');
@@ -689,14 +708,13 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $request->setGender('2');
             }
         }
-		
-		
 
-        $requestId = uniqid((String)$order->getBillingAddress()->getId()."_");
+
+        $requestId = uniqid((String)$order->getBillingAddress()->getId() . "_");
         $request->setRequestId($requestId);
         $reference = $order->getCustomerId();
         if (empty($reference)) {
-            $request->setCustomerReference("guest_".$order->getId());
+            $request->setCustomerReference("guest_" . $order->getId());
         } else {
             $request->setCustomerReference($order->getCustomerId());
         }
@@ -746,7 +764,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         }
 
         /* shipping information */
-        if ($order->canShip()) {            
+        if ($order->canShip()) {
 
             $extraInfo["Name"] = 'DELIVERY_FIRSTLINE';
             $extraInfo["Value"] = trim($order->getShippingAddress()->getStreetFull());
@@ -772,25 +790,25 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
                 $request->setExtraInfo($extraInfo);
-			
-				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-				$extraInfo["Value"] = '';
-				$request->setExtraInfo($extraInfo);
 
-				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getCompany();
-				$request->setExtraInfo($extraInfo);
-				
+                $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+                $extraInfo["Value"] = '';
+                $request->setExtraInfo($extraInfo);
+
+                $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
+                $request->setExtraInfo($extraInfo);
+
             } else {
-			
-				$extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
-				$request->setExtraInfo($extraInfo);
 
-				$extraInfo["Name"] = 'DELIVERY_LASTNAME';
-				$extraInfo["Value"] = $order->getShippingAddress()->getLastname();
-				$request->setExtraInfo($extraInfo);
-			}
+                $extraInfo["Name"] = 'DELIVERY_FIRSTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getFirstname();
+                $request->setExtraInfo($extraInfo);
+
+                $extraInfo["Name"] = 'DELIVERY_LASTNAME';
+                $extraInfo["Value"] = $order->getShippingAddress()->getLastname();
+                $request->setExtraInfo($extraInfo);
+            }
         }
 
         $extraInfo["Name"] = 'PP_TRANSACTION_NUMBER';
@@ -809,9 +827,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $extraInfo["Value"] = $this->mapRepayment($repayment);
         $request->setExtraInfo($extraInfo);
 
-		$extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-		$extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
-		$request->setExtraInfo($extraInfo);
+        $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
+        $request->setExtraInfo($extraInfo);
         return $request;
     }
 
@@ -864,8 +882,8 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $mailer->setStoreId($storeId);
         $mailer->setTemplateId($templateId);
         $mailer->setTemplateParams(array(
-            'order'        => $order,
-            'billing'      => $order->getBillingAddress(),
+            'order' => $order,
+            'billing' => $order->getBillingAddress(),
             'payment_html' => $paymentBlockHtml
         ));
 
@@ -985,14 +1003,142 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract {
         $mailer->setStoreId($storeId);
         $mailer->setTemplateId($templateId);
         $mailer->setTemplateParams(array(
-                'order'        => $order,
-                'creditmemo'   => $creditMemo,
-                'comment'      => $comment,
-                'billing'      => $order->getBillingAddress(),
+                'order' => $order,
+                'creditmemo' => $creditMemo,
+                'comment' => $comment,
+                'billing' => $order->getBillingAddress(),
                 'payment_html' => $paymentBlockHtml
             )
         );
         $mailer->send();
+    }
+
+    public function  successAction()
+    {
+        $request_start = date('Y-m-d G:i:s');
+        $session = Mage::getSingleton('checkout/session');
+        $session->setByjunoStandardQuoteId($session->getQuoteId());
+        $statusRequest = $session->getData("intrum_status");
+        $statusRequestType = $session->getData("intrum_request_type");
+        $byjunoTransaction = $session->getData("byjuno_transaction");
+        $orderId = $session->getData("intrum_order");
+        if ($this->isStatusOk($statusRequest)) {
+            if (!$this->isStatusOk($statusRequest)) {
+                $session->addError($this->getByjunoErrorMessage($statusRequest, $statusRequestType) . " (S1 Redirect-2)");
+                return Mage::getUrl('cdp/standard/cancel');
+            }
+            $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+            $session = Mage::getSingleton('checkout/session');
+            $session->setQuoteId($session->getByjunoStandardQuoteId(true));
+            /* @var $order Mage_Sales_Model_Order */
+            $order = Mage::getModel('sales/order')->load($orderId);
+
+            $payment = $order->getPayment();
+            $paymentPlan = $payment->getAdditionalInformation("payment_plan");
+            $paymentSend = $payment->getAdditionalInformation("payment_send");
+            $gender_custom = '';
+            if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+                $gender_custom = $payment->getAdditionalInformation("gender_custom");
+            }
+            $dob_custom = '';
+            if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+                $dob_custom = $payment->getAdditionalInformation("dob_custom");
+            }
+
+            $riskOwner = $this->getStatusRisk($statusRequest);
+            $riskOwnerVisual = $this->getStatusRiskVisual($riskOwner);
+
+            $request = $this->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoTransaction, $paymentSend, $gender_custom, $dob_custom, $riskOwner);
+            $ByjunoRequestName = "Order paid";
+            $requestType = 'b2c';
+            if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+                $ByjunoRequestName = "Order paid for Company";
+                $requestType = 'b2b';
+                $xml = $request->createRequestCompany();
+            } else {
+                $xml = $request->createRequest();
+            }
+            $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+            $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+            if ($mode == 'production') {
+                $byjunoCommunicator->setServer('live');
+            } else {
+                $byjunoCommunicator->setServer('test');
+            }
+            $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+            $status = 0;
+            if ($response) {
+                $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
+                $byjunoResponse->setRawResponse($response);
+                $byjunoResponse->processResponse();
+                $status = (int)$byjunoResponse->getCustomerRequestStatus();
+                if (intval($status) > 15) {
+                    $status = 0;
+                }
+                $this->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
+                $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
+                if (!empty($statusToPayment) && !empty($ByjunoResponseSession)) {
+                    $this->saveStatusToOrder($order, $statusToPayment, unserialize($ByjunoResponseSession));
+                }
+            } else {
+                $this->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+            }
+            if ($this->isStatusOk($statusRequest) && $status == 2) {
+                $payment->setAdditionalInformation("s3_ok", 'true')->save();
+                $status = Mage::getStoreConfig('payment/cdp/success_order_status', Mage::app()->getStore());
+                /* @var $config Mage_Sales_Model_Order_Config */
+                $config = $order->getConfig();
+                $states = $config->getStatusStates($status);
+                if (!empty($states[0]) && $states[0] instanceof Mage_Sales_Model_Order_Status) {
+                    /* @var $state Mage_Sales_Model_Order_Status */
+                    $state = $states[0];
+                    $st = $state->getData();
+                    if (!empty($st["status"]) && !empty($st["state"])) {
+                        $order->setState($st["state"], true, '', null);
+                        $order->setStatus($st["status"]);
+                    } else {
+                        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null);
+                    }
+                } else {
+                    $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', null);
+
+                }
+                $order->getPayment()->setAdditionalInformation("payment_riskowner", $riskOwnerVisual);
+                $order->save();
+                try {
+                    if (Mage::getStoreConfig('payment/cdp/forsesendendcustomer', Mage::app()->getStore()) == '1') {
+
+                        $order->queueNewOrderEmail(true);
+                        $order->getResource()->saveAttribute($order, 'email_sent');
+                        $order->setEmailSent(true);
+                        $order->save();
+                    }
+                    $this->queueNewOrderEmail($order);
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+                $paymentRiskOwner = $order->getPayment()->getAdditionalInformation("payment_riskowner");
+
+                if ($paymentRiskOwner == null || $paymentRiskOwner == "") {
+                    $paymentRiskOwner = "Check actual transaction RISKOWNER tag";
+                }
+                $htmlAdd = $this->__("Risk owner") . ": " . $paymentRiskOwner;
+
+                $historyItem = $order->addStatusHistoryComment($htmlAdd, $status);
+                $historyItem->setIsVisibleOnFront(false)->save();
+
+                Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
+                Mage::getSingleton('checkout/session')->getQuote()->setIsActive(false)->save();
+                return Mage::getUrl('checkout/onepage/success', array('_secure' => true));
+            } else {
+                $session->addError($this->getByjunoErrorMessage($status, $requestType) . " (S3)");
+                return Mage::getUrl('cdp/standard/cancel');
+            }
+        } else {
+            $session->addError($this->getByjunoErrorMessage($statusRequest, $statusRequestType) . " (S1 cancel)");
+            return Mage::getUrl('cdp/standard/cancel');
+        }
     }
 
 }
