@@ -632,6 +632,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
 
+        $extraInfo["Name"] = 'MESSAGETYPESPEC';
+        $extraInfo["Value"] = 'CREDITCHECK';
+        $request->setExtraInfo($extraInfo);
+
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
         $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
         $request->setExtraInfo($extraInfo);
@@ -810,6 +814,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
                 $request->setExtraInfo($extraInfo);
             }
         }
+
+        $extraInfo["Name"] = 'MESSAGETYPESPEC';
+        $extraInfo["Value"] = 'ORDERREQUEST';
+        $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'PP_TRANSACTION_NUMBER';
         $extraInfo["Value"] = $requestId;
