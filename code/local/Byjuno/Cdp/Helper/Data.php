@@ -238,7 +238,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $order->save();
     }
 
-    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom, $riskOwner)
+    function CreateMagentoShopRequestPaid(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $transaction, $invoiceDelivery, $gender_custom, $dob_custom, $riskOwner, $email = '')
     {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
@@ -332,6 +332,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
 
         $request->setTelephonePrivate((String)trim($order->getBillingAddress()->getTelephone(), '-'));
         $request->setEmail((String)$order->getBillingAddress()->getEmail());
+        if (!empty($email)) {
+            $request->setEmail((String)$email);
+        }
 
         $extraInfo["Name"] = 'TRANSACTIONNUMBER';
         $extraInfo["Value"] = $transaction;
@@ -642,7 +645,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         return $request;
     }
 
-    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom)
+    function CreateMagentoShopRequestOrder(Mage_Sales_Model_Order $order, $paymentmethod, $repayment, $invoiceDelivery, $gender_custom, $dob_custom, $email = '')
     {
 
         $request = new Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest();
@@ -737,6 +740,9 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
 
         $request->setTelephonePrivate((String)trim($order->getBillingAddress()->getTelephone(), '-'));
         $request->setEmail((String)$order->getBillingAddress()->getEmail());
+        if (!empty($email)) {
+            $request->setEmail((String)$email);
+        }
 
         $extraInfo["Name"] = 'ORDERCLOSED';
         $extraInfo["Value"] = 'NO';

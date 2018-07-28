@@ -54,6 +54,14 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         if (Mage::app()->getStore()->isAdmin())
         {
             $payment = $order->getPayment();
+            $email = $order->getBillingAddress()->getEmail();
+            if (empty($email)) {
+                $email = $order->getCustomerEmail();
+            }
+            if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i', $email)) {
+                $order->cancel()->save();
+                throw new Exception("Wrong email address. Order canceled. ". $email);
+            }
             $paymentMethod = $payment->getMethod();
             $paymentPlan = $payment->getAdditionalInformation("payment_plan");
             $paymentSend = $payment->getAdditionalInformation("payment_send");
@@ -66,8 +74,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 $dob_custom = $payment->getAdditionalInformation("dob_custom");
             }
-
-            $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
+            $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom, $email);
 
             $ByjunoRequestName = "Order request";
             $requestType = 'b2c';
@@ -127,7 +134,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                 $riskOwner = $this->getHelper()->getStatusRisk($statusRequest);
                 $riskOwnerVisual = $this->getHelper()->getStatusRiskVisual($riskOwner);
 
-                $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoResponse->getTransactionNumber(), $paymentSend, $gender_custom, $dob_custom, $riskOwner);
+                $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoResponse->getTransactionNumber(), $paymentSend, $gender_custom, $dob_custom, $riskOwner, $email);
                 $ByjunoRequestName = "Order paid";
                 $requestType = 'b2c';
                 if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
