@@ -70,6 +70,9 @@ class Byjuno_Cdp_Model_Standardinstallment
 					$info->setAdditionalInformation("gender_custom", $data["installment_gender"]);
 				}
 			}
+			if (isset($data["preffered_language"])) {
+				$info->setAdditionalInformation("preffered_language", $data["preffered_language"]);
+			}
 			if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
 				if (isset($data["installment_dob"])) {
 					$info->setAdditionalInformation("dob_custom", $data["installment_dob"]);
@@ -98,6 +101,9 @@ class Byjuno_Cdp_Model_Standardinstallment
 				if ($data->getInstallmentGender()) {
 					$info->setAdditionalInformation("gender_custom", $data->getInstallmentGender());
 				}
+			}
+			if ($data->getPrefferedLanguage()) {
+				$info->setAdditionalInformation("preffered_language", $data->getPrefferedLanguage());
 			}
 			if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
 				if ($data->getInstallmentMonth() && $data->getInstallmentDay() && $data->getInstallmentYear()) {

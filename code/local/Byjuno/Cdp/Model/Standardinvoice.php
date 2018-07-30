@@ -436,6 +436,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     $info->setAdditionalInformation("gender_custom", $data["invoice_gender"]);
                 }
             }
+            if (isset($data["preffered_language"])) {
+                $info->setAdditionalInformation("preffered_language", $data["preffered_language"]);
+            }
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 if (isset($data["invoice_month"]) && isset($data["invoice_day"]) && isset($data["invoice_year"])) {
                     $dob = intval($data["invoice_day"]).'.'.intval($data["invoice_month"]).'.'.intval($data["invoice_year"]);
@@ -461,6 +464,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 if ($data->getInvoiceGender()) {
                     $info->setAdditionalInformation("gender_custom", $data->getInvoiceGender());
                 }
+            }
+            if ($data->getPrefferedLanguage()) {
+                $info->setAdditionalInformation("preffered_language", $data->getPrefferedLanguage());
             }
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 if ($data->getInvoiceMonth() && $data->getInvoiceDay() && $data->getInvoiceYear()) {
