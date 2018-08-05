@@ -41,6 +41,71 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         throw new Exception('quote not set');
     }
 
+    public function byjunoProcessShipping(Varien_Event_Observer $observer)
+    {
+        /* @var $shipment Mage_Sales_Model_Order_Shipment */
+        $shipment = $observer->getEvent()->getShipment();
+        if ($shipment) {
+            $order = $shipment->getOrder();
+            /* @var $invoices Mage_Sales_Model_Resource_Order_Invoice_Collection */
+            $invoices = $order->getInvoiceCollection();
+            $coountInv = count($invoices);
+            if ($coountInv > 0) {
+                foreach ($invoices as $invoice) {
+                    $request_start = date('Y-m-d G:i:s');
+                    /* @var $invoice Mage_Sales_Model_Order_Invoice */
+                    $payment = $order->getPayment();
+                    $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
+                    if (!isset($webshopProfileId) || $webshopProfileId == "") {
+                        $webshopProfileId = $order->getStoreId();
+                    }
+                    if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', $webshopProfileId) == '0') {
+                        return;
+                    }
+                    if (Mage::getStoreConfig('payment/cdp/byjunos4transactonactivationplace', $webshopProfileId) == 'shipping') {
+                        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
+                            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)) . " (error code: S3_NOT_CREATED)");
+                        }
+                        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
+
+                        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
+                        $invoiceId = $invoice->getIncrementId();
+                        if ($invoiceId == null) {
+                            $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
+                            $invoice->setIncrementId($invoiceId);
+                        }
+
+                        /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
+                        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
+                        $ByjunoRequestName = 'Byjuno S4';
+                        $xml = $request->createRequest();
+                        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+                        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
+                        if ($mode == 'production') {
+                            $byjunoCommunicator->setServer('live');
+                        } else {
+                            $byjunoCommunicator->setServer('test');
+                        }
+                        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
+                        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
+                        if ($response) {
+                            $byjunoResponse->setRawResponse($response);
+                            $byjunoResponse->processResponse();
+                            $status = $byjunoResponse->getProcessingInfoClassification();
+                            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                        } else {
+                            $status = "ERR";
+                            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                        }
+                        if ($status == 'INF') {
+                            $this->getHelper()->sendEmailInvoice($invoice, $webshopProfileId);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function saveOrderAdmin(Varien_Event_Observer $observer)
     {
         $request_start = date('Y-m-d G:i:s');

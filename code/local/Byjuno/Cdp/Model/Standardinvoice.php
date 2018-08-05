@@ -98,44 +98,46 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', $webshopProfileId) == '0') {
             return $this;
         }
-        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)). " (error code: S3_NOT_CREATED)");
-        }
-        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
+        if (Mage::getStoreConfig('payment/cdp/byjunos4transactonactivationplace', $webshopProfileId) == 'invoice') {
+            if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
+                Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)) . " (error code: S3_NOT_CREATED)");
+            }
+            $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
 
-        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
-        $invoiceId = $invoice->getIncrementId();
-        if ($invoiceId == null) {
-            $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
-            $invoice->setIncrementId($invoiceId);
-        }
+            $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
+            $invoiceId = $invoice->getIncrementId();
+            if ($invoiceId == null) {
+                $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
+                $invoice->setIncrementId($invoiceId);
+            }
 
-        /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
-        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
-        $ByjunoRequestName = 'Byjuno S4';
-        $xml = $request->createRequest();
-        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
-        if ($mode == 'production') {
-            $byjunoCommunicator->setServer('live');
-        } else {
-            $byjunoCommunicator->setServer('test');
-        }
-        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
-        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
-        if ($response) {
-            $byjunoResponse->setRawResponse($response);
-            $byjunoResponse->processResponse();
-            $status = $byjunoResponse->getProcessingInfoClassification();
-            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
-        } else {
-            $status = "ERR";
-            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
-        }
-        if ($status == 'ERR') {
-            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)));
-        } else {
-            $this->getHelper()->sendEmailInvoice($invoice, $webshopProfileId);
+            /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
+            $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
+            $ByjunoRequestName = 'Byjuno S4';
+            $xml = $request->createRequest();
+            $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+            $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
+            if ($mode == 'production') {
+                $byjunoCommunicator->setServer('live');
+            } else {
+                $byjunoCommunicator->setServer('test');
+            }
+            $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
+            $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
+            if ($response) {
+                $byjunoResponse->setRawResponse($response);
+                $byjunoResponse->processResponse();
+                $status = $byjunoResponse->getProcessingInfoClassification();
+                $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+            } else {
+                $status = "ERR";
+                $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+            }
+            if ($status == 'ERR') {
+                Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)));
+            } else {
+                $this->getHelper()->sendEmailInvoice($invoice, $webshopProfileId);
+            }
         }
         return $this;
     }

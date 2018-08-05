@@ -292,10 +292,20 @@
                             <show_in_store>1</show_in_store>
                         </byjunos4transacton>
 
+                        <byjunos4transactonactivationplace translate="label comment">
+                            <label>S4 Transaction activation place</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>byjuno/source_Activationplace</source_model>
+                            <sort_order>96</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </byjunos4transactonactivationplace>
+
                         <byjuno_s4_explain translate="label">
                             <label></label>
                             <frontend_model>byjuno/catalog_form_renderer_config_byjunoS4Check</frontend_model>
-                            <sort_order>96</sort_order>
+                            <sort_order>97</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -304,7 +314,7 @@
                         <byjuno_s4_fail translate="label">
                             <label>*Localization* Process S4 failed</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>97</sort_order>
+                            <sort_order>98</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -313,7 +323,7 @@
                             <label>Enable S5 Transaction</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>98</sort_order>
+                            <sort_order>99</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -322,7 +332,7 @@
                         <byjuno_s5_explain translate="label">
                             <label></label>
                             <frontend_model>byjuno/catalog_form_renderer_config_byjunoS5Check</frontend_model>
-                            <sort_order>99</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -331,7 +341,7 @@
                         <byjuno_s5_fail translate="label">
                             <label>*Localization* Process S5 failed</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
+                            <sort_order>101</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -339,7 +349,7 @@
                         <mail translate="label">
                             <label>Technical Contact (E-mail)</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>101</sort_order>
+                            <sort_order>102</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

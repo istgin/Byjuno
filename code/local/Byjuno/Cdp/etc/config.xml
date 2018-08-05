@@ -146,6 +146,15 @@
             </sales_convert_quote>
         </fieldsets>
         <events>
+            <sales_order_shipment_save_after>
+                <observers>
+                    <byjuno_submit_shiping_order_admin>
+                        <type>singleton</type>
+                        <class>byjuno/observer</class>
+                        <method>byjunoProcessShipping</method>
+                    </byjuno_submit_shiping_order_admin>
+                </observers>
+            </sales_order_shipment_save_after>
             <checkout_submit_all_after>
                 <observers>
                     <byjuno_submit_order_admin>
@@ -340,6 +349,7 @@
 				<telephone_code_wrong>Die Telefonnummer der Rechnungsadresse ist fehlerhaft</telephone_code_wrong>
                 <byjuno_prod_email>invoices@byjuno.ch</byjuno_prod_email>
                 <byjuno_test_email>test-invoices@byjuno.ch</byjuno_test_email>
+                <byjunos4transactonactivationplace>invoice</byjunos4transactonactivationplace>
                 <cdpplaces>checkout,onepage,saveShippingMethod
 onestepcheckout,index,saveShippingMethod
 onestepcheckout,onepage,saveShippingMethod
