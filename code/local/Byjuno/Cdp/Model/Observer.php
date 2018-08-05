@@ -142,10 +142,10 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
             }
             $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom, $email, $preffered_language);
 
-            $ByjunoRequestName = "Order request";
+            $ByjunoRequestName = "Order request (backend)";
             $requestType = 'b2c';
             if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                $ByjunoRequestName = "Order request for Company";
+                $ByjunoRequestName = "Order request for Company (backend)";
                 $requestType = 'b2b';
                 $xml = $request->createRequestCompany();
             } else {
@@ -201,10 +201,10 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                 $riskOwnerVisual = $this->getHelper()->getStatusRiskVisual($riskOwner);
 
                 $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoResponse->getTransactionNumber(), $paymentSend, $gender_custom, $dob_custom, $riskOwner, $email, $preffered_language);
-                $ByjunoRequestName = "Order paid";
+                $ByjunoRequestName = "Order paid (backend)";
                 $requestType = 'b2c';
                 if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                    $ByjunoRequestName = "Order paid for Company";
+                    $ByjunoRequestName = "Order paid for Company (backend)";
                     $requestType = 'b2b';
                     $xml = $request->createRequestCompany();
                 } else {

@@ -92,6 +92,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             'country' => $request->getCountryCode(),
             'street1' => $request->getFirstLine(),
             'request_id' => $request->getRequestId(),
+            'orderid' => $order->getIncrementId(),
             'status' => ($status != 0) ? $status : 'Error',
             'error' => '',
             'request' => $xml_request,
@@ -106,7 +107,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $byjuno_model->save();
     }
 
-    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end)
+    function saveLog(Mage_Sales_Model_Quote $quote, Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest $request, $xml_request, $xml_response, $status, $type, $request_start, $request_end, $orderId)
     {
         $data = array('firstname' => $request->getFirstName(),
             'lastname' => $request->getLastName(),
@@ -117,6 +118,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             'request_id' => $request->getRequestId(),
             'status' => ($status != 0) ? $status : 'Error',
             'error' => '',
+            'orderid' => $orderId,
             'request' => $xml_request,
             'response' => $xml_response,
             'type' => $type,
@@ -140,6 +142,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             'request_id' => $request->getRequestId(),
             'status' => $status,
             'error' => '',
+            'orderid' => $order->getIncrementId(),
             'request' => $xml_request,
             'response' => $xml_response,
             'type' => $type,
@@ -437,7 +440,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.1';
         $request->setExtraInfo($extraInfo);
 
         return $request;
@@ -643,7 +646,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.1';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -848,7 +851,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.0';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.1';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -1095,14 +1098,14 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
                 if (intval($status) > 15) {
                     $status = 0;
                 }
-                $this->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                $this->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), $order->getIncrementId());
                 $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
                 $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
                 if (!empty($statusToPayment) && !empty($ByjunoResponseSession)) {
                     $this->saveStatusToOrder($order, $statusToPayment, unserialize($ByjunoResponseSession));
                 }
             } else {
-                $this->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                $this->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), $order->getIncrementId());
             }
             if ($this->isStatusOk($statusRequest) && $status == 2) {
                 $payment->setAdditionalInformation("s3_ok", 'true')->save();

@@ -120,6 +120,17 @@ class Byjuno_Cdp_Block_Admin_Log extends Mage_Adminhtml_Block_Widget_Grid
             'escape'        => true,
         ));
 
+        $this->addColumn('orderid', array(
+            'header'        => Mage::helper('byjuno')->__('Order ID'),
+            'align'         => 'left',
+            'width'         => '100px',
+            'filter_index'  => 'orderid',
+            'index'         => 'orderid',
+            'type'          => 'text',
+            'truncate'      => 50,
+            'escape'        => true,
+        ));
+
 
         $this->addColumn('creation_date', array(
             'header'        => Mage::helper('byjuno')->__('Date'),
