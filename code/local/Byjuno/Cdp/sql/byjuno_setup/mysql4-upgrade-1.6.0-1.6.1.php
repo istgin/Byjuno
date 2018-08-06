@@ -1,15 +1,8 @@
 <?php
 
-$installer = $this;
-$installer->startSetup();
+$this->startSetup();
 
-$installer->getConnection()
-
-    ->addColumn($installer->getTable('byjuno'), 'orderid', array(
-        'type'      => Varien_Db_Ddl_Table::TYPE_VARCHAR,
-        'nullable'  => true,
-        'length'    => 255,
-        'after'     => null, // column name to insert new column after
-        'comment'   => 'Order ID'
-    ));
-$installer->endSetup();
+$this->run("ALTER TABLE {$this->getTable('byjuno')} (
+  ADD COLUMN `orderid` varchar(250) AFTER `creation_date`;");
+  
+$this->endSetup();
