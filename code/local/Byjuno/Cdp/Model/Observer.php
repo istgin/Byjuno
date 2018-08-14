@@ -118,6 +118,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         }
         if (Mage::app()->getStore()->isAdmin())
         {
+            $session = Mage::getSingleton('admin/session');
             $payment = $order->getPayment();
             $email = $order->getBillingAddress()->getEmail();
             if (empty($email)) {
@@ -131,6 +132,7 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
             $paymentPlan = $payment->getAdditionalInformation("payment_plan");
             $paymentSend = $payment->getAdditionalInformation("payment_send");
             $preffered_language = $payment->getAdditionalInformation("preffered_language");
+            $session->setByjunoLanguage($preffered_language);
 
             $gender_custom = '';
             if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
