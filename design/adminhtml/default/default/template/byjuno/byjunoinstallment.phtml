@@ -1,6 +1,13 @@
 <div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
     <div><?php
         $locale = Mage::getStoreConfig('general/locale/code', Mage::app()->getStore());
+        $session = Mage::getSingleton('admin/session');
+        $pref_lang = $session->getByjunoLanguage();
+        var_dump($pref_lang);
+        if (empty($pref_lang))
+        {
+            $pref_lang = 'de';
+        }
         $locale = strstr($locale, "_", true);
         $lang = 'de';
         if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
@@ -151,10 +158,10 @@
                 <td style="vertical-align: middle" width="100%">
                     <span>
                         <select name="payment[preffered_language]">
-                            <option value="de">Deutsch</option>
-                            <option value="fr">Français</option>
-                            <option value="it">Italiano</option>
-                            <option value="en">English</option>
+                            <option value="de"<?php if ($pref_lang == 'de') echo ' selected'; ?>>Deutsch</option>
+                            <option value="fr"<?php if ($pref_lang == 'fr') echo ' selected'; ?>>Français</option>
+                            <option value="it"<?php if ($pref_lang == 'it') echo ' selected'; ?>>Italiano</option>
+                            <option value="en"<?php if ($pref_lang == 'en') echo ' selected'; ?>>English</option>
                         </select>
                     </span>
                 </td>
