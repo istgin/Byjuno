@@ -3,7 +3,6 @@
         $locale = Mage::getStoreConfig('general/locale/code', Mage::app()->getStore());
         $session = Mage::getSingleton('admin/session');
         $pref_lang = $session->getByjunoLanguage();
-        var_dump($pref_lang);
         if (empty($pref_lang))
         {
             $pref_lang = 'de';
