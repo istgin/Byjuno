@@ -137,13 +137,14 @@
                         <?php
                         if ($paperInstallment == 1) {
                             ?>
-                            <input type="radio" checked="checked" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?><br/>
-                            <input type="radio" name="payment[installment_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>
+                            <input type="radio" checked="checked" name="payment[installment_payment_send]" value="email"> Rechnungsversand via E-Mail (ohne Gebühr).<br/>
+                            <input type="radio" name="payment[installment_payment_send]" value="postal"> Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).
 
                             <?php
                         } else {
                             ?>
-                            <input type="hidden" name="payment[installment_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>
+                            <input type="hidden" name="payment[installment_payment_send]" value="email"> Rechnungsversand via E-Mail (ohne Gebühr).
+
                             <?php
                         }
                         ?>
