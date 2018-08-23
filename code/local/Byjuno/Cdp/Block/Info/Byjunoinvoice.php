@@ -26,11 +26,11 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         $htmlAdd = '';
         if ($paymentSend == 'email')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
+            $htmlAdd = '<br>Rechnungsversand via E-Mail (ohne Gebühr).';
         }
         else if ($paymentSend == 'postal')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
+            $htmlAdd = '<br>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).';
         }
         if ($this->getInfo()->getAdditionalInformation("gender_custom") != "") {
             $gendername = "";
