@@ -130,7 +130,7 @@
                             if ($paperInvoice == 1) {
                             ?>
                                 <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"> Rechnungsversand via E-Mail (ohne Gebühr).<br/>
-                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate)
+                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).
 
                                 <?php
                             } else {
@@ -143,10 +143,8 @@
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: middle; padding: 0 10px 0 0" width="70">
-                    Customer communication language
-                </td>
-                <td style="vertical-align: middle" width="100%">
+                <td colspan="2" style="vertical-align: middle" width="100%">
+					Customer communication language
                     <span>
                         <select name="payment[preffered_language]">
                             <option value="de"<?php if ($pref_lang == 'de') echo ' selected'; ?>>Deutsch</option>
