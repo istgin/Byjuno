@@ -14,18 +14,23 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         $methodsAllowed["invoice_byjuno_enable"] = 0;
         $methodsAllowed["invoice_single_enable"] = 1;
 
-        $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore()));
+        $info = $this->getInfo()->getAdditionalInformation("is_b2b");
+        if ($info == "true") {
+            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore()));
+        } else {
+            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore()));
+        }
 
         $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
         $paymentSend = $this->getInfo()->getAdditionalInformation("payment_send");
         $htmlAdd = '';
         if ($paymentSend == 'email')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
+            $htmlAdd = '<br>Rechnungsversand via E-Mail (ohne Gebühr).';
         }
         else if ($paymentSend == 'postal')
         {
-            $htmlAdd = '<br>'. Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore()).': '.$this->getInfo()->getAdditionalInformation("payment_send_to");
+            $htmlAdd = '<br>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).';
         }
         if ($this->getInfo()->getAdditionalInformation("gender_custom") != "") {
             $gendername = "";
@@ -47,6 +52,12 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
                 $i++;
             }
         }
-        return $stringValues[$plId] . ' - (<a href="'.$this->escapeHtml($stringValues[$plId + 2]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
+        $out = '(B2C)';
+        if ($info == 'true') {
+            $out = '(B2B)';
+        } else if ($info == "") {
+            $out = '(-)';
+        }
+        return $stringValues[$plId] . ' '.$out.' - (<a href="'.$this->escapeHtml($stringValues[$plId + 2]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
     }
 }

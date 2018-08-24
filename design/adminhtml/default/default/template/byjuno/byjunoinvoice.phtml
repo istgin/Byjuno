@@ -1,13 +1,28 @@
 <div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
     <div><?php
         $locale = Mage::getStoreConfig('general/locale/code', Mage::app()->getStore());
+        $session = Mage::getSingleton('admin/session');
+        $pref_lang = $session->getByjunoLanguage();
+        if (empty($pref_lang))
+        {
+            $pref_lang = 'de';
+        }
         $locale = strstr($locale, "_", true);
         $lang = 'de';
         if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
             $lang = $locale;
         }
-        if ($locale)
-            $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+        if ($locale) {
+            if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore());
+            } else {
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+            }
+        }
         $plns = explode(",", $pl);
 
         $stringValues = Array();
@@ -33,8 +48,6 @@
         }
 
         $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
-        /* @var $quote Mage_Sales_Model_Quote */
-        $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
         switch ($lang) {
             case 'de':
@@ -116,19 +129,32 @@
                         <?php
                             if ($paperInvoice == 1) {
                             ?>
-                                <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?><br/>
-                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>
+                                <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"> Rechnungsversand via E-Mail (ohne Gebühr).<br/>
+                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).
 
                                 <?php
                             } else {
                             ?>
-                                <input type="hidden" name="payment[invoice_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>
+                                <input type="hidden" name="payment[invoice_payment_send]" value="email"> Rechnungsversand via E-Mail (ohne Gebühr).
                             <?php
                             }
                         ?>
                     </div>
                 </td>
+            </tr>
             <tr>
+                <td colspan="2" style="vertical-align: middle" width="100%">
+					Customer communication language
+                    <span>
+                        <select name="payment[preffered_language]">
+                            <option value="de"<?php if ($pref_lang == 'de') echo ' selected'; ?>>Deutsch</option>
+                            <option value="fr"<?php if ($pref_lang == 'fr') echo ' selected'; ?>>Français</option>
+                            <option value="it"<?php if ($pref_lang == 'it') echo ' selected'; ?>>Italiano</option>
+                            <option value="en"<?php if ($pref_lang == 'en') echo ' selected'; ?>>English</option>
+                        </select>
+                    </span>
+                </td>
+            </tr>
         </table>
         <br />
     </div>

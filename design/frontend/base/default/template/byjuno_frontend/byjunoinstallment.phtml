@@ -6,8 +6,18 @@
         if ($locale == 'de' || $locale == 'fr' || $locale == 'it' || $locale == 'en') {
             $lang = $locale;
         }
-        if ($locale)
-        $pl = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+        if ($locale) {
+            $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+            if ($locale) {
+                if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+                    $pl = Mage::getStoreConfig('payment/cdp/byjuno_installment_paymentsb2b', Mage::app()->getStore());
+                } else {
+                    $pl = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+                }
+            }
+        }
         $plns = explode(",", $pl);
 
         $stringValues = Array();
@@ -39,8 +49,6 @@
         //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
 
         $paperInstallment = Mage::getStoreConfig('payment/cdp/byjuno_installment_paper', Mage::app()->getStore());
-        /* @var $quote Mage_Sales_Model_Quote */
-        $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
 
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif';
         switch ($lang) {

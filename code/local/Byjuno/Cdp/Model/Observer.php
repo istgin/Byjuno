@@ -41,6 +41,71 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         throw new Exception('quote not set');
     }
 
+    public function byjunoProcessShipping(Varien_Event_Observer $observer)
+    {
+        /* @var $shipment Mage_Sales_Model_Order_Shipment */
+        $shipment = $observer->getEvent()->getShipment();
+        if ($shipment) {
+            $order = $shipment->getOrder();
+            /* @var $invoices Mage_Sales_Model_Resource_Order_Invoice_Collection */
+            $invoices = $order->getInvoiceCollection();
+            $coountInv = count($invoices);
+            if ($coountInv > 0) {
+                foreach ($invoices as $invoice) {
+                    $request_start = date('Y-m-d G:i:s');
+                    /* @var $invoice Mage_Sales_Model_Order_Invoice */
+                    $payment = $order->getPayment();
+                    $webshopProfileId = $payment->getAdditionalInformation("webshop_profile_id");
+                    if (!isset($webshopProfileId) || $webshopProfileId == "") {
+                        $webshopProfileId = $order->getStoreId();
+                    }
+                    if (Mage::getStoreConfig('payment/cdp/byjunos4transacton', $webshopProfileId) == '0') {
+                        return;
+                    }
+                    if (Mage::getStoreConfig('payment/cdp/byjunos4transactonactivationplace', $webshopProfileId) == 'shipping') {
+                        if ($payment->getAdditionalInformation("s3_ok") == null || $payment->getAdditionalInformation("s3_ok") == 'false') {
+                            Mage::throwException(Mage::helper('payment')->__(Mage::getStoreConfig('payment/cdp/byjuno_s4_fail', $webshopProfileId)) . " (error code: S3_NOT_CREATED)");
+                        }
+                        $entityType = Mage::getModel('eav/entity_type')->loadByCode('invoice');
+
+                        $webshopProfile = Mage::getModel('core/store')->load($webshopProfileId);
+                        $invoiceId = $invoice->getIncrementId();
+                        if ($invoiceId == null) {
+                            $invoiceId = $entityType->fetchNewIncrementId($invoice->getStoreId());
+                            $invoice->setIncrementId($invoiceId);
+                        }
+
+                        /* @var $request Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Request */
+                        $request = $this->getHelper()->CreateMagentoShopRequestS4Paid($order, $invoice, $webshopProfile);
+                        $ByjunoRequestName = 'Byjuno S4';
+                        $xml = $request->createRequest();
+                        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+                        $mode = Mage::getStoreConfig('payment/cdp/currentmode', $webshopProfileId);
+                        if ($mode == 'production') {
+                            $byjunoCommunicator->setServer('live');
+                        } else {
+                            $byjunoCommunicator->setServer('test');
+                        }
+                        $response = $byjunoCommunicator->sendS4Request($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', $webshopProfileId));
+                        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoS4Response();
+                        if ($response) {
+                            $byjunoResponse->setRawResponse($response);
+                            $byjunoResponse->processResponse();
+                            $status = $byjunoResponse->getProcessingInfoClassification();
+                            $this->getHelper()->saveS4Log($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                        } else {
+                            $status = "ERR";
+                            $this->getHelper()->saveS4Log($order, $request, $xml, "empty response", $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
+                        }
+                        if ($status == 'INF') {
+                            $this->getHelper()->sendEmailInvoice($invoice, $webshopProfileId);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function saveOrderAdmin(Varien_Event_Observer $observer)
     {
         $request_start = date('Y-m-d G:i:s');
@@ -53,10 +118,21 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
         }
         if (Mage::app()->getStore()->isAdmin())
         {
+            $session = Mage::getSingleton('admin/session');
             $payment = $order->getPayment();
+            $email = $order->getBillingAddress()->getEmail();
+            if (empty($email)) {
+                $email = $order->getCustomerEmail();
+            }
+            if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i', $email)) {
+                $order->cancel()->save();
+                throw new Exception("Wrong email address. Order canceled. ". $email);
+            }
             $paymentMethod = $payment->getMethod();
             $paymentPlan = $payment->getAdditionalInformation("payment_plan");
             $paymentSend = $payment->getAdditionalInformation("payment_send");
+            $preffered_language = $payment->getAdditionalInformation("preffered_language");
+            $session->setByjunoLanguage($preffered_language);
 
             $gender_custom = '';
             if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
@@ -66,13 +142,12 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
             if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
                 $dob_custom = $payment->getAdditionalInformation("dob_custom");
             }
+            $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom, $email, $preffered_language);
 
-            $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
-
-            $ByjunoRequestName = "Order request";
+            $ByjunoRequestName = "Order request (backend)";
             $requestType = 'b2c';
             if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                $ByjunoRequestName = "Order request for Company";
+                $ByjunoRequestName = "Order request for Company (backend)";
                 $requestType = 'b2b';
                 $xml = $request->createRequestCompany();
             } else {
@@ -127,11 +202,11 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                 $riskOwner = $this->getHelper()->getStatusRisk($statusRequest);
                 $riskOwnerVisual = $this->getHelper()->getStatusRiskVisual($riskOwner);
 
-                $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoResponse->getTransactionNumber(), $paymentSend, $gender_custom, $dob_custom, $riskOwner);
-                $ByjunoRequestName = "Order paid";
+                $request = $this->getHelper()->CreateMagentoShopRequestPaid($order, $payment->getMethodInstance()->getCode(), $paymentPlan, $byjunoResponse->getTransactionNumber(), $paymentSend, $gender_custom, $dob_custom, $riskOwner, $email, $preffered_language);
+                $ByjunoRequestName = "Order paid (backend)";
                 $requestType = 'b2c';
                 if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-                    $ByjunoRequestName = "Order paid for Company";
+                    $ByjunoRequestName = "Order paid for Company (backend)";
                     $requestType = 'b2b';
                     $xml = $request->createRequestCompany();
                 } else {
