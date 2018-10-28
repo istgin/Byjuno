@@ -324,7 +324,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
      */
     public function setRequestEmail($RequestEmail)
     {
-        if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $RequestEmail)) {
+        if (!filter_var($RequestEmail, FILTER_VALIDATE_EMAIL)) {
             throw new Exception("Request Email is invalid");
         }
         $this->RequestEmail = $RequestEmail;
