@@ -323,6 +323,7 @@
                 <single_query_requests>1</single_query_requests>
                 <byjuno_installment_paper>0</byjuno_installment_paper>
                 <forsesendendcustomer>0</forsesendendcustomer>
+                <keepopenorder>0</keepopenorder>
                 <country_phone_validation>1</country_phone_validation>
                 <s2_acceptance>standard</s2_acceptance>
                 <byjuno_risk>2</byjuno_risk>

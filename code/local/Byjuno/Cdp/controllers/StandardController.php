@@ -19,6 +19,17 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         return $this->_order;
     }
 
+    public function cancelpendingAction()
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setQuoteId($session->getByjunoStandardQuoteId(true));
+        if ($session->getLastRealOrderId()) {
+            $order = Mage::getModel('sales/order')->loadByIncrementId($session->getLastRealOrderId());
+            Mage::helper('byjuno/checkout')->restoreCart($order);
+        }
+        Mage::getSingleton('checkout/session')->setData("byjuno_session_id", "");
+        $this->_redirect('checkout/cart');
+    }
 
     public function cancelAction()
     {

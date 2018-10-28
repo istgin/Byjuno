@@ -410,6 +410,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);
+                    if ($status == 0 && Mage::getStoreConfig('payment/cdp/keepopenorder', Mage::app()->getStore()) == 1) {
+                        return null;
+                    }
                     if (!$helper->isStatusOk($status)) {
                         return false;
                     }
@@ -591,9 +594,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 return Mage::getUrl('cdp/standard/result');
             }
         } else if ($status == 0) {
-            $order->cancel()->save();
             $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
-            return Mage::getUrl('cdp/standard/cancel');
+            if (Mage::getStoreConfig('payment/cdp/keepopenorder', Mage::app()->getStore()) == 1) {
+                return Mage::getUrl('cdp/standard/cancelpending');
+            } else {
+                $order->cancel()->save();
+                return Mage::getUrl('cdp/standard/cancel');
+            }
         } else {
             $order->cancel()->save();
             $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
