@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <byjuno translate="label" module="byjuno">
-            <label>Byjuno (1.6.1)</label>
+            <label>Byjuno (1.6.2)</label>
             <sort_order>301</sort_order>
         </byjuno>
     </tabs>
@@ -397,6 +397,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </forsesendendcustomer>
+                        <keepopenorder translate="label">
+                            <label>Keep order state "Byjuno pending" on S1 error or timeout response</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>143</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </keepopenorder>
                         <cdpbeforeshow translate="label comment">
                             <label>Credit check before submit</label>
                             <comment>Enable credit check before show byjuno payment methods</comment>
