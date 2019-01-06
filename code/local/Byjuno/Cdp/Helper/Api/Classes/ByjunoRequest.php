@@ -14,30 +14,26 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     private $RequestEmail;
     private $UserID;
     private $Password;
-
     private $CustomerReference;
     private $FirstName;
     private $LastName;
     private $Gender;
     private $DateOfBirth;
     private $Language;
-
     /* CurrentAddress */
     private $FirstLine;
     private $HouseNumber;
     private $CountryCode;
     private $PostCode;
     private $Town;
-
     /* CommunicationNumbers */
     private $TelephonePrivate;
     private $TelephoneOffice;
     private $Fax;
     private $Mobile;
     private $Email;
-
     private $CompanyName1;
-
+    private $DeliveryCompanyName1;
     /**
      * @param mixed $CompanyName1
      */
@@ -45,7 +41,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->CompanyName1 = $CompanyName1;
     }
-
     /**
      * @return mixed
      */
@@ -53,12 +48,22 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->CompanyName1;
     }
-
-
-
+    /**
+     * @param mixed $DeliveryCompanyName1
+     */
+    public function setDeliveryCompanyName1($CompanyName1)
+    {
+        $this->DeliveryCompanyName1 = $CompanyName1;
+    }
+    /**
+     * @return mixed
+     */
+    public function getDeliveryCompanyName1()
+    {
+        return $this->DeliveryCompanyName1;
+    }
     /*ExtraInfo*/
     private $ExtraInfo;
-
     /**
      * @param mixed $ClientId
      */
@@ -66,7 +71,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->ClientId = $ClientId;
     }
-
     /**
      * @return mixed
      */
@@ -74,7 +78,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->ClientId;
     }
-
     /**
      * @param mixed $CountryCode
      */
@@ -82,7 +85,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->CountryCode = $CountryCode;
     }
-
     /**
      * @return mixed
      */
@@ -90,7 +92,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->CountryCode;
     }
-
     /**
      * @param mixed $DateOfBirth
      */
@@ -98,7 +99,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->DateOfBirth = $DateOfBirth;
     }
-
     /**
      * @return mixed
      */
@@ -106,7 +106,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->DateOfBirth;
     }
-
     /**
      * @param mixed $Email
      */
@@ -114,7 +113,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Email = $Email;
     }
-
     /**
      * @return mixed
      */
@@ -122,7 +120,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Email;
     }
-
     /**
      * @param mixed $ExtraInfo
      */
@@ -133,7 +130,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         }
         $this->ExtraInfo[] = $ExtraInfo;
     }
-
     /**
      * @return mixed
      */
@@ -141,8 +137,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->ExtraInfo;
     }
-
-
     /**
      * @return String
      */
@@ -158,7 +152,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         }
         return "";
     }
-
     /**
      * @param mixed $Fax
      */
@@ -166,7 +159,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Fax = $Fax;
     }
-
     /**
      * @return mixed
      */
@@ -174,7 +166,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Fax;
     }
-
     /**
      * @param mixed $FirstLine
      */
@@ -182,7 +173,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->FirstLine = $FirstLine;
     }
-
     /**
      * @return mixed
      */
@@ -190,7 +180,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->FirstLine;
     }
-
     /**
      * @param mixed $FirstName
      */
@@ -198,7 +187,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->FirstName = $FirstName;
     }
-
     /**
      * @return mixed
      */
@@ -206,7 +194,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->FirstName;
     }
-
     /**
      * @param mixed $Gender
      */
@@ -214,7 +201,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Gender = $Gender;
     }
-
     /**
      * @return mixed
      */
@@ -222,7 +208,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Gender;
     }
-
     /**
      * @param mixed $HouseNumber
      */
@@ -230,7 +215,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->HouseNumber = $HouseNumber;
     }
-
     /**
      * @return mixed
      */
@@ -238,7 +222,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->HouseNumber;
     }
-
     /**
      * @param mixed $Language
      */
@@ -246,7 +229,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Language = $Language;
     }
-
     /**
      * @return mixed
      */
@@ -254,7 +236,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Language;
     }
-
     /**
      * @param mixed $LastName
      */
@@ -262,7 +243,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->LastName = $LastName;
     }
-
     /**
      * @return mixed
      */
@@ -270,7 +250,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->LastName;
     }
-
     /**
      * @param mixed $Mobile
      */
@@ -278,7 +257,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Mobile = $Mobile;
     }
-
     /**
      * @return mixed
      */
@@ -286,7 +264,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Mobile;
     }
-
     /**
      * @param mixed $Password
      */
@@ -294,7 +271,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Password = $Password;
     }
-
     /**
      * @return mixed
      */
@@ -302,7 +278,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Password;
     }
-
     /**
      * @param mixed $PostCode
      */
@@ -310,7 +285,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->PostCode = $PostCode;
     }
-
     /**
      * @return mixed
      */
@@ -318,18 +292,16 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->PostCode;
     }
-
     /**
      * @param mixed $RequestEmail
      */
     public function setRequestEmail($RequestEmail)
     {
-        if (!filter_var($RequestEmail, FILTER_VALIDATE_EMAIL)) {
+        if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $RequestEmail)) {
             throw new Exception("Request Email is invalid");
         }
         $this->RequestEmail = $RequestEmail;
     }
-
     /**
      * @return mixed
      */
@@ -337,7 +309,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->RequestEmail;
     }
-
     /**
      * @param mixed $RequestId
      */
@@ -345,7 +316,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->RequestId = $RequestId;
     }
-
     /**
      * @return mixed
      */
@@ -353,7 +323,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->RequestId;
     }
-
     /**
      * @param mixed $TelephoneOffice
      */
@@ -361,7 +330,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->TelephoneOffice = $TelephoneOffice;
     }
-
     /**
      * @return mixed
      */
@@ -369,7 +337,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->TelephoneOffice;
     }
-
     /**
      * @param mixed $TelephonePrivate
      */
@@ -377,7 +344,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->TelephonePrivate = $TelephonePrivate;
     }
-
     /**
      * @return mixed
      */
@@ -385,7 +351,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->TelephonePrivate;
     }
-
     /**
      * @param mixed $Town
      */
@@ -393,7 +358,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Town = $Town;
     }
-
     /**
      * @return mixed
      */
@@ -401,7 +365,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Town;
     }
-
     /**
      * @param mixed $UserID
      */
@@ -409,7 +372,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->UserID = $UserID;
     }
-
     /**
      * @return mixed
      */
@@ -417,7 +379,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->UserID;
     }
-
     /**
      * @param mixed $Version
      */
@@ -425,7 +386,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->Version = $Version;
     }
-
     /**
      * @return mixed
      */
@@ -433,7 +393,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->Version;
     }
-
     /**
      * @param mixed $CustomerReference
      */
@@ -441,7 +400,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         $this->CustomerReference = $CustomerReference;
     }
-
     /**
      * @return mixed
      */
@@ -449,7 +407,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
     {
         return $this->CustomerReference;
     }
-
     public function createRequest()
     {
         $xml = new SimpleXMLElement("<Request></Request>");
@@ -461,7 +418,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         $xml->addAttribute("Email", $this->RequestEmail);
         $xml->addAttribute("UserID", $this->UserID);
         $xml->addAttribute("Password", $this->Password);
-
         $Customer = $xml->addChild('Customer');
         $Customer->addAttribute("Reference", $this->CustomerReference);
         $Person = $Customer->addChild("Person");
@@ -470,7 +426,6 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         $Person->Gender = $this->Gender;
         $Person->DateOfBirth = $this->DateOfBirth;
         $Person->Language = $this->Language;
-
         $CurrentAddress = $Person->addChild("CurrentAddress");
         $CurrentAddress->FirstLine = $this->FirstLine;
         $CurrentAddress->HouseNumber = $this->HouseNumber;
@@ -478,23 +433,19 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         $CurrentAddress->CountryCode = $this->CountryCode;
         $CurrentAddress->PostCode = $this->PostCode;
         $CurrentAddress->Town = $this->Town;
-
         $CommunicationNumbers = $Person->addChild("CommunicationNumbers");
         $CommunicationNumbers->TelephonePrivate = $this->TelephonePrivate;
         $CommunicationNumbers->TelephoneOffice = $this->TelephoneOffice;
         $CommunicationNumbers->Fax = $this->Fax;
         $CommunicationNumbers->Mobile = $this->Mobile;
         $CommunicationNumbers->Email = $this->Email;
-
         foreach($this->ExtraInfo as $ei) {
             $ExtraInfo = $Person->addChild("ExtraInfo");
             $ExtraInfo->Name = $ei["Name"];
             $ExtraInfo->Value = $ei["Value"];
         }
-
         return $xml->asXML();
     }
-
     public function createRequestCompany()
     {
         $xml = new SimpleXMLElement("<Request></Request>");
@@ -506,20 +457,17 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         $xml->addAttribute("Email", $this->RequestEmail);
         $xml->addAttribute("UserID", $this->UserID);
         $xml->addAttribute("Password", $this->Password);
-
         $Customer = $xml->addChild('Customer');
         $Customer->addAttribute("Reference", $this->CustomerReference);
         $Company = $Customer->addChild("Company");
         $Company->CompanyName1 = $this->CompanyName1;
-
+        $Company->Language = $this->Language;
         $OrderingPerson = $Company->addChild('OrderingPerson');
         $Person = $OrderingPerson->addChild("Person");
         $Person->LastName = $this->LastName;
         $Person->FirstName = $this->FirstName;
         $Person->Gender = $this->Gender;
         $Person->DateOfBirth = $this->DateOfBirth;
-        $Person->Language = $this->Language;
-
         $CurrentAddress = $Company->addChild("CurrentAddress");
         $CurrentAddress->FirstLine = $this->FirstLine;
         $CurrentAddress->HouseNumber = $this->HouseNumber;
@@ -527,20 +475,23 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoRequest
         $CurrentAddress->CountryCode = $this->CountryCode;
         $CurrentAddress->PostCode = $this->PostCode;
         $CurrentAddress->Town = $this->Town;
-
         $CommunicationNumbers = $Company->addChild("CommunicationNumbers");
         $CommunicationNumbers->TelephonePrivate = $this->TelephonePrivate;
         $CommunicationNumbers->TelephoneOffice = $this->TelephoneOffice;
         $CommunicationNumbers->Fax = $this->Fax;
         $CommunicationNumbers->Mobile = $this->Mobile;
         $CommunicationNumbers->Email = $this->Email;
-
         foreach($this->ExtraInfo as $ei) {
             $ExtraInfo = $Company->addChild("ExtraInfo");
             $ExtraInfo->Name = $ei["Name"];
             $ExtraInfo->Value = $ei["Value"];
         }
-
+        if ($this->DeliveryCompanyName1 != "")
+        {
+            $ExtraInfo = $Company->addChild("ExtraInfo");
+            $ExtraInfo->Name = "DELIVERY_COMPANYNAME";
+            $ExtraInfo->Value = $this->DeliveryCompanyName1;
+        }
         return $xml->asXML();
     }
 
