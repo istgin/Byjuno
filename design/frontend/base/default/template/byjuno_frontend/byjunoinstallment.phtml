@@ -8,6 +8,7 @@
         }
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
+        $pl = Array();
         if ($locale) {
             $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
             if ($locale) {
@@ -21,29 +22,38 @@
         $plns = explode(",", $pl);
 
         $stringValues = Array();
+        $tocValues = Array();
         $enablesValues = Array();
 
-        $methodsAllowed["installment_3_enable"] = 0;
-        $methodsAllowed["installment_10_enable"] = 1;
-        $methodsAllowed["installment_12_enable"] = 2;
-        $methodsAllowed["installment_24_enable"] = 3;
-        $methodsAllowed["installment_4x12_enable"] = 4;
-        $methodsAllowed["installment_4x10_enable"] = 5;
+        if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+            $methodsAllowed["installment_3_enable"] = Array("byjuno_installment_payments_3b2b", "byjuno_installment_payments_3_urlb2b");
+            $methodsAllowed["installment_10_enable"] = Array("byjuno_installment_payments_10b2b", "byjuno_installment_payments_10_urlb2b");
+            $methodsAllowed["installment_12_enable"] = Array("byjuno_installment_payments_12b2b", "byjuno_installment_payments_12_urlb2b");
+            $methodsAllowed["installment_24_enable"] = Array("byjuno_installment_payments_24b2b", "byjuno_installment_payments_24_urlb2b");
+            $methodsAllowed["installment_4x12_enable"] = Array("byjuno_installment_payments_4x12b2b", "byjuno_installment_payments_4x12_urlb2b");
+            $methodsAllowed["installment_4x10_enable"] = Array("byjuno_installment_payments_4x10b2b", "byjuno_installment_payments_4x10_urlb2b");
+        } else {
+            $methodsAllowed["installment_3_enable"] = Array("byjuno_installment_payments_3", "byjuno_installment_payments_3_url");
+            $methodsAllowed["installment_10_enable"] = Array("byjuno_installment_payments_10", "byjuno_installment_payments_10_url");
+            $methodsAllowed["installment_12_enable"] = Array("byjuno_installment_payments_12", "byjuno_installment_payments_12_url");
+            $methodsAllowed["installment_24_enable"] = Array("byjuno_installment_payments_24", "byjuno_installment_payments_24_url");
+            $methodsAllowed["installment_4x12_enable"] = Array("byjuno_installment_payments_4x12", "byjuno_installment_payments_4x12_url");
+            $methodsAllowed["installment_4x10_enable"] = Array("byjuno_installment_payments_4x10", "byjuno_installment_payments_4x10_url");
+        }
 
         $i = 0;
         foreach($plns as $val) {
             if (strstr($val, "_enable")) {
-                $enablesValues[] = Array($val, $methodsAllowed[$val]);
-            } else {
-                $stringValues[$i] = $val;
-                $i++;
+                $enablesValues[] = $val;
+                $stringValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][0], Mage::app()->getStore());
+                $tocValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][1], Mage::app()->getStore());
             }
         }
 
         $i = 0;
         $plans = Array();
-        foreach($enablesValues as $p) {
-            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]], "toc" => $stringValues[$p[1] + 6]);
+        foreach($enablesValues as $key => $p) {
+            $plans[] = Array("code" => $p, "name" => $stringValues[$key], "toc" => $tocValues[$key]);
             $i++;
         }
         //http://byjuno.ch/Content/logo/de/6639/BJ_Ratenzahlung_BLK.gif
