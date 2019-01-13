@@ -85,6 +85,7 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
             <div style="display:inline-block;padding: 0 5px 0 0; width:15px; vertical-align: top"><ul class="checkboxes"><li>&nbsp;</li><li>'.implode("</li><li>", $from).'</li></ul></div>
             <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan name</b></li><li style="padding-top: 1px">'.implode("</li><li style=\"padding-top: 1px\">", $to).'</li></ul></div>
             <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan T&C</b></li><li style="padding-top: 1px">'.implode("</li><li style=\"padding-top: 1px\">", $totoc).'</li></ul></div>
-        </div>';
+        </div>
+        <input type="checkbox" name="'.$elName.'[]" checked="checked" value="empty" style="display:none">';
     }
 }

@@ -309,7 +309,13 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         if ($quote->getGrandTotal() < $minAmount || $quote->getGrandTotal() > $maxAmount) {
             return false;
         }
-        $payments = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+        $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+        $payments = Array();
+        if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+            $payments = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore());
+        } else {
+            $payments = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+        }
         $active = false;
         $plns = explode(",", $payments);
         foreach ($plns as $val) {
