@@ -6,8 +6,13 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $elName = $element->getName();
+        $b2b = '';
+        if (strstr($elName, "b2b")) {
+            $b2b = 'b2b';
+        }
         $element->setStyle('display:block')
             ->setName($elName . '[]');
+
 
         $methodsAllowed["invoice_byjuno"] = array(
             'value' => "invoice_byjuno_enable",
@@ -17,14 +22,12 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
         );
 
         $methodsName["invoice_byjuno"] = array(
-            'label'   => 'Byjuno Invoice',
-            'value' => "invoice_byjuno",
-            'toc' => "http://www.byjuno.ch",
+            'value' => "byjuno_invoice_payments_invoice".$b2b,
+            'url' => "byjuno_invoice_payments_invoice_url".$b2b
         );
         $methodsName["invoice_single"] = array(
-            'label'   => 'Single',
-            'value' => "invoice_single",
-            'toc' => "http://www.byjuno.ch",
+            'value' => "byjuno_invoice_payments_single".$b2b,
+            'url' => "byjuno_invoice_payments_single_url".$b2b
         );
         //invoice_byjuno_enable,invoice_single_enable,Byjuno invoice,Single invoice,http://www.byjuno.ch/&3,http://www.byjuno.ch/&4
         //var_dump($element->getValue());
@@ -70,24 +73,18 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInvoiceRange extends M
         }
         $i = 0;
         foreach($methodsName as $m) {
-            //<input id="payment_cdp_byjuno_installment_payments_installment_3" type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="installment_3">
-            $val = $m["label"];
-            if (!empty($stringValues[$i])) {
-                $val = $stringValues[$i];
-            }
 
-            $toc = $m["toc"];
-            if (!empty($stringValues[$i + 2])) {
-                $toc = $stringValues[$i + 2];
-            }
-            $to[] = '<input style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
-            $totoc[] = '<input style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($toc).'" '.$disabled.'>';
+            $byjuno_invoice_plan = Mage::getStoreConfig('payment/cdp/'.$m["value"], Mage::getSingleton('adminhtml/config_data')->getStore());
+            $byjuno_invoice_plan_url = Mage::getStoreConfig('payment/cdp/'.$m["url"].'', Mage::getSingleton('adminhtml/config_data')->getStore());
+
+            $to[] = '<input style="width: 200px" type="text" name="groups[cdp][fields]['.$m["value"].'][value]" value="'.htmlspecialchars($byjuno_invoice_plan).'" '.$disabled.'>';
+            $totoc[] = '<input style="width: 200px" type="text" name="groups[cdp][fields]['.$m["url"].'][value]" value="'.htmlspecialchars($byjuno_invoice_plan_url).'" '.$disabled.'>';
             $i++;
         }
         return '<div style="white-space: nowrap;">
             <div style="display:inline-block;padding: 0 5px 0 0; width:15px; vertical-align: top"><ul class="checkboxes"><li>&nbsp;</li><li>'.implode("</li><li>", $from).'</li></ul></div>
-            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan name</b></li><li>'.implode("</li><li>", $to).'</li></ul></div>
-            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan T&C</b></li><li>'.implode("</li><li>", $totoc).'</li></ul></div>
+            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan name</b></li><li style="padding-top: 1px">'.implode("</li><li style=\"padding-top: 1px\">", $to).'</li></ul></div>
+            <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan T&C</b></li><li style="padding-top: 1px">'.implode("</li><li style=\"padding-top: 1px\">", $totoc).'</li></ul></div>
         </div>';
     }
 }
