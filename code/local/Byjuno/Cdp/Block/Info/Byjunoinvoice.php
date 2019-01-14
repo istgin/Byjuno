@@ -51,7 +51,7 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
             $out = '(-)';
         }
         return Mage::getStoreConfig('payment/cdp/'.$plId[0], Mage::app()->getStore()) .
-        ' '.$out.' - '.$plId[1].'(<a href="'.
+        ' '.$out.' - (<a href="'.
         $this->escapeHtml(Mage::getStoreConfig('payment/cdp/'.$plId[1], Mage::app()->getStore())).
         '" target="_blank">'.
         Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore())
