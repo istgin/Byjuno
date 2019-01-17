@@ -10,6 +10,7 @@
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/type_onepage')->getQuote();
         $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+        $pl = Array();
         if ($locale) {
             if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
                 $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore());
@@ -20,24 +21,29 @@
         $plns = explode(",", $pl);
 
         $stringValues = Array();
+        $tocValues = Array();
         $enablesValues = Array();
 
-        $methodsAllowed["invoice_byjuno_enable"] = 0;
-        $methodsAllowed["invoice_single_enable"] = 1;
+        if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoiceb2b", "byjuno_invoice_payments_invoice_urlb2b");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_singleb2b", "byjuno_invoice_payments_single_urlb2b");
+        } else {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoice", "byjuno_invoice_payments_invoice_url");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_single", "byjuno_invoice_payments_single_url");
+        }
 
         $i = 0;
         foreach($plns as $val) {
             if (strstr($val, "_enable")) {
-                $enablesValues[] = Array($val, $methodsAllowed[$val]);
-            } else {
-                $stringValues[$i] = $val;
-                $i++;
+                $enablesValues[] = $val;
+                $stringValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][0], Mage::app()->getStore());
+                $tocValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][1], Mage::app()->getStore());
             }
         }
         $i = 0;
         $plans = Array();
-        foreach($enablesValues as $p) {
-            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]], "toc" => $stringValues[$p[1] + 2]);
+        foreach($enablesValues as $key => $p) {
+            $plans[] = Array("code" => $p, "name" => $stringValues[$key], "toc" => $tocValues[$key]);
             $i++;
         }
 

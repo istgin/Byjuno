@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -198,10 +198,42 @@
         <german>
             <payment>
                 <cdp>
-                    <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,https://byjuno.ch/de/1b/terms/,https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,https://byjuno.ch/de/3a/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,N/A</byjuno_installment_payments>
-                    <byjuno_invoice_paymentsb2b>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,https://byjuno.ch/de/1b/terms/,https://byjuno.ch/de/2b/terms/</byjuno_invoice_paymentsb2b>
-                    <byjuno_installment_paymentsb2b>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,https://byjuno.ch/de/3a/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,N/A</byjuno_installment_paymentsb2b>
+                    <byjuno_invoice_payments_invoice>Byjuno Rechnung mit Teilzahlungsoption</byjuno_invoice_payments_invoice>
+                    <byjuno_invoice_payments_single>Byjuno Einmalrechnung</byjuno_invoice_payments_single>
+                    <byjuno_invoice_payments_invoice_url>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_url>
+                    <byjuno_invoice_payments_single_url>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_url>
+
+                    <byjuno_invoice_payments_invoiceb2b>Byjuno Rechnung mit Teilzahlungsoption</byjuno_invoice_payments_invoiceb2b>
+                    <byjuno_invoice_payments_singleb2b>Byjuno Einmalrechnung</byjuno_invoice_payments_singleb2b>
+                    <byjuno_invoice_payments_invoice_urlb2b>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_urlb2b>
+                    <byjuno_invoice_payments_single_urlb2b>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_urlb2b>
+
+                    <byjuno_installment_payments_3>3 Raten</byjuno_installment_payments_3>
+                    <byjuno_installment_payments_10>10 Raten</byjuno_installment_payments_10>
+                    <byjuno_installment_payments_12>12 Raten</byjuno_installment_payments_12>
+                    <byjuno_installment_payments_24>24 Raten</byjuno_installment_payments_24>
+                    <byjuno_installment_payments_4x12>4 Raten innerhalb von 12 Monaten</byjuno_installment_payments_4x12>
+                    <byjuno_installment_payments_4x10>N/A</byjuno_installment_payments_4x10>
+                    <byjuno_installment_payments_3_url>https://byjuno.ch/de/3a/terms/</byjuno_installment_payments_3_url>
+                    <byjuno_installment_payments_10_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_10_url>
+                    <byjuno_installment_payments_12_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_12_url>
+                    <byjuno_installment_payments_24_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_24_url>
+                    <byjuno_installment_payments_4x12_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_4x12_url>
+                    <byjuno_installment_payments_4x10_url>N/A</byjuno_installment_payments_4x10_url>
+
+                    <byjuno_installment_payments_3b2b>3 Raten</byjuno_installment_payments_3b2b>
+                    <byjuno_installment_payments_10b2b>10 Raten</byjuno_installment_payments_10b2b>
+                    <byjuno_installment_payments_12b2b>12 Raten</byjuno_installment_payments_12b2b>
+                    <byjuno_installment_payments_24b2b>24 Raten</byjuno_installment_payments_24b2b>
+                    <byjuno_installment_payments_4x12b2b>4 Raten innerhalb von 12 Monaten</byjuno_installment_payments_4x12b2b>
+                    <byjuno_installment_payments_4x10b2b>N/A</byjuno_installment_payments_4x10b2b>
+                    <byjuno_installment_payments_3_urlb2b>https://byjuno.ch/de/3a/terms/</byjuno_installment_payments_3_urlb2b>
+                    <byjuno_installment_payments_10_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_10_urlb2b>
+                    <byjuno_installment_payments_12_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_12_urlb2b>
+                    <byjuno_installment_payments_24_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_24_urlb2b>
+                    <byjuno_installment_payments_4x12_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_4x12_urlb2b>
+                    <byjuno_installment_payments_4x10_urlb2b>N/A</byjuno_installment_payments_4x10_urlb2b>
+
                     <title_invoice>Byjuno Rechnung</title_invoice>
                     <title_installment>Byjuno Ratenzahlung</title_installment>
                     <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>
@@ -223,10 +255,42 @@
         <french>
             <payment>
                 <cdp>
-                    <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Facture avec option de paiement partiel,Byjuno facture unique,https://byjuno.ch/fr/1b/terms/,https://byjuno.ch/fr/2b/terms/</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 tranches,10 tranches,12 tranches,24 tranches,4 tranches dans 12 mois,N/A,https://byjuno.ch/fr/3a/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,N/A</byjuno_installment_payments>
-                    <byjuno_invoice_paymentsb2b>invoice_byjuno_enable,Byjuno Facture avec option de paiement partiel,Byjuno facture unique,https://byjuno.ch/fr/1b/terms/,https://byjuno.ch/fr/2b/terms/</byjuno_invoice_paymentsb2b>
-                    <byjuno_installment_paymentsb2b>3 tranches,10 tranches,12 tranches,24 tranches,4 tranches dans 12 mois,N/A,https://byjuno.ch/fr/3a/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,https://byjuno.ch/fr/1d/terms/,N/A</byjuno_installment_paymentsb2b>
+                    <byjuno_invoice_payments_invoice>Byjuno Facture avec option de paiement partiel</byjuno_invoice_payments_invoice>
+                    <byjuno_invoice_payments_single>Byjuno facture unique</byjuno_invoice_payments_single>
+                    <byjuno_invoice_payments_invoice_url>https://byjuno.ch/fr/1b/terms/</byjuno_invoice_payments_invoice_url>
+                    <byjuno_invoice_payments_single_url>https://byjuno.ch/fr/2b/terms/</byjuno_invoice_payments_single_url>
+
+                    <byjuno_invoice_payments_invoiceb2b>Byjuno Facture avec option de paiement partiel</byjuno_invoice_payments_invoiceb2b>
+                    <byjuno_invoice_payments_singleb2b>Byjuno facture unique</byjuno_invoice_payments_singleb2b>
+                    <byjuno_invoice_payments_invoice_urlb2b>https://byjuno.ch/fr/1b/terms/</byjuno_invoice_payments_invoice_urlb2b>
+                    <byjuno_invoice_payments_single_urlb2b>https://byjuno.ch/fr/2b/terms/</byjuno_invoice_payments_single_urlb2b>
+
+                    <byjuno_installment_payments_3>3 tranches</byjuno_installment_payments_3>
+                    <byjuno_installment_payments_10>10 tranches</byjuno_installment_payments_10>
+                    <byjuno_installment_payments_12>12 tranches</byjuno_installment_payments_12>
+                    <byjuno_installment_payments_24>24 tranches</byjuno_installment_payments_24>
+                    <byjuno_installment_payments_4x12>4 tranches dans 12 mois</byjuno_installment_payments_4x12>
+                    <byjuno_installment_payments_4x10>N/A</byjuno_installment_payments_4x10>
+                    <byjuno_installment_payments_3_url>https://byjuno.ch/fr/3a/terms/</byjuno_installment_payments_3_url>
+                    <byjuno_installment_payments_10_url>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_10_url>
+                    <byjuno_installment_payments_12_url>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_12_url>
+                    <byjuno_installment_payments_24_url>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_24_url>
+                    <byjuno_installment_payments_4x12_url>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_4x12_url>
+                    <byjuno_installment_payments_4x10_url>N/A</byjuno_installment_payments_4x10_url>
+
+                    <byjuno_installment_payments_3b2b>3 tranches</byjuno_installment_payments_3b2b>
+                    <byjuno_installment_payments_10b2b>10 tranches</byjuno_installment_payments_10b2b>
+                    <byjuno_installment_payments_12b2b>12 tranches</byjuno_installment_payments_12b2b>
+                    <byjuno_installment_payments_24b2b>24 tranches</byjuno_installment_payments_24b2b>
+                    <byjuno_installment_payments_4x12b2b>4 tranches dans 12 mois</byjuno_installment_payments_4x12b2b>
+                    <byjuno_installment_payments_4x10b2b>N/A</byjuno_installment_payments_4x10b2b>
+                    <byjuno_installment_payments_3_urlb2b>https://byjuno.ch/fr/3a/terms/</byjuno_installment_payments_3_urlb2b>
+                    <byjuno_installment_payments_10_urlb2b>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_10_urlb2b>
+                    <byjuno_installment_payments_12_urlb2b>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_12_urlb2b>
+                    <byjuno_installment_payments_24_urlb2b>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_24_urlb2b>
+                    <byjuno_installment_payments_4x12_urlb2b>https://byjuno.ch/fr/1d/terms/</byjuno_installment_payments_4x12_urlb2b>
+                    <byjuno_installment_payments_4x10_urlb2b>N/A</byjuno_installment_payments_4x10_urlb2b>
+
                     <title_invoice>Facture Byjuno</title_invoice>
                     <title_installment>Byjuno Paiement échelonné</title_installment>
                     <byjuno_installment_toc_string>CGV</byjuno_installment_toc_string>
@@ -248,10 +312,43 @@
         <italian>
             <payment>
                 <cdp>
-                    <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno fattura con opzione di pagamento parziale,Byjuno fattura singola,hhttps://byjuno.ch/it/1b/terms/,https://byjuno.ch/it/2b/terms/</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 rate,10 rate,12 rate,24 rate,4 rate in 12 mesi,N/A,https://byjuno.ch/it/3a/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,N/A</byjuno_installment_payments>
-                    <byjuno_invoice_paymentsb2b>invoice_byjuno_enable,Byjuno fattura con opzione di pagamento parziale,Byjuno fattura singola,hhttps://byjuno.ch/it/1b/terms/,https://byjuno.ch/it/2b/terms/</byjuno_invoice_paymentsb2b>
-                    <byjuno_installment_paymentsb2b>3 rate,10 rate,12 rate,24 rate,4 rate in 12 mesi,N/A,https://byjuno.ch/it/3a/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,https://byjuno.ch/it/1d/terms/,N/A</byjuno_installment_paymentsb2b>
+                    <byjuno_invoice_payments_invoice>Byjuno fattura con opzione di pagamento parziale</byjuno_invoice_payments_invoice>
+                    <byjuno_invoice_payments_single>Byjuno fattura singola</byjuno_invoice_payments_single>
+                    <byjuno_invoice_payments_invoice_url>https://byjuno.ch/it/1b/terms/</byjuno_invoice_payments_invoice_url>
+                    <byjuno_invoice_payments_single_url>https://byjuno.ch/it/2b/terms/</byjuno_invoice_payments_single_url>
+
+                    <byjuno_invoice_payments_invoiceb2b>Byjuno fattura con opzione di pagamento parziale</byjuno_invoice_payments_invoiceb2b>
+                    <byjuno_invoice_payments_singleb2b>Byjuno fattura singola</byjuno_invoice_payments_singleb2b>
+                    <byjuno_invoice_payments_invoice_urlb2b>https://byjuno.ch/it/1b/terms/</byjuno_invoice_payments_invoice_urlb2b>
+                    <byjuno_invoice_payments_single_urlb2b>https://byjuno.ch/it/2b/terms/</byjuno_invoice_payments_single_urlb2b>
+
+                    <byjuno_installment_payments_3>3 rate</byjuno_installment_payments_3>
+                    <byjuno_installment_payments_10>10 rate</byjuno_installment_payments_10>
+                    <byjuno_installment_payments_12>12 rate</byjuno_installment_payments_12>
+                    <byjuno_installment_payments_24>24 rate</byjuno_installment_payments_24>
+                    <byjuno_installment_payments_4x12>4 rate in 12 mesi</byjuno_installment_payments_4x12>
+                    <byjuno_installment_payments_4x10>N/A</byjuno_installment_payments_4x10>
+                    <byjuno_installment_payments_3_url>https://byjuno.ch/it/3a/terms/</byjuno_installment_payments_3_url>
+                    <byjuno_installment_payments_10_url>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_10_url>
+                    <byjuno_installment_payments_12_url>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_12_url>
+                    <byjuno_installment_payments_24_url>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_24_url>
+                    <byjuno_installment_payments_4x12_url>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_4x12_url>
+                    <byjuno_installment_payments_4x10_url>N/A</byjuno_installment_payments_4x10_url>
+
+                    <byjuno_installment_payments_3b2b>3 rate</byjuno_installment_payments_3b2b>
+                    <byjuno_installment_payments_10b2b>10 rate</byjuno_installment_payments_10b2b>
+                    <byjuno_installment_payments_12b2b>12 rate</byjuno_installment_payments_12b2b>
+                    <byjuno_installment_payments_24b2b>24 rate</byjuno_installment_payments_24b2b>
+                    <byjuno_installment_payments_4x12b2b>4 rate in 12 mesi</byjuno_installment_payments_4x12b2b>
+                    <byjuno_installment_payments_4x10b2b>N/A</byjuno_installment_payments_4x10b2b>
+                    <byjuno_installment_payments_3_urlb2b>https://byjuno.ch/it/3a/terms/</byjuno_installment_payments_3_urlb2b>
+                    <byjuno_installment_payments_10_urlb2b>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_10_urlb2b>
+                    <byjuno_installment_payments_12_urlb2b>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_12_urlb2b>
+                    <byjuno_installment_payments_24_urlb2b>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_24_urlb2b>
+                    <byjuno_installment_payments_4x12_urlb2b>https://byjuno.ch/it/1d/terms/</byjuno_installment_payments_4x12_urlb2b>
+                    <byjuno_installment_payments_4x10_urlb2b>N/A</byjuno_installment_payments_4x10_urlb2b>
+
+
                     <title_invoice>Fattura Byjuno</title_invoice>
                     <title_installment>Byjuno Pagamento rateale</title_installment>
                     <byjuno_installment_toc_string>CGC</byjuno_installment_toc_string>
@@ -273,10 +370,42 @@
         <english>
             <payment>
                 <cdp>
-                    <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Invoice (with partial payment option),Byjuno Single Invoice,https://byjuno.ch/en/1b/terms/,https://byjuno.ch/en/2b/terms/</byjuno_invoice_payments>
-                    <byjuno_installment_payments>3 Installments,10 installments,12 installments,24 installments,4 installments in 12 months,N/A,https://byjuno.ch/en/3a/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,N/A</byjuno_installment_payments>
-                    <byjuno_invoice_paymentsb2b>invoice_byjuno_enable,Byjuno Invoice (with partial payment option),Byjuno Single Invoice,https://byjuno.ch/en/1b/terms/,https://byjuno.ch/en/2b/terms/</byjuno_invoice_paymentsb2b>
-                    <byjuno_installment_paymentsb2b>3 Installments,10 installments,12 installments,24 installments,4 installments in 12 months,N/A,https://byjuno.ch/en/3a/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,https://byjuno.ch/en/1d/terms/,N/A</byjuno_installment_paymentsb2b>
+                    <byjuno_invoice_payments_invoice>Byjuno Invoice (with partial payment option)</byjuno_invoice_payments_invoice>
+                    <byjuno_invoice_payments_single>Byjuno Single Invoice</byjuno_invoice_payments_single>
+                    <byjuno_invoice_payments_invoice_url>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_url>
+                    <byjuno_invoice_payments_single_url>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_url>
+
+                    <byjuno_invoice_payments_invoiceb2b>Byjuno Invoice (with partial payment option)</byjuno_invoice_payments_invoiceb2b>
+                    <byjuno_invoice_payments_singleb2b>Byjuno Single Invoice</byjuno_invoice_payments_singleb2b>
+                    <byjuno_invoice_payments_invoice_urlb2b>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_urlb2b>
+                    <byjuno_invoice_payments_single_urlb2b>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_urlb2b>
+
+                    <byjuno_installment_payments_3>3 Installments</byjuno_installment_payments_3>
+                    <byjuno_installment_payments_10>10 Installments</byjuno_installment_payments_10>
+                    <byjuno_installment_payments_12>12 Installments</byjuno_installment_payments_12>
+                    <byjuno_installment_payments_24>24 Installments</byjuno_installment_payments_24>
+                    <byjuno_installment_payments_4x12>4 installments in 12 months</byjuno_installment_payments_4x12>
+                    <byjuno_installment_payments_4x10>N/A</byjuno_installment_payments_4x10>
+                    <byjuno_installment_payments_3_url>https://byjuno.ch/en/3a/terms/</byjuno_installment_payments_3_url>
+                    <byjuno_installment_payments_10_url>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_10_url>
+                    <byjuno_installment_payments_12_url>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_12_url>
+                    <byjuno_installment_payments_24_url>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_24_url>
+                    <byjuno_installment_payments_4x12_url>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_4x12_url>
+                    <byjuno_installment_payments_4x10_url>N/A</byjuno_installment_payments_4x10_url>
+
+                    <byjuno_installment_payments_3b2b>3 Installments</byjuno_installment_payments_3b2b>
+                    <byjuno_installment_payments_10b2b>10 Installments</byjuno_installment_payments_10b2b>
+                    <byjuno_installment_payments_12b2b>12 Installments</byjuno_installment_payments_12b2b>
+                    <byjuno_installment_payments_24b2b>24 Installments</byjuno_installment_payments_24b2b>
+                    <byjuno_installment_payments_4x12b2b>4 installments in 12 months</byjuno_installment_payments_4x12b2b>
+                    <byjuno_installment_payments_4x10b2b>N/A</byjuno_installment_payments_4x10b2b>
+                    <byjuno_installment_payments_3_urlb2b>https://byjuno.ch/en/3a/terms/</byjuno_installment_payments_3_urlb2b>
+                    <byjuno_installment_payments_10_urlb2b>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_10_urlb2b>
+                    <byjuno_installment_payments_12_urlb2b>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_12_urlb2b>
+                    <byjuno_installment_payments_24_urlb2b>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_24_urlb2b>
+                    <byjuno_installment_payments_4x12_urlb2b>https://byjuno.ch/en/1d/terms/</byjuno_installment_payments_4x12_urlb2b>
+                    <byjuno_installment_payments_4x10_urlb2b>N/A</byjuno_installment_payments_4x10_urlb2b>
+
                     <title_invoice>Byjuno INVOICE</title_invoice>
                     <title_installment>Byjuno INSTALLMENT</title_installment>
                     <byjuno_installment_toc_string>T&amp;C</byjuno_installment_toc_string>
@@ -329,10 +458,48 @@
                 <byjuno_risk>2</byjuno_risk>
                 <success_order_status>processing</success_order_status>
 
-                <byjuno_invoice_payments>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,https://byjuno.ch/de/1b/terms/,https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments>
-                <byjuno_installment_payments>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,https://byjuno.ch/de/3a/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,N/A</byjuno_installment_payments>
-                <byjuno_invoice_paymentsb2b>invoice_byjuno_enable,Byjuno Rechnung mit Teilzahlungsoption,Byjuno Einmalrechnung,https://byjuno.ch/de/1b/terms/,https://byjuno.ch/de/2b/terms/</byjuno_invoice_paymentsb2b>
-                <byjuno_installment_paymentsb2b>3 Raten,10 Raten,12 Raten,24 Raten,4 Raten innerhalb von 12 Monaten,N/A,https://byjuno.ch/de/3a/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,https://byjuno.ch/de/1d/terms/,N/A</byjuno_installment_paymentsb2b>
+                <byjuno_invoice_payments>invoice_byjuno_enable</byjuno_invoice_payments>
+                <byjuno_invoice_paymentsb2b>invoice_byjuno_enable</byjuno_invoice_paymentsb2b>
+
+                <byjuno_invoice_payments_invoice>Byjuno Rechnung mit Teilzahlungsoption</byjuno_invoice_payments_invoice>
+                <byjuno_invoice_payments_single>Byjuno Einmalrechnung</byjuno_invoice_payments_single>
+                <byjuno_invoice_payments_invoice_url>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_url>
+                <byjuno_invoice_payments_single_url>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_url>
+
+                <byjuno_invoice_payments_invoiceb2b>Byjuno Rechnung mit Teilzahlungsoption</byjuno_invoice_payments_invoiceb2b>
+                <byjuno_invoice_payments_singleb2b>Byjuno Einmalrechnung</byjuno_invoice_payments_singleb2b>
+                <byjuno_invoice_payments_invoice_urlb2b>https://byjuno.ch/de/1b/terms/</byjuno_invoice_payments_invoice_urlb2b>
+                <byjuno_invoice_payments_single_urlb2b>https://byjuno.ch/de/2b/terms/</byjuno_invoice_payments_single_urlb2b>
+
+                <byjuno_installment_payments />
+                <byjuno_installment_paymentsb2b />
+
+                <byjuno_installment_payments_3>3 Raten</byjuno_installment_payments_3>
+                <byjuno_installment_payments_10>10 Raten</byjuno_installment_payments_10>
+                <byjuno_installment_payments_12>12 Raten</byjuno_installment_payments_12>
+                <byjuno_installment_payments_24>24 Raten</byjuno_installment_payments_24>
+                <byjuno_installment_payments_4x12>4 Raten innerhalb von 12 Monaten</byjuno_installment_payments_4x12>
+                <byjuno_installment_payments_4x10>N/A</byjuno_installment_payments_4x10>
+                <byjuno_installment_payments_3_url>https://byjuno.ch/de/3a/terms/</byjuno_installment_payments_3_url>
+                <byjuno_installment_payments_10_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_10_url>
+                <byjuno_installment_payments_12_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_12_url>
+                <byjuno_installment_payments_24_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_24_url>
+                <byjuno_installment_payments_4x12_url>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_4x12_url>
+                <byjuno_installment_payments_4x10_url>N/A</byjuno_installment_payments_4x10_url>
+
+                <byjuno_installment_payments_3b2b>3 Raten</byjuno_installment_payments_3b2b>
+                <byjuno_installment_payments_10b2b>10 Raten</byjuno_installment_payments_10b2b>
+                <byjuno_installment_payments_12b2b>12 Raten</byjuno_installment_payments_12b2b>
+                <byjuno_installment_payments_24b2b>24 Raten</byjuno_installment_payments_24b2b>
+                <byjuno_installment_payments_4x12b2b>4 Raten innerhalb von 12 Monaten</byjuno_installment_payments_4x12b2b>
+                <byjuno_installment_payments_4x10b2b>N/A</byjuno_installment_payments_4x10b2b>
+                <byjuno_installment_payments_3_urlb2b>https://byjuno.ch/de/3a/terms/</byjuno_installment_payments_3_urlb2b>
+                <byjuno_installment_payments_10_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_10_urlb2b>
+                <byjuno_installment_payments_12_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_12_urlb2b>
+                <byjuno_installment_payments_24_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_24_urlb2b>
+                <byjuno_installment_payments_4x12_urlb2b>https://byjuno.ch/de/1d/terms/</byjuno_installment_payments_4x12_urlb2b>
+                <byjuno_installment_payments_4x10_urlb2b>N/A</byjuno_installment_payments_4x10_urlb2b>
+
                 <title_invoice>Byjuno Rechnung</title_invoice>
                 <title_installment>Byjuno Ratenzahlung</title_installment>
                 <byjuno_installment_toc_string>AGB</byjuno_installment_toc_string>

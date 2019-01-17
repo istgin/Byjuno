@@ -397,6 +397,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             $extraInfo["Value"] = $order->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
+            if ($order->getShippingAddress()->getCompany()) {
+                $request->setDeliveryCompanyName1($order->getShippingAddress()->getCompany());
+            }
+
             if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
@@ -440,7 +444,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.2';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.3';
         $request->setExtraInfo($extraInfo);
 
         return $request;
@@ -634,6 +638,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             $extraInfo["Value"] = $quote->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
+            if ($quote->getShippingAddress()->getCompany()) {
+                $request->setDeliveryCompanyName1($quote->getShippingAddress()->getCompany());
+            }
+
             if ($quote->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $quote->getShippingAddress()->getCompany();
@@ -646,7 +654,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.2';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.3';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -805,6 +813,10 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
             $extraInfo["Value"] = $order->getShippingAddress()->getCity();
             $request->setExtraInfo($extraInfo);
 
+            if ($order->getShippingAddress()->getCompany()) {
+                $request->setDeliveryCompanyName1($order->getShippingAddress()->getCompany());
+            }
+
             if ($order->getShippingAddress()->getCompany() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
                 $extraInfo["Name"] = 'DELIVERY_COMPANYNAME';
                 $extraInfo["Value"] = $order->getShippingAddress()->getCompany();
@@ -851,7 +863,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.2';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.3';
         $request->setExtraInfo($extraInfo);
         return $request;
     }

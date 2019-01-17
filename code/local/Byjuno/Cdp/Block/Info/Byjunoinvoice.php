@@ -11,14 +11,14 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
     public function getInstructions()
     {
 
-        $methodsAllowed["invoice_byjuno_enable"] = 0;
-        $methodsAllowed["invoice_single_enable"] = 1;
 
         $info = $this->getInfo()->getAdditionalInformation("is_b2b");
         if ($info == "true") {
-            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore()));
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoiceb2b", "byjuno_invoice_payments_invoice_urlb2b");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_singleb2b", "byjuno_invoice_payments_single_urlb2b");
         } else {
-            $pl = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore()));
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoice", "byjuno_invoice_payments_invoice_url");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_single", "byjuno_invoice_payments_single_url");
         }
 
         $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
@@ -44,20 +44,18 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         if ($this->getInfo()->getAdditionalInformation("dob_custom") != "") {
             $htmlAdd .= '<br>'.$this->__("Date of birth").": ".$this->getInfo()->getAdditionalInformation("dob_custom");
         }
-        $i = 0;
-        $stringValues = Array();
-        foreach($pl as $val) {
-            if (!strstr($val, "_enable")) {
-                $stringValues[$i] = $val;
-                $i++;
-            }
-        }
         $out = '(B2C)';
         if ($info == 'true') {
             $out = '(B2B)';
         } else if ($info == "") {
             $out = '(-)';
         }
-        return $stringValues[$plId] . ' '.$out.' - (<a href="'.$this->escapeHtml($stringValues[$plId + 2]).'" target="_blank">'.Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore()).'</a>)'.$htmlAdd;
+        return Mage::getStoreConfig('payment/cdp/'.$plId[0], Mage::app()->getStore()) .
+        ' '.$out.' - (<a href="'.
+        $this->escapeHtml(Mage::getStoreConfig('payment/cdp/'.$plId[1], Mage::app()->getStore())).
+        '" target="_blank">'.
+        Mage::getStoreConfig('payment/cdp/byjuno_invoice_toc_string', Mage::app()->getStore())
+        .'</a>)'
+        .$htmlAdd;
     }
 }

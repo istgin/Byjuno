@@ -15,39 +15,45 @@
 
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
-        $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+        $is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', $quote->getStore()) == 'enable');
+        $pl = Array();
         if ($locale) {
             if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
-                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', Mage::app()->getStore());
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paymentsb2b', $quote->getStore());
             } else {
-                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', Mage::app()->getStore());
+                $pl = Mage::getStoreConfig('payment/cdp/byjuno_invoice_payments', $quote->getStore());
             }
         }
         $plns = explode(",", $pl);
 
         $stringValues = Array();
+        $tocValues = Array();
         $enablesValues = Array();
 
-        $methodsAllowed["invoice_byjuno_enable"] = 0;
-        $methodsAllowed["invoice_single_enable"] = 1;
+        if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoiceb2b", "byjuno_invoice_payments_invoice_urlb2b");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_singleb2b", "byjuno_invoice_payments_single_urlb2b");
+        } else {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoice", "byjuno_invoice_payments_invoice_url");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_single", "byjuno_invoice_payments_single_url");
+        }
 
         $i = 0;
         foreach($plns as $val) {
             if (strstr($val, "_enable")) {
-                $enablesValues[] = Array($val, $methodsAllowed[$val]);
-            } else {
-                $stringValues[$i] = $val;
-                $i++;
+                $enablesValues[] = $val;
+                $stringValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][0], $quote->getStore());
+                $tocValues[] = Mage::getStoreConfig('payment/cdp/'.$methodsAllowed[$val][1], $quote->getStore());
             }
         }
         $i = 0;
         $plans = Array();
-        foreach($enablesValues as $p) {
-            $plans[] = Array("code" => $p[0], "name" => $stringValues[$p[1]], "toc" => $stringValues[$p[1] + 2]);
+        foreach($enablesValues as $key => $p) {
+            $plans[] = Array("code" => $p, "name" => $stringValues[$key], "toc" => $tocValues[$key]);
             $i++;
         }
 
-        $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', Mage::app()->getStore());
+        $paperInvoice = Mage::getStoreConfig('payment/cdp/byjuno_invoice_paper', $quote->getStore());
         $logo = 'https://byjuno.ch/Content/logo/de/6639/BJ_Rechnung_BLK.gif';
         switch ($lang) {
             case 'de':
@@ -66,7 +72,7 @@
 
         ?>
         <?php if (count($plans) > 1) { ?>
-            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', Mage::app()->getStore()) ?></label>
+            <label style="padding: 0 0 10px 0"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_invoice_payment_message', $quote->getStore()) ?></label>
         <?php } else { ?>
             <br />
         <?php } ?>
@@ -81,7 +87,7 @@
                         $i = 0;
                         if (count($plans) == 1) { ?>
                             <input type="hidden" name="payment[invoice_payment_plan]" value="<?php echo $this->htmlEscape($plans[0]["code"]) ?>"> <?php echo $this->htmlEscape($plans[0]["name"]); ?>
-                            (<a href="<?php echo $this->htmlEscape($plans[0]["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                            (<a href="<?php echo $this->htmlEscape($plans[0]["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', $quote->getStore()) ?></a>)
                             <br />
 
                         <?php } else {
@@ -90,7 +96,7 @@
                                     echo 'checked="checked"';
                                 } ?> name="payment[invoice_payment_plan]"
                                        value="<?php echo $this->htmlEscape($plan["code"]) ?>"> <?php echo $this->htmlEscape($plan["name"]); ?>
-                                       (<a href="<?php echo $this->htmlEscape($plan["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', Mage::app()->getStore()) ?></a>)
+                                       (<a href="<?php echo $this->htmlEscape($plan["toc"]); ?>" target="_blank"><?php echo Mage::getStoreConfig('payment/cdp/byjuno_installment_toc_string', $quote->getStore()) ?></a>)
                                 <br/>
                                 <?php
                                 $i++;
@@ -99,7 +105,7 @@
                     </span>
                 </td>
             </tr>
-            <?php if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+            <?php if (Mage::getStoreConfig('payment/cdp/gender_enable', $quote->getStore()) == '1') {
                 $_gender = $this->getLayout()->createBlock('byjuno/widget_gender');
                 ?>
                 <tr>
@@ -111,7 +117,7 @@
                 </tr>
 
             <?php } ?>
-            <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+            <?php if (Mage::getStoreConfig('payment/cdp/birthday_enable', $quote->getStore()) == '1') {
                 $_dob = $this->getLayout()->createBlock('byjuno/widget_dobinvoice');
                 ?>
                 <tr>

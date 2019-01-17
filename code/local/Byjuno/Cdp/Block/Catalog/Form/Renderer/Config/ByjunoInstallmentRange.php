@@ -6,6 +6,10 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $elName = $element->getName();
+        $b2b = '';
+        if (strstr($elName, "b2b")) {
+            $b2b = 'b2b';
+        }
         $element->setStyle('display:block')
             ->setName($elName . '[]');
 
@@ -29,34 +33,28 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
         );
 
         $methodsName["installment_3"] = array(
-            'label'   => '3 monthly installments',
-            'value' => "installment_3",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_3".$b2b,
+            'url' => "byjuno_installment_payments_3_url".$b2b
         );
         $methodsName["installment_10"] = array(
-            'label'   => '10 monthly installments',
-            'value' => "installment_10",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_10".$b2b,
+            'url' => "byjuno_installment_payments_10_url".$b2b
         );
         $methodsName["installment_12"] = array(
-            'label'   => '12 monthly installments',
-            'value' => "installment_12",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_12".$b2b,
+            'url' => "byjuno_installment_payments_12_url".$b2b
         );
         $methodsName["installment_24"] = array(
-            'label'   => '24 monthly installments',
-            'value' => "installment_24",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_24".$b2b,
+            'url' => "byjuno_installment_payments_24_url".$b2b
         );
         $methodsName["installment_4x12"] = array(
-            'label'   => '4 installments in 12 months',
-            'value' => "installment_4x12",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_4x12".$b2b,
+            'url' => "byjuno_installment_payments_4x12_url".$b2b
         );
         $methodsName["installment_4x10"] = array(
-            'label'   => '4 installments in 10 months',
-            'value' => "installment_4x10",
-            'toc' => "http://www.byjuno.ch"
+            'value' => "byjuno_installment_payments_4x10".$b2b,
+            'url' => "byjuno_installment_payments_4x10_url".$b2b
         );
         //var_dump($element->getValue());
         //installment_4x12_enable,3 monthly installments,10 monthly installments,12 monthly installments,24 monthly installments,4 installments in 12 months,4 installments in 10 months,http://www.byjuno.ch/&5,http://www.byjuno.ch/&6,http://www.byjuno.ch/&7,http://www.byjuno.ch/&8,http://www.byjuno.ch/&9,http://www.byjuno.ch/&10
@@ -103,24 +101,22 @@ class Byjuno_Cdp_Block_Catalog_Form_Renderer_Config_ByjunoInstallmentRange exten
         }
         $i = 0;
         foreach($methodsName as $m) {
-            //<input id="payment_cdp_byjuno_installment_payments_installment_3" type="checkbox" name="groups[cdp][fields][byjuno_installment_payments][value][]" value="installment_3">
-            $val = $m["label"];
-            if (!empty($stringValues[$i])) {
-                $val = $stringValues[$i];
-            }
-            $toc = $m["toc"];
-            if (!empty($stringValues[$i + 6])) {
-                $toc = $stringValues[$i + 6];
-            }
-            $to[] = '<input style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($val).'" '.$disabled.'>';
-            $totoc[] = '<input style="width: 200px" style="width: 200px" type="text" name="'.$elName.'[]" value="'.htmlspecialchars($toc).'" '.$disabled.'>';
+
+            $byjuno_installment_plan = Mage::getStoreConfig('payment/cdp/'.$m["value"], Mage::getSingleton('adminhtml/config_data')->getStore());
+            $byjuno_installment_plan_url = Mage::getStoreConfig('payment/cdp/'.$m["url"].'', Mage::getSingleton('adminhtml/config_data')->getStore());
+
+            $to[] = '<input style="width: 200px" type="text" name="groups[cdp][fields]['.$m["value"].'][value]" value="'.htmlspecialchars($byjuno_installment_plan).'" '.$disabled.'>';
+            $totoc[] = '<input style="width: 200px" type="text" name="groups[cdp][fields]['.$m["url"].'][value]" value="'.htmlspecialchars($byjuno_installment_plan_url).'" '.$disabled.'>';
+
             $i++;
         }
         return '<div style="white-space: nowrap;">
             <div style="display:inline-block;padding: 0 5px 0 0; width:15px; vertical-align: top"><ul class="checkboxes"><li>&nbsp;</li><li>'.implode("</li><li>", $from).'</li></ul></div>
             <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan name</b></li><li>'.implode("</li><li>", $to).'</li></ul></div>
             <div style="display:inline-block;padding: 0 5px 0 0; width:45%; vertical-align: top"><ul class="checkboxes"><li><b>Payment plan T&C</b></li><li>'.implode("</li><li>", $totoc).'</li></ul></div>
-        </div>';
+        </div>
+        <input type="checkbox" name="'.$elName.'[]" checked="checked" value="empty" style="display:none">
+        ';
 
     }
 }

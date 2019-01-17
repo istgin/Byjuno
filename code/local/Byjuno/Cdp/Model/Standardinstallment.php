@@ -16,6 +16,25 @@ class Byjuno_Cdp_Model_Standardinstallment
 	{
 		if (Mage::app()->getStore()->isAdmin())
 		{
+			$quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+			$is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', $quote->getStore()) == 'enable');
+			$payments = Array();
+			if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+				$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_paymentsb2b', $quote->getStore());
+			} else {
+				$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', $quote->getStore());
+			}
+			$active = false;
+			$plns = explode(",", $payments);
+			foreach($plns as $val) {
+				if (strstr($val, "_enable")) {
+					$active = true;
+					break;
+				}
+			}
+			if (!$active) {
+				return false;
+			}
 			return true;
 		}
 		if (Mage::getStoreConfig('payment/cdp/active', Mage::app()->getStore()) == "0") {
@@ -27,7 +46,13 @@ class Byjuno_Cdp_Model_Standardinstallment
 		if ($quote->getGrandTotal() < $minAmount || $quote->getGrandTotal() > $maxAmount) {
 			return false;
 		}
-		$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+		$is_b2b = (Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable');
+		$payments = Array();
+		if ($is_b2b && $quote->getBillingAddress()->getCompany() != "") {
+			$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_paymentsb2b', Mage::app()->getStore());
+		} else {
+			$payments = Mage::getStoreConfig('payment/cdp/byjuno_installment_payments', Mage::app()->getStore());
+		}
 		$active = false;
 		$plns = explode(",", $payments);
 		foreach($plns as $val) {
