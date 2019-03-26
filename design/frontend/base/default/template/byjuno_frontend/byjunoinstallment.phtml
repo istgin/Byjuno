@@ -145,9 +145,10 @@
                                    onclick="document.getElementById('byjuno-postal-notice').style.display='none'"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
                             <input type="radio" name="payment[installment_payment_send]" value="postal"
                                    onclick="document.getElementById('byjuno-postal-notice').style.display='block'"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_installment_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?> <?php echo (String)$quote->getCustomerFirstname(); ?> <?php echo (String)$quote->getCustomerLastname(); ?>, <?php echo (String)$quote->getBillingAddress()->getStreet1(); ?>, <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?>  <?php echo (String)$quote->getBillingAddress()->getCity(); ?>
-                            <div id="byjuno-postal-notice" style="background-image: none; background-color: #6bc5e9; color: #000; border-color: #7c622a; background-position: 25px center !important; background-repeat: no-repeat !important; padding: 25px 25px 25px 25px !important; font-size: 12px !important; display: none; margin-top: 5px!important; margin-bottom: 15px!important;">
+                            <div class="shipment-consent-notice notice-msg m-bottom-15 m-top-5" id="byjuno-postal-notice" style="background-image: none; background-color: #6bc5e9; color: #000; border-color: #7c622a; background-position: 25px center !important; background-repeat: no-repeat !important; padding: 25px 25px 25px 80px !important; font-size: 12px !important; display: none; margin-top: 5px!important; margin-bottom: 15px!important;">
+                                <span class="icon icon-attention" style="position: relative; left: -63px; top: 22px; font-size: 50px; line-height: 0; color: #000;"></span>
                                 <h2>Zusätzliche Kosten bei Rechnung mit Postversand</h2>
-                                <p style="margin-bottom: 15px!important;">
+                                <p class="m-bottom-15" style="margin-bottom: 15px!important;">
                                     Achtung: Beim Rechnungsversand in Papierform via seperater Post von Byjuno, fallen zusätzliche Kosten in Höhe von CHF 3.50 pro Briefsendung von Byjuno an.
                                 </p>
                             </div>
