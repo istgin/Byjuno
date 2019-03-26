@@ -129,9 +129,16 @@
                         <?php
                             if ($paperInvoice == 1) {
                             ?>
-                                <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
-                                <input type="radio" name="payment[invoice_payment_send]" value="postal"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?> <?php echo (String)$quote->getBillingAddress()->getCity(); ?> <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>
-
+                                <input type="radio" checked="checked" name="payment[invoice_payment_send]" value="email"
+                                       onclick="document.getElementById('byjuno-postal-notice').style.display='none'"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_email_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getEmail(); ?><br/>
+                                <input type="radio" name="payment[invoice_payment_send]" value="postal"
+                                       onclick="document.getElementById('byjuno-postal-notice').style.display='block'"> <?php echo $this->htmlEscape(Mage::getStoreConfig('payment/cdp/byjuno_invoice_postal_text', Mage::app()->getStore())); ?>: <?php echo (String)$quote->getBillingAddress()->getPostcode(); ?> <?php echo (String)$quote->getBillingAddress()->getCity(); ?> <?php echo (String)$quote->getBillingAddress()->getStreetFull(); ?>
+                                <div id="byjuno-postal-notice" style="background-image: none; background-color: #6bc5e9; color: #000; border-color: #7c622a; background-position: 25px center !important; background-repeat: no-repeat !important; padding: 25px 25px 25px 25px !important; font-size: 12px !important; display: none; margin-top: 5px!important; margin-bottom: 15px!important;">
+                                    <h2>Zusätzliche Kosten bei Rechnung mit Postversand</h2>
+                                    <p style="margin-bottom: 15px!important;">
+                                        Achtung: Beim Rechnungsversand in Papierform via seperater Post von Byjuno, fallen zusätzliche Kosten in Höhe von CHF 3.50 pro Briefsendung von Byjuno an.
+                                    </p>
+                                </div>
                                 <?php
                             } else {
                             ?>
