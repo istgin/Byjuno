@@ -39,18 +39,6 @@ class Byjuno_Cdp_Block_Info_Byjunoinstallment extends Mage_Payment_Block_Info
         {
             $htmlAdd = '<br>'.Mage::getStoreConfig('payment/cdp/byjuno_postal_text_admin', Mage::app()->getStore());
         }
-        if ($this->getInfo()->getAdditionalInformation("gender_custom") != "") {
-            $gendername = "";
-            if ($this->getInfo()->getAdditionalInformation("gender_custom") == '1') {
-                $gendername = $this->__("Male");
-            } else if ($this->getInfo()->getAdditionalInformation("gender_custom") == '2') {
-                $gendername = $this->__("Female");
-            }
-            $htmlAdd .= '<br>'.$this->__("Gender").": ".$gendername;
-        }
-        if ($this->getInfo()->getAdditionalInformation("dob_custom") != "") {
-            $htmlAdd .= '<br>'.$this->__("Date of birth").": ".$this->getInfo()->getAdditionalInformation("dob_custom");
-        }
         $out = '(B2C)';
         if ($info == 'true') {
             $out = '(B2B)';
