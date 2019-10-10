@@ -420,6 +420,7 @@
                     <byjuno_invoice_toc_string>T&amp;C</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>Please select payment option and agree to Terms and Conditions</byjuno_invoice_payment_message>
                     <byjuno_invoice_postal_text>Invoice Delivery method by Post (postage fee 3.50 CHF) to</byjuno_invoice_postal_text>
+                    <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
                     <byjuno_s4_fail>The invoice transfer to Byjuno failed; the invoice could not be generated, please retry.</byjuno_s4_fail>
