@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.6.5</version>
+            <version>1.6.6</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -249,6 +249,8 @@
                     <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
                     <postal_code_wrong>Die PLZ der Rechnungsadresse ist fehlerhaft</postal_code_wrong>
                     <telephone_code_wrong>Die Telefonnummer der Rechnungsadresse ist fehlerhaft</telephone_code_wrong>
+                    <byjuno_email_text_admin>Rechnungsversand via E-Mail</byjuno_email_text_admin>
+                    <byjuno_postal_text_admin>Rechnungsversand in Papierform via Post</byjuno_postal_text_admin>
                 </cdp>
             </payment>
         </german>
@@ -306,6 +308,8 @@
                     <byjuno_s5_fail>La transmission de la commande modifiée a échoué. L’annulation/le remboursement n’a pas pu être exécuté. Veuillez essayer à nouveau.</byjuno_s5_fail>
                     <postal_code_wrong>Le code postal de l’adresse de facturation est défectueux</postal_code_wrong>
                     <telephone_code_wrong>Le numéro du téléphone de l’adresse de facturation est défectueux</telephone_code_wrong>
+                    <byjuno_email_text_admin>Expédition facture via e-mail</byjuno_email_text_admin>
+                    <byjuno_postal_text_admin>Expédition facture sous forme papier</byjuno_postal_text_admin>
                 </cdp>
             </payment>
         </french>
@@ -364,6 +368,8 @@
                     <byjuno_s5_fail>La trasmissione della modifica dell’ordine non é riuscita. Storno/Rimborso non é stato eseguito. La preghiamo di riprovare.</byjuno_s5_fail>
                     <postal_code_wrong>Il CAP dell’indirizzo di fatturazione è difettoso</postal_code_wrong>
                     <telephone_code_wrong>Il numero di telefono dell’indirizzo di fatturazione è difettoso</telephone_code_wrong>
+                    <byjuno_email_text_admin>Invio fattura tramite e-mail</byjuno_email_text_admin>
+                    <byjuno_postal_text_admin>Invio fattura cartacea tramite posta</byjuno_postal_text_admin>
                 </cdp>
             </payment>
         </italian>
@@ -414,13 +420,14 @@
                     <byjuno_invoice_toc_string>T&amp;C</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>Please select payment option and agree to Terms and Conditions</byjuno_invoice_payment_message>
                     <byjuno_invoice_postal_text>Invoice Delivery method by Post (postage fee 3.50 CHF) to</byjuno_invoice_postal_text>
-                    <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
                     <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
                     <byjuno_s4_fail>The invoice transfer to Byjuno failed; the invoice could not be generated, please retry.</byjuno_s4_fail>
                     <byjuno_s5_fail>The transfer of the updated order to Byjuno failed; Cancel/Refund could not be completed, please retry.</byjuno_s5_fail>
                     <postal_code_wrong>Postal code of billing address is incorrect</postal_code_wrong>
                     <telephone_code_wrong>Telephone of billing address is incorrect</telephone_code_wrong>
+                    <byjuno_email_text_admin>Delivery method by E-Mail</byjuno_email_text_admin>
+                    <byjuno_postal_text_admin>Delivery method by Post</byjuno_postal_text_admin>
                 </cdp>
             </payment>
         </english>
@@ -528,6 +535,8 @@ SaferpayCw,process,saveShippingMethod
 DatatransCw,onepage,saveShippingMethod
 DatatransCw,process,saveShippingMethod
 amscheckoutfront,onepage,saveShippingMethod</cdpplaces>
+                <byjuno_email_text_admin>Rechnungsversand via E-Mail</byjuno_email_text_admin>
+                <byjuno_postal_text_admin>Rechnungsversand in Papierform via Post</byjuno_postal_text_admin>
             </cdp>
         </payment>
     </default>

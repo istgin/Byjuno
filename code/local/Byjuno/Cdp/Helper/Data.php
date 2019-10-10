@@ -444,7 +444,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento Mofakult module 1.6.5';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
         $request->setExtraInfo($extraInfo);
 
         return $request;
@@ -654,7 +654,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento Mofakult module 1.6.5';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -863,7 +863,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento Mofakult module 1.6.5';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
         $request->setExtraInfo($extraInfo);
         return $request;
     }

@@ -8,10 +8,9 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         $this->setTemplate('payment/info/byjuno.phtml');
     }
 
-    public function getInstructions()
+    public function toPdf()
     {
-
-
+        $paymentMehtodName = $this->getMethod()->getTitle();
         $info = $this->getInfo()->getAdditionalInformation("is_b2b");
         if ($info == "true") {
             $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoiceb2b", "byjuno_invoice_payments_invoice_urlb2b");
@@ -26,11 +25,44 @@ class Byjuno_Cdp_Block_Info_Byjunoinvoice extends Mage_Payment_Block_Info
         $htmlAdd = '';
         if ($paymentSend == 'email')
         {
-            $htmlAdd = '<br>Rechnungsversand via E-Mail (ohne Gebühr).';
+            $htmlAdd = '<br>'.Mage::getStoreConfig('payment/cdp/byjuno_email_text_admin', Mage::app()->getStore());
         }
         else if ($paymentSend == 'postal')
         {
-            $htmlAdd = '<br>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate).';
+            $htmlAdd = '<br>'.Mage::getStoreConfig('payment/cdp/byjuno_postal_text_admin', Mage::app()->getStore());
+        }
+        $out = '(B2C)';
+        if ($info == 'true') {
+            $out = '(B2B)';
+        } else if ($info == "") {
+            $out = '(-)';
+        }
+        return $paymentMehtodName."{{pdf_row_separator}}"
+        .Mage::getStoreConfig('payment/cdp/'.$plId[0], Mage::app()->getStore()).' '.$out.'{{pdf_row_separator}}'
+        .$htmlAdd;
+    }
+
+    public function getInstructions()
+    {
+        $info = $this->getInfo()->getAdditionalInformation("is_b2b");
+        if ($info == "true") {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoiceb2b", "byjuno_invoice_payments_invoice_urlb2b");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_singleb2b", "byjuno_invoice_payments_single_urlb2b");
+        } else {
+            $methodsAllowed["invoice_byjuno_enable"] = Array("byjuno_invoice_payments_invoice", "byjuno_invoice_payments_invoice_url");
+            $methodsAllowed["invoice_single_enable"] = Array("byjuno_invoice_payments_single", "byjuno_invoice_payments_single_url");
+        }
+
+        $plId = $methodsAllowed[$this->getInfo()->getAdditionalInformation("payment_plan")];
+        $paymentSend = $this->getInfo()->getAdditionalInformation("payment_send");
+        $htmlAdd = '';
+        if ($paymentSend == 'email')
+        {
+            $htmlAdd = '<br>'.Mage::getStoreConfig('payment/cdp/byjuno_email_text_admin', Mage::app()->getStore());
+        }
+        else if ($paymentSend == 'postal')
+        {
+            $htmlAdd = '<br>'.Mage::getStoreConfig('payment/cdp/byjuno_postal_text_admin', Mage::app()->getStore());
         }
         if ($this->getInfo()->getAdditionalInformation("gender_custom") != "") {
             $gendername = "";

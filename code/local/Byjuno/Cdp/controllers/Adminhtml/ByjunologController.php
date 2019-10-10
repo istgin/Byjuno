@@ -11,6 +11,12 @@ class Byjuno_Cdp_Adminhtml_ByjunologController extends Mage_Adminhtml_Controller
         $this->loadLayout()->_addContent($this->getLayout()->createBlock('byjuno/admin_logedit'))->renderLayout();
     }
 
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('admin/byjuno/set_time');
+    }
+
     public function logexportAction()
     {
         @ini_set('max_execution_time', 0);
