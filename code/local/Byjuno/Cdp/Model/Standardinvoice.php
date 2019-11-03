@@ -435,7 +435,10 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                     );
                     $session->setData("isTheSame", $this->_savedUser);
                     $session->setData("CDPStatus", $status);
-                    if ($status == 0 && Mage::getStoreConfig('payment/cdp/keepopenorder', Mage::app()->getStore()) == 1) {
+                    if ($status == 0 && (
+                            Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "keeporder" ||
+                            Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "successorder"
+                        )) {
                         return null;
                     }
                     if (!$helper->isStatusOk($status)) {
@@ -619,10 +622,14 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 return Mage::getUrl('cdp/standard/result');
             }
         } else if ($status == 0) {
-            $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
-            if (Mage::getStoreConfig('payment/cdp/keepopenorder', Mage::app()->getStore()) == 1) {
+            if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "keeporder") {
+                $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
                 return Mage::getUrl('cdp/standard/cancelpending');
+            } else if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "successorder") {
+                $order->setState("byjuno_timeout", true)->save();
+                return Mage::getUrl('cdp/standard/successtimeout');
             } else {
+                $session->addError($this->getHelper()->getByjunoErrorMessage($status, $requestType));
                 $order->cancel()->save();
                 return Mage::getUrl('cdp/standard/cancel');
             }

@@ -31,6 +31,14 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         $this->_redirect('checkout/cart');
     }
 
+    public function successtimeoutAction()
+    {
+        $session = Mage::getSingleton('checkout/session');
+        $session->setData("byjuno_session_id", "");
+        $session->getQuote()->setIsActive(false)->save();
+        $this->_redirect('checkout/onepage/success', array('_secure' => true));
+    }
+
     public function cancelAction()
     {
         $session = Mage::getSingleton('checkout/session');
@@ -63,7 +71,7 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
         }
     }
 
-    public function  successAction()
+    public function successAction()
     {
         $request_start = date('Y-m-d G:i:s');
         $helper = Mage::helper('byjuno');

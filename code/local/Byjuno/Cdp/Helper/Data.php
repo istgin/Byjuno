@@ -43,11 +43,19 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
     {
         if (Mage::getStoreConfig('payment/cdp/s2_acceptance') == 'custom') {
             try {
-                $ijStatus = explode(",", Mage::getStoreConfig('payment/cdp/byjuno_risk'));
-                $merchantStatus = explode(",", Mage::getStoreConfig('payment/cdp/merchant_risk'));
-                if (in_array($status, $ijStatus)) {
+                $byjuno_risk = trim(Mage::getStoreConfig('payment/cdp/byjuno_risk'));
+                $merchant_risk = trim(Mage::getStoreConfig('payment/cdp/merchant_risk'));
+                $ijStatus = Array();
+                if ($byjuno_risk != "") {
+                    $ijStatus = explode(",", $byjuno_risk);
+                }
+                $merchantStatus = Array();
+                if ($merchant_risk != "") {
+                    $merchantStatus = explode(",", $merchant_risk);
+                }
+                if ($byjuno_risk != "" && in_array($status, $ijStatus)) {
                     return true;
-                } else if (in_array($status, $merchantStatus)) {
+                } else if ($merchant_risk != "" && in_array($status, $merchantStatus)) {
                     return true;
                 }
                 return false;
@@ -444,7 +452,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.7.0';
         $request->setExtraInfo($extraInfo);
 
         return $request;
@@ -654,7 +662,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.7.0';
         $request->setExtraInfo($extraInfo);
         return $request;
     }
@@ -863,7 +871,7 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
         $request->setExtraInfo($extraInfo);
 
         $extraInfo["Name"] = 'CONNECTIVTY_MODULE';
-        $extraInfo["Value"] = 'Byjuno Magento module 1.6.6';
+        $extraInfo["Value"] = 'Byjuno Magento module 1.7.0';
         $request->setExtraInfo($extraInfo);
         return $request;
     }

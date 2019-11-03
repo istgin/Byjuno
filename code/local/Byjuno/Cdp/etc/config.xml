@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.6.6</version>
+            <version>1.7.0</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -74,6 +74,9 @@
                     <byjuno_pending translate="label">
                         <label>Byjuno pending</label>
                     </byjuno_pending>
+                    <byjuno_timeout translate="label">
+                        <label>Byjuno timeout</label>
+                    </byjuno_timeout>
                 </statuses>
                 <states>
                     <byjuno_pending translate="label">
@@ -83,6 +86,13 @@
                         </statuses>
                         <visible_on_front>1</visible_on_front>
                     </byjuno_pending>
+                    <byjuno_timeout translate="label">
+                        <label>Byjuno timout</label>
+                        <statuses>
+                            <byjuno_timeout default="1"/>
+                        </statuses>
+                        <visible_on_front>1</visible_on_front>
+                    </byjuno_timeout>
                 </states>
             </order>
         </sales>
@@ -459,7 +469,7 @@
                 <single_query_requests>1</single_query_requests>
                 <byjuno_installment_paper>0</byjuno_installment_paper>
                 <forsesendendcustomer>0</forsesendendcustomer>
-                <keepopenorder>0</keepopenorder>
+                <actionontimeout>cancel</actionontimeout>
                 <country_phone_validation>1</country_phone_validation>
                 <s2_acceptance>standard</s2_acceptance>
                 <byjuno_risk>2</byjuno_risk>
