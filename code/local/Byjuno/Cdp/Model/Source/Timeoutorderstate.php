@@ -9,11 +9,11 @@ class Byjuno_Cdp_Model_Source_Timeoutorderstate
         $options = array();
         $options[] = array(
             'value' => 'cancel',
-            'label' => 'Cancel order'
+            'label' => 'Cancel order and return to cart'
         );
         $options[] = array(
             'value' => 'keeporder',
-            'label' => 'Keep cart'
+            'label' => 'Keep order in Byjuno pending state and return to cart'
         );
         $options[] = array(
             'value' => 'successorder',
