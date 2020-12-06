@@ -129,14 +129,15 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         $paymentInfo->setAdditionalInformation("intrum_request_type", $requestType);
         $trxId = (string)$trxId;
         $paymentInfo->setAdditionalInformation("intrum_trx_id", $trxId);
-        $paymentInfo->setAdditionalInformation("byjuno_payment_hash", $newHash);
         $helper = Mage::helper('byjuno');
         if ($helper->isStatusOk($status)) {
+            $paymentInfo->setAdditionalInformation("byjuno_payment_hash", $newHash);
             return $this;
         } else if ($status == 0) {
             if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "keeporder") {
                 Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
             } else if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "successorder") {
+                $paymentInfo->setAdditionalInformation("byjuno_payment_hash", $newHash);
                 return $this;
             } else {
                 Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
@@ -144,6 +145,7 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         } else {
             Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
         }
+        $paymentInfo->setAdditionalInformation("byjuno_payment_hash", $newHash);
         return $this;
     }
 
