@@ -68,6 +68,82 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 Mage::throwException(Mage::getStoreConfig('payment/cdp/telephone_code_wrong', Mage::app()->getStore()) . ": " . $q->getBillingAddress()->getTelephone());
             }
         }
+
+        $request_start = date('Y-m-d G:i:s');
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getSingleton('checkout/cart')->getQuote();
+        $paymentMethod = $quote->getPayment()->getMethod();
+        $paymentPlan = $quote->getPayment()->getAdditionalInformation("payment_plan");
+        $paymentSend = $quote->getPayment()->getAdditionalInformation("payment_send");
+
+        $gender_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
+            $gender_custom = $quote->getPayment()->getAdditionalInformation("gender_custom");
+        }
+        $dob_custom = '';
+        if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
+            $dob_custom = $quote->getPayment()->getAdditionalInformation("dob_custom");
+        }
+
+        $request = $this->getHelper()->CreateMagentoShopRequestQuote($quote, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
+        $requestHash = $this->getHelper()->CreateMagentoShopRequestQuoteHash($quote, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
+        $hash = $paymentInfo->getAdditionalInformation("byjuno_payment_hash");
+        $newHash = sha1(serialize($requestHash));
+        if ($hash != null && $hash == $newHash) {
+            return $this;
+        }
+        $ByjunoRequestName = "Order request";
+        $requestType = 'b2c';
+        if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
+            $ByjunoRequestName = "Order request for Company";
+            $requestType = 'b2b';
+            $xml = $request->createRequestCompany();
+        } else {
+            $xml = $request->createRequest();
+        }
+        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
+        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
+        if ($mode == 'production') {
+            $byjunoCommunicator->setServer('live');
+        } else {
+            $byjunoCommunicator->setServer('test');
+        }
+        $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
+        $status = 0;
+        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
+        if ($response) {
+            $byjunoResponse->setRawResponse($response);
+            $byjunoResponse->processResponse();
+            $status = (int)$byjunoResponse->getCustomerRequestStatus();
+            $paymentInfo->setAdditionalInformation("byjuno_transaction", $byjunoResponse->getTransactionNumber());
+            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
+            if (intval($status) > 15) {
+                $status = 0;
+            }
+            $trxId = $byjunoResponse->getResponseId();
+        } else {
+            $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
+            $trxId = "empty";
+        }
+        $paymentInfo->setAdditionalInformation("intrum_status", $status);
+        $paymentInfo->setAdditionalInformation("intrum_request_type", $requestType);
+        $trxId = (string)$trxId;
+        $paymentInfo->setAdditionalInformation("intrum_trx_id", $trxId);
+        $paymentInfo->setAdditionalInformation("byjuno_payment_hash", $newHash);
+        $helper = Mage::helper('byjuno');
+        if ($helper->isStatusOk($status)) {
+            return $this;
+        } else if ($status == 0) {
+            if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "keeporder") {
+                Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
+            } else if (Mage::getStoreConfig('payment/cdp/actionontimeout', Mage::app()->getStore()) == "successorder") {
+                return $this;
+            } else {
+                Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
+            }
+        } else {
+            Mage::throwException($this->getHelper()->getByjunoErrorMessage($status, $requestType));
+        }
         return $this;
     }
 
@@ -540,64 +616,24 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
 
     public function getOrderPlaceRedirectUrl()
     {
-        $request_start = date('Y-m-d G:i:s');
         $session = Mage::getSingleton('checkout/session');
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/cart')->getQuote();
         /* @var $order Mage_Sales_Model_Order */
         /* @var $ordSess Mage_Sales_Model_Order */
         $ordSess = Mage::getModel('sales/order');
-
         $order = $ordSess->loadByIncrementId($quote->getReservedOrderId());
         $payment = $order->getPayment();
-        $paymentMethod = $payment->getMethod();
-        $paymentPlan = $payment->getAdditionalInformation("payment_plan");
-        $paymentSend = $payment->getAdditionalInformation("payment_send");
 
-        $gender_custom = '';
-        if (Mage::getStoreConfig('payment/cdp/gender_enable', Mage::app()->getStore()) == '1') {
-            $gender_custom = $payment->getAdditionalInformation("gender_custom");
-        }
-        $dob_custom = '';
-        if (Mage::getStoreConfig('payment/cdp/birthday_enable', Mage::app()->getStore()) == '1') {
-            $dob_custom = $payment->getAdditionalInformation("dob_custom");
-        }
+        $status = $payment->getAdditionalInformation("intrum_status");
+        $requestType = $payment->getAdditionalInformation("intrum_request_type");
+        $trxId = $payment->getAdditionalInformation("intrum_trx_id");
+        $byjuno_transaction = $payment->getAdditionalInformation("byjuno_transaction");
+        $session->setData("intrum_status", $status);
+        $session->setData("intrum_request_type", $requestType);
+        $session->setData("intrum_trx_id", $trxId);
+        $session->setData("byjuno_transaction", $byjuno_transaction);
 
-        $request = $this->getHelper()->CreateMagentoShopRequestOrder($order, $paymentMethod, $paymentPlan, $paymentSend, $gender_custom, $dob_custom);
-
-        $ByjunoRequestName = "Order request";
-        $requestType = 'b2c';
-        if ($request->getCompanyName1() != '' && Mage::getStoreConfig('payment/cdp/businesstobusiness', Mage::app()->getStore()) == 'enable') {
-            $ByjunoRequestName = "Order request for Company";
-            $requestType = 'b2b';
-            $xml = $request->createRequestCompany();
-        } else {
-            $xml = $request->createRequest();
-        }
-        $byjunoCommunicator = new Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator();
-        $mode = Mage::getStoreConfig('payment/cdp/currentmode', Mage::app()->getStore());
-        if ($mode == 'production') {
-            $byjunoCommunicator->setServer('live');
-        } else {
-            $byjunoCommunicator->setServer('test');
-        }
-        $response = $byjunoCommunicator->sendRequest($xml, (int)Mage::getStoreConfig('payment/cdp/timeout', Mage::app()->getStore()));
-        $status = 0;
-        $byjunoResponse = new Byjuno_Cdp_Helper_Api_Classes_ByjunoResponse();
-        if ($response) {
-            $byjunoResponse->setRawResponse($response);
-            $byjunoResponse->processResponse();
-            $status = (int)$byjunoResponse->getCustomerRequestStatus();
-            $session->setData("byjuno_transaction", $byjunoResponse->getTransactionNumber());
-            $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
-            if (intval($status) > 15) {
-                $status = 0;
-            }
-            $trxId = $byjunoResponse->getResponseId();
-        } else {
-            $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
-            $trxId = "empty";
-        }
         $payment->setTransactionId($trxId);
         $payment->setParentTransactionId($payment->getTransactionId());
         $transaction = $payment->addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH, null, true, "");
@@ -609,8 +645,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
         }
         $transaction->save();
         $payment->save();
-        $session->setData("intrum_status", $status);
-        $session->setData("intrum_request_type", $requestType);
         $session->setData("intrum_order", $order->getId());
         if ($helper->isStatusOk($status)) {
             if (Mage::getStoreConfig('payment/cdp/single_query_requests', Mage::app()->getStore())) {

@@ -28,7 +28,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator
 
     public function sendRequest($xmlRequest, $timeout = 30) {
         $response = "";
-        if (intval($timeout) < 0) {
+        if (intval($timeout) <= 0) {
             $timeout = 30;
         }
         if ($this->server == 'test') {
@@ -67,7 +67,7 @@ class Byjuno_Cdp_Helper_Api_Classes_ByjunoCommunicator
 
     public function sendS4Request($xmlRequest, $timeout = 30) {
         $response = "";
-        if (intval($timeout) < 0) {
+        if (intval($timeout) <= 0) {
             $timeout = 30;
         }
         if ($this->server == 'test') {
