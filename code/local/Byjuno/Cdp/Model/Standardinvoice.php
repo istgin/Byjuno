@@ -68,7 +68,9 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                 Mage::throwException(Mage::getStoreConfig('payment/cdp/telephone_code_wrong', Mage::app()->getStore()) . ": " . $q->getBillingAddress()->getTelephone());
             }
         }
-
+        if (Mage::app()->getStore()->isAdmin()) {
+            return $this;
+        }
         $request_start = date('Y-m-d G:i:s');
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = Mage::getSingleton('checkout/cart')->getQuote();
