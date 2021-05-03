@@ -1480,9 +1480,6 @@ class Byjuno_Cdp_Helper_Data extends Mage_Core_Helper_Abstract
                 $byjunoResponse->setRawResponse($response);
                 $byjunoResponse->processResponse();
                 $status = (int)$byjunoResponse->getCustomerRequestStatus();
-                if (intval($status) > 15) {
-                    $status = 0;
-                }
                 $this->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), $order->getIncrementId());
                 $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
                 $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');

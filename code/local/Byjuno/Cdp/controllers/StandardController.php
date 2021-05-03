@@ -125,9 +125,6 @@ class Byjuno_Cdp_StandardController extends Mage_Core_Controller_Front_Action
             $byjunoResponse->setRawResponse($response);
             $byjunoResponse->processResponse();
             $status = (int)$byjunoResponse->getCustomerRequestStatus();
-            if (intval($status) > 15) {
-                $status = 0;
-            }
             $helper->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), $order->getIncrementId());
             $statusToPayment = Mage::getSingleton('checkout/session')->getData('ByjunoCDPStatus');
             $ByjunoResponseSession = Mage::getSingleton('checkout/session')->getData('ByjunoResponse');
