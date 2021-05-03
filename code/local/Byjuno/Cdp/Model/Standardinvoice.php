@@ -404,9 +404,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
                         $byjunoResponse->processResponse();
                         $status = (int)$byjunoResponse->getCustomerRequestStatus();
                         $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
-                        if (intval($status) > 15) {
-                            $status = 0;
-                        }
                     } else {
                         $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
                     }
@@ -593,9 +590,6 @@ class Byjuno_Cdp_Model_Standardinvoice extends Mage_Payment_Model_Method_Abstrac
             $status = (int)$byjunoResponse->getCustomerRequestStatus();
             $session->setData("byjuno_transaction", $byjunoResponse->getTransactionNumber());
             $this->getHelper()->saveLog($quote, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");
-            if (intval($status) > 15) {
-                $status = 0;
-            }
             $trxId = $byjunoResponse->getResponseId();
         } else {
             $this->getHelper()->saveLog($quote, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'), "-");

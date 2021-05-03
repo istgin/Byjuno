@@ -226,9 +226,6 @@ class Byjuno_Cdp_Model_Observer extends Mage_Core_Model_Abstract {
                     $byjunoResponse->setRawResponse($response);
                     $byjunoResponse->processResponse();
                     $status = (int)$byjunoResponse->getCustomerRequestStatus();
-                    if (intval($status) > 15) {
-                        $status = 0;
-                    }
                     $this->getHelper()->saveLogOrder($order, $request, $xml, $response, $status, $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
                 } else {
                     $this->getHelper()->saveLogOrder($order, $request, $xml, "empty response", "0", $ByjunoRequestName, $request_start, date('Y-m-d G:i:s'));
