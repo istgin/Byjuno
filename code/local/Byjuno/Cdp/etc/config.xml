@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Byjuno_Cdp>
-            <version>1.7.2</version>
+            <version>1.7.3</version>
         </Byjuno_Cdp>
     </modules>
     <admin>
@@ -241,9 +241,9 @@
                     <byjuno_fail_message>Der Anbieter dieser Zahlungsart hat die gewählte Bezahlmethode abgelehnt. Bitte wählen Sie eine andere Zahlungsart.</byjuno_fail_message>
                     <byjuno_invoice_toc_string>AGB</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_invoice_payment_message>
-                    <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.50) an</byjuno_invoice_postal_text>
+                    <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.95) an</byjuno_invoice_postal_text>
                     <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
-                    <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
+                    <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.95 pro Rate) an</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
                     <byjuno_s4_fail>Das Senden der Rechnung an Byjuno ist fehlgeschlagen. Die Rechnung wurde nicht generiert. Bitte versuchen Sie es erneut.</byjuno_s4_fail>
                     <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
@@ -300,9 +300,9 @@
                     <byjuno_fail_message>Le prestataire de ce type de paiement a rejeté la méthode de paiement choisie. Veuillez choisir un autre mode de paiement.</byjuno_fail_message>
                     <byjuno_invoice_toc_string>CGV</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>Veuillez choisir le type de paiement et accepter les conditions générales</byjuno_invoice_payment_message>
-                    <byjuno_invoice_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50) à</byjuno_invoice_postal_text>
+                    <byjuno_invoice_postal_text>Expédition facture sous forme papier (au prix de CHF 3.95) à</byjuno_invoice_postal_text>
                     <byjuno_invoice_email_text>Expédition facture via e-mail (sans frais) à</byjuno_invoice_email_text>
-                    <byjuno_installment_postal_text>Expédition facture sous forme papier (au prix de CHF 3.50 par tranche) à</byjuno_installment_postal_text>
+                    <byjuno_installment_postal_text>Expédition facture sous forme papier (au prix de CHF 3.95 par tranche) à</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Expédition facture via e-mail (sans frais) à</byjuno_installment_email_text>
                     <byjuno_s4_fail>La transmission de la facture à Byjuno a échoué. La facture n’a pas été produite, veuillez essayer à nouveau.</byjuno_s4_fail>
                     <byjuno_s5_fail>La transmission de la commande modifiée a échoué. L’annulation/le remboursement n’a pas pu être exécuté. Veuillez essayer à nouveau.</byjuno_s5_fail>
@@ -360,9 +360,9 @@
                     <byjuno_fail_message>L’operatore del servizio di pagamento ha rifiutato la modalità di pagamento da Lei scelta. La preghiamo di scegliere un’altra modalità di pagamento.</byjuno_fail_message>
                     <byjuno_invoice_toc_string>CGC</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>La preghiamo di scegliere la modalità di pagamento e di accettare le condizioni generali di contratto</byjuno_invoice_payment_message>
-                    <byjuno_invoice_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50) all’indirizzo</byjuno_invoice_postal_text>
+                    <byjuno_invoice_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.95) all’indirizzo</byjuno_invoice_postal_text>
                     <byjuno_invoice_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_invoice_email_text>
-                    <byjuno_installment_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.50 per ogni rata) all’indirizzo</byjuno_installment_postal_text>
+                    <byjuno_installment_postal_text>Invio fattura cartacea tramite posta (spese aggiuntive di CHF 3.95 per ogni rata) all’indirizzo</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Invio fattura tramite e-mail (senza spese aggiuntive) all’indirizzo</byjuno_installment_email_text>
                     <byjuno_s4_fail>La trasmissione della fattura a Byjuno non é riuscita. La fattura non é stata generata. La preghiamo di riprovare.</byjuno_s4_fail>
                     <byjuno_s5_fail>La trasmissione della modifica dell’ordine non é riuscita. Storno/Rimborso non é stato eseguito. La preghiamo di riprovare.</byjuno_s5_fail>
@@ -419,9 +419,9 @@
                     <byjuno_fail_message>Payment Method Provider have refused selected payment method, please select different payment method.</byjuno_fail_message>
                     <byjuno_invoice_toc_string>T&amp;C</byjuno_invoice_toc_string>
                     <byjuno_invoice_payment_message>Please select payment option and agree to Terms and Conditions</byjuno_invoice_payment_message>
-                    <byjuno_invoice_postal_text>Invoice Delivery method by Post (postage fee 3.50 CHF) to</byjuno_invoice_postal_text>
+                    <byjuno_invoice_postal_text>Invoice Delivery method by Post (postage fee 3.95 CHF) to</byjuno_invoice_postal_text>
                     <byjuno_invoice_email_text>Invoice Delivery method by E-Mail (no fees) to</byjuno_invoice_email_text>
-                    <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.50 CHF for each installment) to</byjuno_installment_postal_text>
+                    <byjuno_installment_postal_text>Installments Delivery method by Post (postage fee 3.95 CHF for each installment) to</byjuno_installment_postal_text>
                     <byjuno_installment_email_text>Installments Delivery method by E-Mail (no fees) to</byjuno_installment_email_text>
                     <byjuno_s4_fail>The invoice transfer to Byjuno failed; the invoice could not be generated, please retry.</byjuno_s4_fail>
                     <byjuno_s5_fail>The transfer of the updated order to Byjuno failed; Cancel/Refund could not be completed, please retry.</byjuno_s5_fail>
@@ -515,9 +515,9 @@
                 <byjuno_fail_message>Der Anbieter dieser Zahlungsart hat die gewählte Bezahlmethode abgelehnt. Bitte wählen Sie eine andere Zahlungsart.</byjuno_fail_message>
                 <byjuno_invoice_toc_string>AGB</byjuno_invoice_toc_string>
                 <byjuno_invoice_payment_message>Bitte wählen Sie die Zahlungsart und akzeptieren Sie die Allgemeinen Geschäftsbedingungen</byjuno_invoice_payment_message>
-                <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.50) an</byjuno_invoice_postal_text>
+                <byjuno_invoice_postal_text>Rechnungsversand in Papierform via Post  (gegen Gebühr von CHF 3.95) an</byjuno_invoice_postal_text>
                 <byjuno_invoice_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_invoice_email_text>
-                <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.50 pro Rate) an</byjuno_installment_postal_text>
+                <byjuno_installment_postal_text>Rechnungsversand in Papierform via Post (gegen Gebühr von CHF 3.95 pro Rate) an</byjuno_installment_postal_text>
                 <byjuno_installment_email_text>Rechnungsversand via E-Mail (ohne Gebühr) an</byjuno_installment_email_text>
                 <byjuno_s4_fail>Das Senden der Rechnung an Byjuno ist fehlgeschlagen. Die Rechnung wurde nicht generiert. Bitte versuchen Sie es erneut.</byjuno_s4_fail>
                 <byjuno_s5_fail>Das Senden der Bestelländerung an Byjuno ist fehlgeschlagen. Storno/Rückerstattung konnte nicht durchgeführt werden. Bitte versuchen Sie es erneut.</byjuno_s5_fail>
